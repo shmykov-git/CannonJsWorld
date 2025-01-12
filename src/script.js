@@ -6,6 +6,12 @@ const world = new PWorld({
     cameraPosition: [0, 0, 50]
 });
 
+function* range(start, end) {
+    for (let i = start; i < end; i += 1) {
+        yield i;
+    }
+}
+
 const objects = [
     new PPolyhedron({
         id: "cube",
@@ -17,15 +23,20 @@ const objects = [
     }),
 
     new PJumpSphere({ 
-        id: "ball", 
-        radius: 2,
-        position: [2.5, 3, 2.5], 
-        color: 0x0000ff,
-        jumpPower: 100,
+        id: "Earth", 
+        radius: 3,
+        position: [5, 5, 5], 
+        color: 0xff00ff,
         modelPath: "../models/santa_model.glb", // todo
-        jumpOnSpace: true, // todo
-        // jumbBtn: btnId
     }),        
+
+    ...
+    range(0, 5).map(i => new PJumpSphere({ 
+        id: "ball", 
+        radius: 1 + i/5,
+        position: [-2, 2.1 * i, -2], 
+        color: 0x0000ff + 256 * i * 50 
+    }))        
 ];
 
 world.init(objects);
@@ -34,7 +45,7 @@ world.init(objects);
 document.addEventListener("keydown", event => 
 { 
     if (event.code === "Space")
-        world.get("ball").jump()    
+        world.getAll("ball").forEach(ball => ball.jump());
 });
 
 

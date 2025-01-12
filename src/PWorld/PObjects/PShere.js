@@ -4,18 +4,26 @@ import * as CANNON from 'cannon-es';
 import { getMeshTransparentMaterial, getMeshWireMaterial } from '../Scene/MeshMaterials.js'
 import { pItemMaterial } from '../World/PhysicMaterials.js'
 
+
+function getVolume(radius) {
+    return 4/3 * Math.PI * Math.pow(radius, 3);
+}
+
 // Class to handle physics and visual representation of shpere
 export class PShere extends PObject {
     constructor(args) {
         args = { ...{
             id: "sphere",
-            mass: 1,
             radius: 1, 
+            massByRadius: true,
             position: [0, 0, 0],
             pMaterial: pItemMaterial,
             meshMaterialFn: getMeshWireMaterial,
             color: 0xff0000
         }, ...args}
+
+        if (args.massByRadius)
+            args.mass = getVolume(args.radius);
 
         // Create physics body
         const pShape = new CANNON.Sphere(args.radius);
@@ -28,4 +36,5 @@ export class PShere extends PObject {
 
         super(args, [pShape], mesh)
     }
+
 }

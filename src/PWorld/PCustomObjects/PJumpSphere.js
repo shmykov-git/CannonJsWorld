@@ -6,7 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 export class PJumpSphere extends PShere {
     constructor(args) {
         args = {...{
-            jumpPower: 60
+            jumpPower: 500
         }, ...args}
 
         super(args)

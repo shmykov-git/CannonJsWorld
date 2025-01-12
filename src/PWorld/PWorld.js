@@ -20,6 +20,10 @@ export class PWorld {
         return this.objects.find(o => o.id === id)
     }
 
+    getAll(id) {
+        return this.objects.filter(o => o.id === id)
+    }
+
     init(objects) {
         this.world = new CANNON.World();
         this.world.gravity.set(0, -this.args.gravityPower, 0); // Поумолчанию направлена вниз

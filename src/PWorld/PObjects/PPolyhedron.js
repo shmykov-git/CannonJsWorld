@@ -47,6 +47,8 @@ export class PPolyhedron extends PObject {
 
         // Создаем многогранник (Polyhedron) в мире
         if (args.complex) {
+            
+            // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
             if (args.complexStrategy == "NormalVolume") {
                 // todo: CANNON.Trimesh - можно невыпуклые формы
                 // структура faces: [[],[]... (l), [],[]... (l)]
@@ -61,6 +63,8 @@ export class PPolyhedron extends PObject {
                     })
                 });                    
             }
+
+            // see shmykov-dev Algo, to build this one. Example: take many cubes, join them to a single shape, it takes them back
             if (args.complexStrategy == "ManyCubes")
             {
                 let m = 12;

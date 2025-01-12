@@ -6,11 +6,15 @@ import lights from './Scene/Lights.js'
 
 export class PWorld {
     constructor(args) {
+        // default PWorld args
         args = { ...{
             gravityPower: 9.82,
             worldRadius: 20,
             cameraPosition: [0, 0, 50],
             cameraLookAt: [0, 0, 0],
+            changeGravityByCamera: true,
+            useOrbitControlForCamera: true,
+            useWorldRadius: true
         }, ...args};
 
         this.args = args;
@@ -73,10 +77,12 @@ export class PWorld {
         this.objects.forEach(obj => obj.update());
         
         // Позволяем вращать сцену
-        this.orbitControls.update()
+        if (this.args.useOrbitControlForCamera)
+            this.orbitControls.update()
 
         // Гравитация всегда направлена вниз к оси направления камеры
-        this.updateGravity()
+        if (this.args.changeGravityByCamera)
+            this.updateGravity()
 
         // Обновляем визуализацию сцены
         this.renderer.render(this.scene, this.camera);

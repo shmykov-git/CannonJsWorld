@@ -1,20 +1,51 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-        canvas {
-            display: block;
-        }
-    </style>
-    <title>Cube with ball</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background-color: #f4f4f9;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+    }
+    header h1 {
+      margin: 0;
+    }
+    .menu {
+      margin: 50px 0;
+    }
+    .menu a {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 30px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 18px;
+    }
+    .menu a:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
-<body>    
-    <script type="module" src="script.js"></script>
+<body>
+  <header>
+    <h1>Welcome to Cannon Js Physic World</h1>
+    <p>Select an example to view</p>
+  </header>
+  <div class="menu">
+    <a href="Views/MazeCube/">Maze Cube game</a>
+    <a href="Views/BoxWithBalls/">Box with balls</a>
+  </div>
 </body>
 </html>

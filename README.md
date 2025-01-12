@@ -12,7 +12,6 @@ Welcome to Cannon Js World application. You can use it to simplify your Cannon a
 
 - Node.js (version 16 or later recommended)
 - npm or yarn
-- npm run dev
 
 ### Installation
 
@@ -20,3 +19,9 @@ Welcome to Cannon Js World application. You can use it to simplify your Cannon a
    ```bash
    git clone <repository-url>
    cd <project-name>
+
+### Run
+
+- npm install
+- npm run dev
+- Debug (or F5) for vs code, or open http://localhost:5173/src/index.html (check port)

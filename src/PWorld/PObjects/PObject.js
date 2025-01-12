@@ -42,7 +42,8 @@ export class PObject {
         if (this.bodies.length > 1)
             return;
         
-        this.pWorld.enforceWorldRadius(this.body);
+        if (this.pWorld.args.useWorldRadius)
+            this.pWorld.enforceWorldRadius(this.body);
 
         let p = this.body.position;
         let q = this.body.quaternion;

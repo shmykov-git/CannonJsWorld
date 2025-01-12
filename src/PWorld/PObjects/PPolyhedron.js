@@ -36,54 +36,55 @@ export class PPolyhedron extends PObject {
             position: [0, 0, 0],
             pMaterial: pPolyhedronMaterial,
             meshMaterialFn: getMeshTransparentMaterial,
-            color: 0x00ff00
+            color: 0x00ff00,
+            usePhysic: true
         }, ...args}
 
-        let pShapes = []
-        
         if (args.scale) {
             args.vertices = [...args.vertices.map(v => [args.scale[0] * v[0], args.scale[1] * v[1], args.scale[2] * v[2]])];
         }
 
         // Создаем многогранник (Polyhedron) в мире
-        if (args.complex) {
-            
-            // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
-            if (args.complexStrategy == "NormalVolume") {
-                // todo: CANNON.Trimesh - можно невыпуклые формы
-                // структура faces: [[],[]... (l), [],[]... (l)]
-                let n = args.faces.length / 2;
-                let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1], args.faces[2*i+n], args.faces[2*i+1+n]])];
-                // todo: скопировал первую точку во все точки, которых нет в faces
-                pShapes = bodiesFaces.map(bFaces => {
-                    let [nFaces, nVertices] = normalizeShape(bFaces, args.vertices)
-                    return new CANNON.ConvexPolyhedron({
-                        vertices: [...nVertices.map(p => new CANNON.Vec3(...p))],
-                        faces: nFaces
-                    })
-                });                    
-            }
+        let pShapes = []
+        if (args.usePhysic) {
+            if (args.complex) {                
+                // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
+                if (args.complexStrategy == "NormalVolume") {
+                    // todo: CANNON.Trimesh - можно невыпуклые формы
+                    // структура faces: [[],[]... (l), [],[]... (l)]
+                    let n = args.faces.length / 2;
+                    let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1], args.faces[2*i+n], args.faces[2*i+1+n]])];
+                    // todo: скопировал первую точку во все точки, которых нет в faces
+                    pShapes = bodiesFaces.map(bFaces => {
+                        let [nFaces, nVertices] = normalizeShape(bFaces, args.vertices)
+                        return new CANNON.ConvexPolyhedron({
+                            vertices: [...nVertices.map(p => new CANNON.Vec3(...p))],
+                            faces: nFaces
+                        })
+                    });                    
+                }
 
-            // see shmykov-dev Algo, to build this one. Example: take many cubes, join them to a single shape, it takes them back
-            if (args.complexStrategy == "ManyCubes")
-            {
-                let m = 12;
-                let n = args.faces.length / m;
-                let bodiesFaces = Array(n).keys().map(i => args.faces.slice(m*i, m*i+m))
-                pShapes = bodiesFaces.map(bFaces => {
-                    let [nFaces, nVertices] = normalizeShape(bFaces, args.vertices)
-                    return new CANNON.ConvexPolyhedron({
-                        vertices: [...nVertices.map(p => new CANNON.Vec3(...p))],
-                        faces: nFaces
-                    })
-                });
+                // see shmykov-dev Algo, to build this one. Example: take many cubes, join them to a single shape, it takes them back
+                if (args.complexStrategy == "ManyCubes")
+                {
+                    let m = 12;
+                    let n = args.faces.length / m;
+                    let bodiesFaces = Array(n).keys().map(i => args.faces.slice(m*i, m*i+m))
+                    pShapes = bodiesFaces.map(bFaces => {
+                        let [nFaces, nVertices] = normalizeShape(bFaces, args.vertices)
+                        return new CANNON.ConvexPolyhedron({
+                            vertices: [...nVertices.map(p => new CANNON.Vec3(...p))],
+                            faces: nFaces
+                        })
+                    });
+                }
+            } else {
+                let pShape = new CANNON.ConvexPolyhedron({
+                    vertices: [...args.vertices.map(p => new CANNON.Vec3(...p))],
+                    faces: args.faces
+                })
+                pShapes = [pShape]
             }
-        } else {
-            let pShape = new CANNON.ConvexPolyhedron({
-                vertices: [...args.vertices.map(p => new CANNON.Vec3(...p))],
-                faces: args.faces
-            })
-            pShapes = [pShape]
         }
 
         // Создаем представление многогранника на сцене

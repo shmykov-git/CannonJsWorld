@@ -3,6 +3,10 @@ import * as CANNON from 'cannon-es';
 
 export class PObject {
     constructor(args, pShapes, mesh) {
+        args = {...{
+            usePhysic: true
+        }, ...args}
+
         this.args = args
         this.id = args.id
 
@@ -13,16 +17,18 @@ export class PObject {
             shape: shape
         }))];
 
-        this.body = this.bodies[0];
+        if (args.usePhysic && this.bodies.length > 0) {
+            this.body = this.bodies[0];
 
-        // Кастомизируем тело
-        this.bodies.forEach(body => {
-            if (args.static)
-                body.type = CANNON.Body.STATIC // Устанавливаем тип статического тела
+            // Кастомизируем тело
+            this.bodies.forEach(body => {
+                if (args.static)
+                    body.type = CANNON.Body.STATIC // Устанавливаем тип статического тела
 
-            body.material = args.pMaterial;
-            body.angularDamping = 0.5; // Damping to reduce spinning over time
-        });
+                body.material = args.pMaterial;
+                body.angularDamping = 0.5; // Damping to reduce spinning over time
+            });
+        }
 
         this.mesh = mesh;
     }
@@ -33,13 +39,15 @@ export class PObject {
         this.scene = pWorld.scene;
 
         // Добавление тела в мир
-        this.bodies.forEach(body => this.world.addBody(body));
+        if (this.args.usePhysic)
+            this.bodies.forEach(body => this.world.addBody(body));
+
         // Добавляем изображение на сцену
         this.scene.add(this.mesh);
     }
 
     update() {
-        if (this.bodies.length > 1)
+        if (this.bodies.length > 1 || !this.args.usePhysic)
             return;
         
         if (this.pWorld.args.useWorldRadius)

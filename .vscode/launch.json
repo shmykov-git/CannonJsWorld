@@ -8,7 +8,8 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open index.html",
-            "url": "http://localhost:5173/src/index.html",  // Адрес вашего Vite сервера
+            "url1": "http://localhost:5173/src/index.html",
+            "url": "http://localhost:5173/src/views/SomeRotation/index.html",
             "sourceMaps": true,
             "skipFiles": ["node_modules/**"]
         }

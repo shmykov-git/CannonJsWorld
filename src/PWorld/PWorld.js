@@ -14,7 +14,8 @@ export class PWorld {
             cameraLookAt: [0, 0, 0],
             changeGravityByCamera: true,
             useOrbitControlForCamera: true,
-            useWorldRadius: true
+            useWorldRadius: true,
+            useGravity: true
         }, ...args};
 
         this.args = args;
@@ -30,7 +31,10 @@ export class PWorld {
 
     init(objects) {
         this.world = new CANNON.World();
-        this.world.gravity.set(0, -this.args.gravityPower, 0); // Поумолчанию направлена вниз
+
+        if (this.args.useGravity)
+            this.world.gravity.set(0, -this.args.gravityPower, 0); // Поумолчанию направлена вниз
+
         this.objects = objects;
 
         // Set up the scene, camera, and renderer
@@ -81,7 +85,7 @@ export class PWorld {
             this.orbitControls.update()
 
         // Гравитация всегда направлена вниз к оси направления камеры
-        if (this.args.changeGravityByCamera)
+        if (this.args.changeGravityByCamera && this.args.useGravity)
             this.updateGravity()
 
         // Обновляем визуализацию сцены

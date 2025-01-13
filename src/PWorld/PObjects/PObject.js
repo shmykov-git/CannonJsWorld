@@ -4,7 +4,8 @@ import * as CANNON from 'cannon-es';
 export class PObject {
     constructor(args, pShapes, mesh) {
         args = {...{
-            usePhysic: true
+            usePhysic: true,
+            useCollision: true
         }, ...args}
 
         this.args = args
@@ -16,6 +17,9 @@ export class PObject {
             position: new CANNON.Vec3(...args.position), // Начальная позиция
             shape: shape
         }))];
+
+        if (!args.useCollision)
+            this.bodies.forEach(body => body.collisionFilterMask = 0);
 
         if (args.usePhysic && this.bodies.length > 0) {
             this.body = this.bodies[0];

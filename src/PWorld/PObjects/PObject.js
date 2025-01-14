@@ -5,7 +5,8 @@ export class PObject {
     constructor(args, pShapes, mesh) {
         args = {...{
             usePhysic: true,
-            useCollision: true
+            useCollision: true,
+            angularDamping: 0.5
         }, ...args}
 
         this.args = args
@@ -30,7 +31,7 @@ export class PObject {
                     body.type = CANNON.Body.STATIC // Устанавливаем тип статического тела
 
                 body.material = args.pMaterial;
-                body.angularDamping = 0.5; // Damping to reduce spinning over time
+                body.angularDamping = args.angularDamping; // Damping to reduce spinning over time
             });
         }
 

@@ -8,8 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open index.html",
-            "url1": "http://localhost:5173/src/index.html",
-            "url": "http://localhost:5173/src/views/SomeRotation/index.html",
+            "url": "http://localhost:5173/src/index.html",
             "sourceMaps": true,
             "skipFiles": ["node_modules/**"]
         }

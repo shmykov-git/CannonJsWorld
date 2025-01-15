@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages (Main Directory)
 on:
   push:
     branches:
-      - main  # Деплой запускается при пуше в ветку main
+      - pg-pages  # Деплой запускается при пуше в ветку pg-pages
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
       - name: Deploy changes
         run: |
           git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
+          git config --local user.email "shmykov-git@github.com"
           git add .
           git commit -m "Deploy update via GitHub Actions" || echo "No changes to commit"
           git push origin main

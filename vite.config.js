@@ -2,12 +2,13 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: 'src/',
-  base: '/CannonJsWorld/',
+  base: './',
   server: {
     hmr: true
   },
   build: {
-    outDir: 'dist',
+    outDir: './',
+    emptyOutDir: false,
   },
 });
   

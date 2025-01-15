@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages (Main Directory)
+
+on:
+  push:
+    branches:
+      - main  # Деплой запускается при пуше в ветку main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Клонируем репозиторий
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Шаг 2: Устанавливаем Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Укажите версию Node.js
+          cache: 'npm'
+
+      # Шаг 3: Устанавливаем зависимости
+      - name: Install dependencies
+        run: npm install
+
+      # Шаг 4: Собираем проект
+      - name: Build project
+        run: npm run build
+
+      # Шаг 5: Коммитим сборку в main
+      - name: Deploy changes
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add .
+          git commit -m "Deploy update via GitHub Actions" || echo "No changes to commit"
+          git push origin main

@@ -1,0 +1,37 @@
+name: Deploy Vite Project to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Работает при пуше в ветку main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Проверка кода
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Установка Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Укажите версию Node.js
+          cache: 'npm'
+
+      # Установка зависимостей
+      - name: Install dependencies
+        run: npm install
+
+      # Сборка проекта
+      - name: Build project
+        run: npm run build
+
+      # Деплой на GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-main@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist

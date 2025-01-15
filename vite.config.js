@@ -6,5 +6,8 @@ export default defineConfig({
   server: {
     hmr: true
   },
+  build: {
+    outDir: 'dist',
+  },
 });
   

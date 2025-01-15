@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # MacOS system files
 Thumbs.db
+
+# deploy folders
+deploy_prod/

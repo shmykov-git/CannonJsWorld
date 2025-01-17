@@ -1,5 +1,5 @@
-import {PWorld, PShere, PJumpSphere, PPolyhedron } from '../../PWorld/PObjects.js'
-import { getMeshItemMaterial } from '../../PWorld/Scene/MeshMaterials.js'
+import {PWorld, PShere, PJumpSphere, PPolyhedron } from '../PWorld/PObjects.js'
+import { getMeshItemMaterial } from '../PWorld/Scene/MeshMaterials.js'
 
 function getQueryParams() {
     const params = new URLSearchParams(window.location.search);

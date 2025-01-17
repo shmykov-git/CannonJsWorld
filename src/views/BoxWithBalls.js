@@ -1,4 +1,4 @@
-import {PWorld, PShere, PJumpSphere, PPolyhedron } from '../../PWorld/PObjects.js'
+import {PWorld, PShere, PJumpSphere, PPolyhedron } from '../PWorld/PObjects.js'
 
 const world = new PWorld({
     cameraPosition: [0, 0, 50]

@@ -2,6 +2,15 @@ import { defineConfig } from 'vite';
 import fs from 'fs';
 import path from 'path';
 
+function getAllFiles(dir) {
+  return fs
+    .readdirSync(dir)
+    .reduce((entries, file) => {
+      entries[path.parse(file).name] = path.resolve(dir, file);
+      return entries;
+    }, {});
+}
+
 function getHtmlFiles(dir) {
   return fs
     .readdirSync(dir)
@@ -11,6 +20,7 @@ function getHtmlFiles(dir) {
       return entries;
     }, {});
 }
+
 
 console.log(getHtmlFiles("."))
 console.log(getHtmlFiles("views"))

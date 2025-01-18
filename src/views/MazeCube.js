@@ -1,5 +1,5 @@
 import {PWorld, PShere, PJumpSphere, PPolyhedron } from '../PWorld/PObjects.js'
-import { getMeshItemMaterial } from '../PWorld/Scene/MeshMaterials.js'
+import { getMeshItemMaterial, getMazeBallMaterial } from '../PWorld/Scene/MeshMaterials.js'
 
 function getQueryParams() {
     const params = new URLSearchParams(window.location.search);
@@ -51,6 +51,7 @@ const objects = [
     ...Array(1).keys().map(i => new PJumpSphere({ // check worldRadius for many
         id: "ball", 
         position: [2.5, 12 + 2*i, 2.5], 
+        meshMaterialFn: getMazeBallMaterial,
         color: 0xff0000,
     }))
 ];

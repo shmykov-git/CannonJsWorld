@@ -1,5 +1,21 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
+import { normalizeShape } from './ArrayFuncs';
+
+export function getConvexPolyhedronBody(vertices, faces) {
+    return new CANNON.ConvexPolyhedron({
+        vertices: [...vertices.map(p => new CANNON.Vec3(...p))],
+        faces: faces
+    })
+}
+
+// bodiesFaces = [[[0,1,2],...], [[0,1,3],...]] 
+export function getPolyhedronBodiesByFaces(vertices, bodiesFaces) {
+    return bodiesFaces.map(bFaces => {
+        const [nVertices, nFaces] = normalizeShape(vertices, bFaces)
+        return getConvexPolyhedronBody(nVertices, nFaces)
+    });  
+}
 
 // Функция для получения направления камеры
 export function getCameraDirection(camera) {

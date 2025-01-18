@@ -5,9 +5,10 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export class PJumpSphere extends PShere {
     constructor(args) {
-        args = {...{
-            jumpPower: 500
-        }, ...args}
+        args = {
+            jumpPower: 500, 
+            ...args
+        }
 
         super(args)
 
@@ -17,11 +18,11 @@ export class PJumpSphere extends PShere {
             this.canJamp = true;
         });         
 
-                // if (args.modelPath) {
-        //     this.loadModel().then(model =>{
+        if (args.modelPath) {
+            this.loadModel().then(model =>{
 
-        //     })
-        // } 
+            })
+        } 
     }
 
     jump() {

@@ -8,7 +8,8 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open index.html",
-            "url": "http://localhost:5173/index.html",
+            "url1": "http://localhost:3333/index.html",
+            "url": "http://localhost:3333/views/MazeCube.html",
             "sourceMaps": true,
             "skipFiles": ["node_modules/**"]
         }

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
-import { normalizeShape, center, add, sub } from './ArrayFuncs';
+import { normalizeShape, center, addA, subA } from './ArrayFuncs';
 
 export function getConvexPolyhedronShape(vertices, faces) {
     return new CANNON.ConvexPolyhedron({
@@ -21,11 +21,21 @@ export function getPolyhedronShapesByFaces(vertices, bodiesFaces) {
     return bodiesFaces.map(bFaces => {
         const [nVertices, nFaces] = normalizeShape(vertices, bFaces)
         const c = center(nVertices)
-        const nCenterVertices = sub(nVertices, c)
+        const nCenterVertices = subA(nVertices, c)
         const body = getConvexPolyhedronShape(nCenterVertices, nFaces);
         return [body, c];
     });  
 }
+
+// export function getBoxShapesByFaces(vertices, bodiesFaces, ) {
+//     return bodiesFaces.map(bFaces => {
+//         const [nVertices, nFaces] = normalizeShape(vertices, bFaces)
+//         const c = center(nVertices)
+//         const nCenterVertices = sub(nVertices, c)
+//         const body = getConvexPolyhedronShape(nCenterVertices, nFaces);
+//         return [body, c];
+//     });  
+// }
 
 // Функция для получения направления камеры
 export function getCameraDirection(camera) {

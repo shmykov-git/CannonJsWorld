@@ -10,28 +10,33 @@ export function* range(start, end) {
         yield i;
 }
 
-// vector = [0.1, 0.2, 0.3]
-export function scale(vertices, vector) {
-    return vertices.map(v => [vector[0] * v[0], vector[1] * v[1], vector[2] * v[2]]);
+function* rN(end) { for (let i = 0; i < end; i++) yield i }
+
+const doCi = (v, opi) => [...rN(v.length).map(i => opi(v[i]))]
+const doVi = (v, x, opi) => [...rN(v.length).map(i => opi(v[i], x[i]))]
+
+const dooVi = (vs, x, opi) => vs.map( v => doVi(v, x, opi) )
+const dooCi = (vs, opi) => vs.map( v => doCi(v, opi) )
+
+
+export const scale = (v, x) => doVi(v, x, (a, b) => a * b)
+export const add = (v, x) => doVi(v, x, (a, b) => a + b)
+export const sum = (v, x) => doVi(v, x, (a, b) => a + b)
+export const sub = (v, x) => doVi(v, x, (a, b) => a - b)
+export const div = (v, c) => doCi(v, a => a / c)
+
+export const scaleA = (vs, x) => dooVi(vs, x, (a, b) => a * b)
+export const addA = (vs, x) => dooVi(vs, x, (a, b) => a + b)
+export const subA = (vs, x) => dooVi(vs, x, (a, b) => a - b)
+export const divA = (vs, c) => dooCi(vs, a => a / c)
+
+export function sumA(vs) {
+    let sum = [0, 0, 0]
+    vs.forEach(v => { sum[0] += v[0]; sum[1] += v[1]; sum[2] += v[2]; })
+    return sum;
 }
 
-export function add(vertices, vector) {
-    return vertices.map(v => [vector[0] + v[0], vector[1] + v[1], vector[2] + v[2]]);
-}
-
-export function sub(vertices, vector) {
-    return vertices.map(v => [v[0] - vector[0], v[1] - vector[1], v[2] - vector[2]]);
-}
-
-export function center(vertices) {
-    let s = [0, 0, 0]
-    vertices.forEach(v => {
-        s[0] += v[0];
-        s[1] += v[1];
-        s[2] += v[2];
-    })
-    return [s[0]/vertices.length, s[1]/vertices.length, s[2]/vertices.length];
-}
+export function center(vs) { return div(sumA(vs), vs.length); }
 
 // takes part of vertices from big shape and create new shape with correct faces from it
 export function normalizeShape(vertices0, faces0) {

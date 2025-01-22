@@ -3,7 +3,7 @@ import * as CANNON from 'cannon-es';
 import { PObject } from './PObject.js';
 import { getMeshTransparentMaterial, getMeshWireMaterial } from '../Scene/MeshMaterials.js'
 import { pPolyhedronMaterial } from '../World/PhysicMaterials.js'
-import { scale } from '../ArrayFuncs.js'
+import { scaleA } from '../ArrayFuncs.js'
 import { getPolyhedronShapesByFaces } from '../PFuncs.js'
 
 // todo: CANNON.Trimesh - можно невыпуклые формы
@@ -22,7 +22,7 @@ export class PPolyhedron extends PObject {
         }
 
         if (args.scale)
-            args.vertices = scale(args.vertices, args.scale);
+            args.vertices = scaleA(args.vertices, args.scale);
         
         // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
         function getNormalVolumeStrategyShapes() {

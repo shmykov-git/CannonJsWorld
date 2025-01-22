@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { PObject } from './PObject.js';
 import { getMeshWireMaterial } from '../Scene/MeshMaterials.js'
-import { scaleA } from '../ArrayFuncs.js'
+import * as vfn from '../VecFuncs.js'
 
 // Class to handle physics and visual representation of Box
 export class PBox extends PObject {

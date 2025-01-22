@@ -3,41 +3,6 @@
 //        face has a normal, so [0, 1, 2] and [0, 2, 1] is the same triangle, but it will be shown in the scene just by one side of it, that is very important to be shown and for physic collisions
 //        so, each object has back side - that is a body of the shape and outside - that is empty space it is located in
 
-
-// Array(n).keys().map(i => i + start)
-export function* range(start, end) {
-    for (let i = start; i < end; i += 1) 
-        yield i;
-}
-
-function* rN(end) { for (let i = 0; i < end; i++) yield i }
-
-const doCi = (v, opi) => [...rN(v.length).map(i => opi(v[i]))]
-const doVi = (v, x, opi) => [...rN(v.length).map(i => opi(v[i], x[i]))]
-
-const dooVi = (vs, x, opi) => vs.map( v => doVi(v, x, opi) )
-const dooCi = (vs, opi) => vs.map( v => doCi(v, opi) )
-
-
-export const scale = (v, x) => doVi(v, x, (a, b) => a * b)
-export const add = (v, x) => doVi(v, x, (a, b) => a + b)
-export const sum = (v, x) => doVi(v, x, (a, b) => a + b)
-export const sub = (v, x) => doVi(v, x, (a, b) => a - b)
-export const div = (v, c) => doCi(v, a => a / c)
-
-export const scaleA = (vs, x) => dooVi(vs, x, (a, b) => a * b)
-export const addA = (vs, x) => dooVi(vs, x, (a, b) => a + b)
-export const subA = (vs, x) => dooVi(vs, x, (a, b) => a - b)
-export const divA = (vs, c) => dooCi(vs, a => a / c)
-
-export function sumA(vs) {
-    let sum = [0, 0, 0]
-    vs.forEach(v => { sum[0] += v[0]; sum[1] += v[1]; sum[2] += v[2]; })
-    return sum;
-}
-
-export function center(vs) { return div(sumA(vs), vs.length); }
-
 // takes part of vertices from big shape and create new shape with correct faces from it
 export function normalizeShape(vertices0, faces0) {
     let faces = [...new Set(faces0.flatMap(f => f))].sort((a, b) => a - b)

@@ -3,8 +3,8 @@ import * as CANNON from 'cannon-es';
 import { PObject } from './PObject.js';
 import { getMeshTransparentMaterial, getMeshWireMaterial } from '../Scene/MeshMaterials.js'
 import { pPolyhedronMaterial } from '../World/PhysicMaterials.js'
-import { scaleA } from '../ArrayFuncs.js'
-import { getPolyhedronShapesByFaces } from '../PFuncs.js'
+import * as vfn from '../VecFuncs.js'
+import { getPolyhedronShapesByFaces, getBoxShapesByFaces } from '../PFuncs.js'
 
 // todo: CANNON.Trimesh - можно невыпуклые формы
 export class PPolyhedron extends PObject {
@@ -22,13 +22,19 @@ export class PPolyhedron extends PObject {
         }
 
         if (args.scale)
-            args.vertices = scaleA(args.vertices, args.scale);
+            args.vertices = vfn.scaleA(args.vertices, args.scale);
         
         // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
         function getNormalVolumeStrategyShapes() {
             let n = args.faces.length / 2;
             let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1], args.faces[2*i+n], args.faces[2*i+1+n]])];
             return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
+        }
+
+        function getNormalVolumeAsBoxStrategyShapes() {
+            let n = args.faces.length / 2;
+            let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1], args.faces[2*i+n], args.faces[2*i+1+n]])];
+            return getBoxShapesByFaces(args.vertices, bodiesFaces);
         }
 
         function getNormalVolumeNearStrategyShapes() {
@@ -59,6 +65,9 @@ export class PPolyhedron extends PObject {
                 {
                     case "NormalVolume":
                         shapes = getNormalVolumeStrategyShapes();
+                        break;
+                    case "NormalVolumeAsBox":
+                        shapes = getNormalVolumeAsBoxStrategyShapes();
                         break;
                     case "NormalVolumeFar":
                         shapes = getNormalVolumeFarStrategyShapes();

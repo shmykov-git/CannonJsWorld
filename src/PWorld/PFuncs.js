@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
-import { normalizeShape, center, addA, subA } from './ArrayFuncs';
+import { normalizeShape } from './ArrayFuncs';
+import * as vfn from './VecFuncs'
 
 export function getConvexPolyhedronShape(vertices, faces) {
     return new CANNON.ConvexPolyhedron({
@@ -20,22 +21,26 @@ export function getTrimeshShape(vertices, faces) {
 export function getPolyhedronShapesByFaces(vertices, bodiesFaces) {
     return bodiesFaces.map(bFaces => {
         const [nVertices, nFaces] = normalizeShape(vertices, bFaces)
-        const c = center(nVertices)
-        const nCenterVertices = subA(nVertices, c)
-        const body = getConvexPolyhedronShape(nCenterVertices, nFaces);
-        return [body, c];
+        const c = vfn.center(nVertices)
+        const nCenterVertices = vfn.subA(nVertices, c)
+        const shape = getConvexPolyhedronShape(nCenterVertices, nFaces);
+        return [shape, c];
     });  
 }
 
-// export function getBoxShapesByFaces(vertices, bodiesFaces, ) {
-//     return bodiesFaces.map(bFaces => {
-//         const [nVertices, nFaces] = normalizeShape(vertices, bFaces)
-//         const c = center(nVertices)
-//         const nCenterVertices = sub(nVertices, c)
-//         const body = getConvexPolyhedronShape(nCenterVertices, nFaces);
-//         return [body, c];
-//     });  
-// }
+// todo: min, max?
+export function getBoxShapesByFaces(vertices, bodiesFaces) {
+    return bodiesFaces.map(bFaces => {
+        const indices = [...new Set(bFaces.flatMap(bf => bf.flatMap(i => i)))]
+        const vs = [...indices.map(i=>vertices[i])];
+        const c = vfn.center(vs)
+        const cvs = vfn.subA(vs, c)
+        const [fi, i] = vfn.maxBy(cvs, v => vfn.len2(v))
+        const halfV = vfn.abs(cvs[i])
+        const shape = new CANNON.Box(new CANNON.Vec3(...halfV))
+        return [shape, c];
+    });  
+}
 
 // Функция для получения направления камеры
 export function getCameraDirection(camera) {

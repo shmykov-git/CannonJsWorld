@@ -1,13 +1,8 @@
-import {PWorld, PShere, PJumpSphere, PPolyhedron } from '../PWorld/PObjects.js'
+import {PWorld, PShere, PJumpSphere, PPolyhedron, PBox } from '../PWorld/PObjects.js'
 
 const world = new PWorld({
     cameraPosition: [0, 0, 50]
 });
-
-function* range(start, end) {
-    for (let i = start; i < end; i += 1) 
-        yield i;
-}
 
 const objects = [
     new PPolyhedron({
@@ -16,18 +11,24 @@ const objects = [
         faces: [[1,2,3],[1,3,0],[4,5,1],[4,1,0],[3,7,4],[3,4,0],[2,1,5],[2,5,6],[7,3,2],[7,2,6],[5,4,7],[5,7,6],[8,11,10],[8,10,9],[8,9,13],[8,13,12],[8,12,15],[8,15,11],[14,13,9],[14,9,10],[14,10,11],[14,11,15],[14,15,12],[14,12,13]], 
         color: 0x00ff00,
         complex: true,
-        complexStrategy: "NormalVolume" // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
+        complexStrategy: "NormalVolumeNear" // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
     }),
+
+    // new PBox({
+    //     mass: 10,
+    //     position: [2, 17, 2],
+    //     size: [2,2,2]
+    // }),
 
     new PJumpSphere({ 
         id: "Earth", 
         radius: 3,
         position: [5, 5, 5], 
         color: 0xff00ff,
-        modelPath: "../models/santa_model.glb", // todo
+        // modelPath: "../models/santa_model.glb", // todo
     }),        
 
-    ...Array(5).keys().map(i => 
+    ...Array(4).keys().map(i => 
         new PJumpSphere({ 
             id: "ball", 
             radius: 1 + i/5,

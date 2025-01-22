@@ -4,12 +4,12 @@ import { PObject } from './PObject.js';
 import { getMeshTransparentMaterial, getMeshWireMaterial } from '../Scene/MeshMaterials.js'
 import { pPolyhedronMaterial } from '../World/PhysicMaterials.js'
 import { scale } from '../ArrayFuncs.js'
-import { getPolyhedronBodiesByFaces } from '../PFuncs.js'
+import { getPolyhedronShapesByFaces } from '../PFuncs.js'
 
 // todo: CANNON.Trimesh - можно невыпуклые формы
 export class PPolyhedron extends PObject {
     constructor(args) {
-        args = { ...{
+        args = {
             id: "polyhedron",
             mass: 0,
             static: true,
@@ -17,45 +17,63 @@ export class PPolyhedron extends PObject {
             pMaterial: pPolyhedronMaterial,
             meshMaterialFn: getMeshTransparentMaterial,
             color: 0x00ff00,
-            usePhysic: true
-        }, ...args}
-
-        if (args.scale) {
-            args.vertices = scale(args.vertices, args.scale);
+            usePhysic: true,
+            ...args
         }
+
+        if (args.scale)
+            args.vertices = scale(args.vertices, args.scale);
         
         // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
-        function getNormalVolumeStrategyBodies() {
+        function getNormalVolumeStrategyShapes() {
             let n = args.faces.length / 2;
             let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1], args.faces[2*i+n], args.faces[2*i+1+n]])];
-            return getPolyhedronBodiesByFaces(args.vertices, bodiesFaces);
+            return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
+        }
+
+        function getNormalVolumeNearStrategyShapes() {
+            let n = args.faces.length / 2;
+            let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1]])];
+            return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
+        }
+
+        function getNormalVolumeFarStrategyShapes() {
+            let n = args.faces.length / 2;
+            let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i+n], args.faces[2*i+1+n]])];
+            return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
         }
 
         // see shmykov-dev Algo, to build this one. Example: take many cubes, join them to a single shape, it takes them back
-        function getManyCubesStrategyBodies() {
+        function getManyCubesStrategyShapes() {
             let m = 12;
             let n = args.faces.length / m;
             let bodiesFaces = Array(n).keys().map(i => args.faces.slice(m*i, m*i+m))
-            return getPolyhedronBodiesByFaces(args.vertices, bodiesFaces);
+            return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
         }
 
         // Создаем многогранник (Polyhedron) в мире
-        let bodies = []
+        let shapes = []
         if (args.usePhysic) {
             if (args.complex) {       
                 switch (args.complexStrategy)
                 {
                     case "NormalVolume":
-                        bodies = getNormalVolumeStrategyBodies();
+                        shapes = getNormalVolumeStrategyShapes();
+                        break;
+                    case "NormalVolumeFar":
+                        shapes = getNormalVolumeFarStrategyShapes();
+                        break;
+                    case "NormalVolumeNear":
+                        shapes = getNormalVolumeNearStrategyShapes();
                         break;
                     case "ManyCubes":
-                        bodies = getManyCubesStrategyBodies();
+                        shapes = getManyCubesStrategyShapes();
                         break;
                     default:
                         throw new Error(`${args.complexStrategy} is not implemented`);
                 }
             } else {
-                bodies = getPolyhedronBodiesByFaces(args.vertices, [args.faces]);
+                shapes = getPolyhedronShapesByFaces(args.vertices, [args.faces]);
             }
         }
 
@@ -68,6 +86,6 @@ export class PPolyhedron extends PObject {
         const material = args.meshMaterialFn ? args.meshMaterialFn(args.color) : getMeshWireMaterial(args.color);
         const mesh = new THREE.Mesh(geometry, material);
 
-        super(args, bodies, mesh)
+        super(args, shapes, mesh)
     }
 }

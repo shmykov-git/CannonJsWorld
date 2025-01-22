@@ -8,19 +8,19 @@ export const contactPolyhedronMaterial = new CANNON.ContactMaterial(pPolyhedronM
 });
 
 // все Sphere одинакого взаимодействуют друг с другом
-export const contactSphereMaterial = new CANNON.ContactMaterial(pItemMaterial, pItemMaterial, {
+export const contactItemItemMaterial = new CANNON.ContactMaterial(pItemMaterial, pItemMaterial, {
     friction: 0.5, // Коэффициент трения
     restitution: 0.7, // Коэффициент упругости
 });
 
 // все Sphere одинакого взаимодействуют с Polyhedron
-export const contactSpherePolyhedronMaterial = new CANNON.ContactMaterial(pItemMaterial, pPolyhedronMaterial, {
+export const contactItemPolyhedronMaterial = new CANNON.ContactMaterial(pItemMaterial, pPolyhedronMaterial, {
     friction: 0.5, // Коэффициент трения
     restitution: 0.7, // Коэффициент упругости
 });
 
 export default [
     contactPolyhedronMaterial,
-    contactSphereMaterial,
-    contactSpherePolyhedronMaterial
+    contactItemItemMaterial,
+    contactItemPolyhedronMaterial
 ];

@@ -22,18 +22,19 @@ function getHtmlFiles(dir) {
 }
 
 
-console.log(getHtmlFiles("."))
-console.log(getHtmlFiles("views"))
+const files = {
+  ...getHtmlFiles("."),
+  ...getHtmlFiles("views")
+}
+
+console.log(files)
 
 export default defineConfig({
   type: "module",
   root:'.',
   build: {
     rollupOptions: {
-      input: {
-        ...getHtmlFiles("."),
-        ...getHtmlFiles("views")
-      },
+      input: files,
     },
     outDir: './dist',
   },

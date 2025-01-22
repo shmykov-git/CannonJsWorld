@@ -15,6 +15,24 @@ export function scale(vertices, vector) {
     return vertices.map(v => [vector[0] * v[0], vector[1] * v[1], vector[2] * v[2]]);
 }
 
+export function add(vertices, vector) {
+    return vertices.map(v => [vector[0] + v[0], vector[1] + v[1], vector[2] + v[2]]);
+}
+
+export function sub(vertices, vector) {
+    return vertices.map(v => [v[0] - vector[0], v[1] - vector[1], v[2] - vector[2]]);
+}
+
+export function center(vertices) {
+    let s = [0, 0, 0]
+    vertices.forEach(v => {
+        s[0] += v[0];
+        s[1] += v[1];
+        s[2] += v[2];
+    })
+    return [s[0]/vertices.length, s[1]/vertices.length, s[2]/vertices.length];
+}
+
 // takes part of vertices from big shape and create new shape with correct faces from it
 export function normalizeShape(vertices0, faces0) {
     let faces = [...new Set(faces0.flatMap(f => f))].sort((a, b) => a - b)

@@ -1,23 +1,36 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
+import { pItemMaterial } from '../World/PhysicMaterials.js'
 
 export class PObject {
-    constructor(args, pShapes, mesh) {
-        args = {...{
+    constructor(args, shapes, mesh) {
+        args = {
+            id: 'object',
+            mass: 1,
+            position: [0, 0, 0],
             usePhysic: true,
             useCollision: true,
-            angularDamping: 0.5
-        }, ...args}
+            angularDamping: 0.5,
+            pMaterial: pItemMaterial,
+            ...args
+        }
 
         this.args = args
         this.id = args.id
 
+        function getBodyByShape(shape) {
+            const [s, sPos] = Array.isArray(shape) ? shape : [shape, [0, 0, 0]];
+            const p = [args.position[0] + sPos[0], args.position[1] + sPos[1], args.position[2] + sPos[2]];
+
+            return new CANNON.Body({
+                mass: args.mass / shapes.length, // Масса объекта
+                position: new CANNON.Vec3(...p), // Начальная позиция
+                shape: s
+            })
+        }
+
         // Создание физического тела
-        this.bodies = [...pShapes.map(shape => new CANNON.Body({
-            mass: args.mass / pShapes.length, // Масса объекта
-            position: new CANNON.Vec3(...args.position), // Начальная позиция
-            shape: shape
-        }))];
+        this.bodies = [...shapes.map(shape => getBodyByShape(shape))];
 
         if (!args.useCollision)
             this.bodies.forEach(body => body.collisionFilterMask = 0);
@@ -55,7 +68,7 @@ export class PObject {
         if (this.bodies.length > 1 || !this.args.usePhysic)
             return;
         
-        if (this.pWorld.args.useWorldRadius)
+        if (this.pWorld.args.useWorldRadius && this.body)
             this.pWorld.enforceWorldRadius(this.body);
 
         let p = this.body.position;

@@ -12,29 +12,38 @@ function getVolume(radius) {
 // Class to handle physics and visual representation of shpere
 export class PShere extends PObject {
     constructor(args) {
-        args = { ...{
+        args = {
             id: "sphere",
             radius: 1, 
-            massByRadius: true,
+            massByVolume: true,
             position: [0, 0, 0],
-            pMaterial: pItemMaterial,
             meshMaterialFn: getMeshWireMaterial,
-            color: 0xff0000
-        }, ...args}
+            color: 0xff0000,
+            geometry: {
+                type: 'sphere',
+                size: [20, 10],
+                detail: 2
+            },
+            ...args
+        }
 
-        if (args.massByRadius)
+        if (args.massByVolume && !args.mass)
             args.mass = getVolume(args.radius);
 
-        // Create physics body
-        const pShape = new CANNON.Sphere(args.radius);
+        // Create shape
+        const shape = new CANNON.Sphere(args.radius);
 
         // Create visual representation
-        const geometry = new THREE.IcosahedronGeometry(args.radius, 2);
+        let geometry;
+        if (args.geometry.type == 'sphere')
+            geometry = new THREE.SphereGeometry(args.radius, args.geometry.size[0], args.geometry.size[1]);
+        if (args.geometry.type == 'icosahedron')
+            geometry = new THREE.IcosahedronGeometry(args.radius, args.geometry.detail);
 
         const material = args.meshMaterialFn ? args.meshMaterialFn(args.color) : getMeshWireMaterial(args.color);
         const mesh = new THREE.Mesh(geometry, material);
 
-        super(args, [pShape], mesh)
+        super(args, [shape], mesh)
     }
 
 }

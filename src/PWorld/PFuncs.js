@@ -1,19 +1,29 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
-import { normalizeShape } from './ArrayFuncs';
+import { normalizeShape, center, add, sub } from './ArrayFuncs';
 
-export function getConvexPolyhedronBody(vertices, faces) {
+export function getConvexPolyhedronShape(vertices, faces) {
     return new CANNON.ConvexPolyhedron({
         vertices: [...vertices.map(p => new CANNON.Vec3(...p))],
         faces: faces
     })
 }
 
+export function getTrimeshShape(vertices, faces) {
+    var vs = [...vertices.flatMap(v => v)];
+    var ins = [...faces.flatMap(f => f)];
+
+    return new CANNON.Trimesh(vs, ins);
+}
+
 // bodiesFaces = [[[0,1,2],...], [[0,1,3],...]] 
-export function getPolyhedronBodiesByFaces(vertices, bodiesFaces) {
+export function getPolyhedronShapesByFaces(vertices, bodiesFaces) {
     return bodiesFaces.map(bFaces => {
         const [nVertices, nFaces] = normalizeShape(vertices, bFaces)
-        return getConvexPolyhedronBody(nVertices, nFaces)
+        const c = center(nVertices)
+        const nCenterVertices = sub(nVertices, c)
+        const body = getConvexPolyhedronShape(nCenterVertices, nFaces);
+        return [body, c];
     });  
 }
 

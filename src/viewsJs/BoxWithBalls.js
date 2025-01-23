@@ -27,7 +27,7 @@ const objects = [
         id: "Earth", 
         radius: 3,
         position: [5, 5, 5], 
-        color: 0xffffff,
+        color: 0xdddddd,
         meshMaterialFn: getEarthMaterial
         // modelPath: "../models/santa_model.glb", // todo
     }),        

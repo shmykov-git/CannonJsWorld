@@ -47,7 +47,7 @@ world.init(objects);
 document.addEventListener("keydown", event => 
 { 
     if (event.code === "Space")
-        world.getAll("ball").forEach(ball => ball.jump());
+        world.getInstancesOf(PJumpSphere).forEach(ball => ball.jump());
 });
 
 

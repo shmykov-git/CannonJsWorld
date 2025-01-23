@@ -6,7 +6,6 @@ import { pPolyhedronMaterial } from '../World/PhysicMaterials.js'
 import * as vfn from '../VecFuncs.js'
 import { getPolyhedronShapesByFaces, getBoxShapesByFaces } from '../PFuncs.js'
 
-// todo: CANNON.Trimesh - можно невыпуклые формы
 export class PPolyhedron extends PObject {
     constructor(args) {
         args = {

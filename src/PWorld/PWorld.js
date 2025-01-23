@@ -29,6 +29,10 @@ export class PWorld {
         return this.objects.filter(o => o.id === id)
     }
 
+    getInstancesOf(type) {
+        return this.objects.filter(o => o instanceof type)
+    }
+
     init(objects) {
         this.world = new CANNON.World();
 

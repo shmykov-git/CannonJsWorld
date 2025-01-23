@@ -18,7 +18,7 @@ export class PBox extends PObject {
         // центровка куба!!!
 
         if (args.massByVolume && !args.mass)
-            args.mass = size[0] * size[1] * size[2];
+            args.mass = args.size[0] * args.size[1] * args.size[2];
 
         const halfExtents = new CANNON.Vec3(...args.size.map(v => v/2));
         // Create physics body

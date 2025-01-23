@@ -9,6 +9,12 @@ export function* rN(n) {
     for (let i = 0; i < n; i++) yield i 
 }
 
+export function* rMN(m, n) { 
+    for (let i = 0; i < m; i++)
+        for (let j = 0; j < n; j++) 
+            yield [i, j] 
+}
+
 export const agri = (v, f, a0 = 0) => rN(v.length).reduce((a, i) => f(a, i), a0)
 export const agri1 = (v, f, a0) => rN(v.length-1).reduce((a, i) => f(a, i+1), a0)
 

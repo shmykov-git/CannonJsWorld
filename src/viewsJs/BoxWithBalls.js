@@ -1,4 +1,6 @@
 import {PWorld, PShere, PJumpSphere, PPolyhedron, PBox } from '../PWorld/PObjects.js'
+import { getDiceCubeMaterial, getEarthMaterial } from '../PWorld/Scene/MeshMaterials.js'
+
 
 const world = new PWorld({
     cameraPosition: [0, 0, 50]
@@ -15,16 +17,18 @@ const objects = [
     }),
 
     new PBox({
-        mass: 10,
         position: [2, 8, 2],
-        size: [2,2,2]
+        size: [4,4,4],
+        color: 0xff0000,
+        meshMaterialFn: getDiceCubeMaterial
     }),
 
     new PJumpSphere({ 
         id: "Earth", 
         radius: 3,
         position: [5, 5, 5], 
-        color: 0xff00ff,
+        color: 0xffffff,
+        meshMaterialFn: getEarthMaterial
         // modelPath: "../models/santa_model.glb", // todo
     }),        
 

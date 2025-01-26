@@ -12,6 +12,7 @@ export class PObject {
             mass: 1,
             position: [0, 0, 0],
             usePhysic: true,
+            useView: true,
             useCollision: true,
             angularDamping: 0.5,
             pMaterial: pItemMaterial,
@@ -21,11 +22,33 @@ export class PObject {
 
         this.args = args
         this.id = args.id
+        this.shapes = shapes
+        this.geometry = geometry
+    }
 
-        const getVcq = vcq => Array.isArray(vcq) 
-            ? [vcq[0], vfn.sum(vcq[1], args.position), vcq[2]]
-            : [vcq, args.position, new CANNON.Quaternion(0, 0, 0, 1)];
-            
+    getVcq(vcq) {
+        return Array.isArray(vcq) 
+            ? [vcq[0], vfn.sum(vcq[1], this.args.position), vcq[2]]
+            : [vcq, this.args.position, new CANNON.Quaternion(0, 0, 0, 1)];
+    }
+
+    initView() {
+        const args = this.args;
+        const material = args.meshMaterialFn ? args.meshMaterialFn(args.color) : getMeshWireMaterial(args.color);
+        const [g, gC, gQ] = this.getVcq(this.geometry);
+        let mesh = new THREE.Mesh(g, material);       // Представление
+        mesh.position.set(gC[0], gC[1], gC[2])          // Позиция
+        mesh.quaternion.set(gQ.x, gQ.y, gQ.z, gQ.w)     // Поворот
+
+        this.mesh = mesh;
+        this.scene.add(this.mesh);
+    }
+
+    initPhysic() {
+        const args = this.args
+        const shapes = this.shapes
+        const getVcq = this.getVcq.bind(this)
+
         function getBodyByShape(shape) {
             const [s, sC, sQ] = getVcq(shape);
 
@@ -47,25 +70,13 @@ export class PObject {
         }
 
         // physics body
-        this.shapes = shapes
-        this.bodies = [...shapes.map(shape => getBodyByShape(shape))];
-        this.body = this.bodies[0];
-        
-        // view mesh
-        const material = args.meshMaterialFn ? args.meshMaterialFn(args.color) : getMeshWireMaterial(args.color);
-        const [g, gC, gQ] = getVcq(geometry);
-        let mesh = new THREE.Mesh(g, material);       // Представление
-        mesh.position.set(gC[0], gC[1], gC[2])          // Позиция
-        mesh.quaternion.set(gQ.x, gQ.y, gQ.z, gQ.w)     // Поворот
+        this.bodies = [...this.shapes.map(shape => getBodyByShape(shape))];
+        this.bodies.forEach(body => this.world.addBody(body));
+        this.body = this.bodies[0]; // todo: many bodies physic support
+    }
 
-        if (debugMesh) {
-            const group = new THREE.Group()
-            group.add(mesh)
-            group.add(debugMesh)
-            mesh = group
-        }
-
-        this.mesh = mesh;
+    initDebugMesh() {
+        console.log(`Debug mesh for ${this.id} is not implemented`)
     }
 
     init(pWorld) {
@@ -75,10 +86,14 @@ export class PObject {
 
         // use physics bodies in the world
         if (this.args.usePhysic)
-            this.bodies.forEach(body => this.world.addBody(body));
+            this.initPhysic();
 
         // show mesh (view)
-        this.scene.add(this.mesh);
+        if (this.args.useView) 
+            this.initView()
+
+        if (this.args.debugMesh)
+            this.initDebugMesh()
     }
 
     update() {

@@ -75,7 +75,7 @@ export class PWorld {
         contactMaterials.forEach(cM => this.world.addContactMaterial(cM));        
         objects.forEach(o => o.init(this));
 
-        // Set camera position
+        // Set camera position        
         this.camera.position.x = this.args.cameraPosition[0];
         this.camera.position.y = this.args.cameraPosition[1];
         this.camera.position.z = this.args.cameraPosition[2];

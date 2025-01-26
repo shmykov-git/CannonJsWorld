@@ -9,8 +9,11 @@ export class PJumpSphere extends PShere {
             jumpPower: 500, 
             ...args
         }
-
         super(args)
+    }
+
+    initPhysic() {
+        super.initPhysic()
 
         this.canJamp = false;
         this.collideCount = 0;
@@ -18,7 +21,7 @@ export class PJumpSphere extends PShere {
             this.canJamp = true;
         });         
 
-        if (args.modelPath) {
+        if (this.args.modelPath) {
             this.loadModel().then(model =>{
 
             })

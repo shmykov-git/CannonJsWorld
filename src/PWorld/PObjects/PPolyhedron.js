@@ -17,7 +17,7 @@ export class PPolyhedron extends PObject {
             meshMaterialFn: getMeshTransparentMaterial,
             color: 0x00ff00,
             usePhysic: true,
-            debugShapes: false,
+            debugMesh: false,
             debugColor: 0xff0000,
             asBoxNumber: undefined,
             asBoxRotate: false,
@@ -96,11 +96,17 @@ export class PPolyhedron extends PObject {
         geometry.setAttribute('position', new THREE.BufferAttribute(gVertices, 3))
         geometry.setIndex(new THREE.BufferAttribute(gIndices, 1))
 
-        let debugMesh = undefined
+        super(args, shapes, geometry)
+    }
+
+    initDebugMesh() {
+        const args = this.args
+
         if (args.debugShapes && args.complexStrategy.includes("AsBox")) {
             const group = new THREE.Group()
+            
             shapes.forEach(scq => {
-                const [s, c, q] = scq
+                const [s, c, q] = this.getVcq(scq)                
                 const gBox = new THREE.BoxGeometry(2 * s.halfExtents.x, 2 * s.halfExtents.y, 2 * s.halfExtents.z);
                 const mBox = getMeshWireMaterial(args.debugColor)
                 const meshBox = new THREE.Mesh(gBox, mBox);
@@ -108,9 +114,10 @@ export class PPolyhedron extends PObject {
                 meshBox.position.set(c[0], c[1], c[2])
                 group.add(meshBox)
             })
-            debugMesh = group
+            
+            this.scene.add(group);
+        } else {
+            super.initDebugMesh();
         }
-
-        super(args, shapes, geometry, debugMesh)
     }
 }

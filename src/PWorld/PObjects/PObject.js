@@ -11,6 +11,7 @@ export class PObject {
             static: false,
             mass: 1,
             position: [0, 0, 0],
+            quaternion: [0, 0, 0, 1],
             usePhysic: true,
             useView: true,
             useCollision: true,
@@ -24,12 +25,14 @@ export class PObject {
         this.id = args.id
         this.shapes = shapes
         this.geometry = geometry
+
+        args.quaternion.mu
     }
 
     getVcq(vcq) {
         return Array.isArray(vcq) 
-            ? [vcq[0], vfn.sum(vcq[1], this.args.position), vcq[2]]
-            : [vcq, this.args.position, new CANNON.Quaternion(0, 0, 0, 1)];
+            ? [vcq[0], vfn.sum(vcq[1], this.args.position), new CANNON.Quaternion().mult(vcq[2], new CANNON.Quaternion(...this.args.quaternion))]
+            : [vcq, this.args.position, new CANNON.Quaternion(...this.args.quaternion)];
     }
 
     initView() {

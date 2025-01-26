@@ -40,10 +40,7 @@ export class PShere extends PObject {
         if (args.geometry.type == 'icosahedron')
             geometry = new THREE.IcosahedronGeometry(args.radius, args.geometry.detail);
 
-        const material = args.meshMaterialFn ? args.meshMaterialFn(args.color) : getMeshWireMaterial(args.color);
-        const mesh = new THREE.Mesh(geometry, material);
-
-        super(args, [shape], mesh)
+        super(args, [shape], geometry)
     }
 
 }

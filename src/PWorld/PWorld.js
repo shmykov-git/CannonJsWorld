@@ -3,22 +3,30 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as CANNON from 'cannon-es';
 import contactMaterials from './World/ContractMaterials.js'
 import lights from './Scene/Lights.js'
+import { PPlane } from './PObjects/PPlane.js'
+import * as vfn from './VecFuncs.js'
 
 export class PWorld {
     constructor(args) {
         // default PWorld args
-        args = { ...{
-            gravityPower: 9.82,
-            worldRadius: 20,
+        args = {
+            gravity: [0, -9.82, 0],
+            worldRadius: 50,
             cameraPosition: [0, 0, 50],
             cameraLookAt: [0, 0, 0],
             changeGravityByCamera: true,
             useOrbitControlForCamera: true,
             useWorldRadius: true,
-            useGravity: true
-        }, ...args};
+            useGravity: true,
+            useGround: false,
+            groundSize: [20, 20],
+            groundColor: 0x008800,
+            ...args
+        };
+        args.gravityPower = vfn.len(args.gravity)
 
         this.args = args;
+        this.clock = new THREE.Clock();
     }
 
     get(id) {
@@ -36,8 +44,18 @@ export class PWorld {
     init(objects) {
         this.world = new CANNON.World();
 
+        if (this.args.useGround) {
+            const ground = new PPlane({
+                id: "ground",
+                static: true,
+                size: this.args.groundSize,
+                color: this.args.groundColor
+            });
+            objects = [ground, ...objects]
+        }
+
         if (this.args.useGravity)
-            this.world.gravity.set(0, -this.args.gravityPower, 0); // Поумолчанию направлена вниз
+            this.world.gravity.set(this.args.gravity[0], this.args.gravity[1], this.args.gravity[2]);
 
         this.objects = objects;
 
@@ -78,8 +96,10 @@ export class PWorld {
     }
 
     update() {
+        const deltaTime = this.clock.getDelta(); // Time step
+    
         // Обновляем физику всех объектов
-        this.world.step(1 / 60);
+        this.world.step(1 / 60, deltaTime, 3);
 
         // Рисуем объекты в соответствии с физикой
         this.objects.forEach(obj => obj.update());

@@ -27,13 +27,6 @@ export class PBox extends PObject {
         // Create visual representation
         const geometry = new THREE.BoxGeometry(args.size[0], args.size[1], args.size[2]);
 
-        const material = args.meshMaterialFn ? args.meshMaterialFn(args.color) : getMeshWireMaterial(args.color);
-        const mesh = new THREE.Mesh(geometry, material);
-
-        super(args, [shape], mesh)
-    }
-
-    update() {
-        super.update()
+        super(args, [shape], geometry)
     }
 }

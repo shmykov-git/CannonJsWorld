@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { PObject } from './PObject.js';
 import { getMeshTransparentMaterial, getMeshWireMaterial } from '../Scene/MeshMaterials.js'
-import { pPolyhedronMaterial } from '../World/PhysicMaterials.js'
+import { pWallMaterial } from '../World/PhysicMaterials.js'
 import * as vfn from '../VecFuncs.js'
 import { getPolyhedronShapesByFaces, getBoxShapesByFaces } from '../PFuncs.js'
 
@@ -13,10 +13,14 @@ export class PPolyhedron extends PObject {
             mass: 0,
             static: true,
             position: [0, 0, 0],
-            pMaterial: pPolyhedronMaterial,
+            pMaterial: pWallMaterial,
             meshMaterialFn: getMeshTransparentMaterial,
             color: 0x00ff00,
             usePhysic: true,
+            debugShapes: false,
+            debugColor: 0xff0000,
+            asBoxNumber: undefined,
+            asBoxRotate: false,
             ...args
         }
 
@@ -30,10 +34,10 @@ export class PPolyhedron extends PObject {
             return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
         }
 
-        function getNormalVolumeAsBoxStrategyShapes() {
-            let n = args.faces.length / 2;
+        function getNormalVolumeAsBoxStrategyShapes(n = undefined) {
+            n ??= args.faces.length / 2;
             let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1], args.faces[2*i+n], args.faces[2*i+1+n]])];
-            return getBoxShapesByFaces(args.vertices, bodiesFaces);
+            return getBoxShapesByFaces(args.vertices, bodiesFaces, args.asBoxRotate);
         }
 
         function getNormalVolumeNearStrategyShapes() {
@@ -66,7 +70,7 @@ export class PPolyhedron extends PObject {
                         shapes = getNormalVolumeStrategyShapes();
                         break;
                     case "NormalVolumeAsBox":
-                        shapes = getNormalVolumeAsBoxStrategyShapes();
+                        shapes = getNormalVolumeAsBoxStrategyShapes(args.asBoxNumber);
                         break;
                     case "NormalVolumeFar":
                         shapes = getNormalVolumeFarStrategyShapes();
@@ -91,9 +95,22 @@ export class PPolyhedron extends PObject {
         const geometry = new THREE.BufferGeometry()
         geometry.setAttribute('position', new THREE.BufferAttribute(gVertices, 3))
         geometry.setIndex(new THREE.BufferAttribute(gIndices, 1))
-        const material = args.meshMaterialFn ? args.meshMaterialFn(args.color) : getMeshWireMaterial(args.color);
-        const mesh = new THREE.Mesh(geometry, material);
 
-        super(args, shapes, mesh)
+        let debugMesh = undefined
+        if (args.debugShapes && args.complexStrategy.includes("AsBox")) {
+            const group = new THREE.Group()
+            shapes.forEach(scq => {
+                const [s, c, q] = scq
+                const gBox = new THREE.BoxGeometry(2 * s.halfExtents.x, 2 * s.halfExtents.y, 2 * s.halfExtents.z);
+                const mBox = getMeshWireMaterial(args.debugColor)
+                const meshBox = new THREE.Mesh(gBox, mBox);
+                meshBox.quaternion.set(q.x, q.y, q.z, q.w)
+                meshBox.position.set(c[0], c[1], c[2])
+                group.add(meshBox)
+            })
+            debugMesh = group
+        }
+
+        super(args, shapes, geometry, debugMesh)
     }
 }

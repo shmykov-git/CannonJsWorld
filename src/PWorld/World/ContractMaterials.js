@@ -1,8 +1,8 @@
 import * as CANNON from 'cannon-es';
-import { pPolyhedronMaterial, pItemMaterial } from './PhysicMaterials.js'
+import { pWallMaterial, pItemMaterial } from './PhysicMaterials.js'
 
 // все Polyhedron одинакого взаимодействуют друг с другом
-export const contactPolyhedronMaterial = new CANNON.ContactMaterial(pPolyhedronMaterial, pPolyhedronMaterial, {
+export const contactPolyhedronMaterial = new CANNON.ContactMaterial(pWallMaterial, pWallMaterial, {
     friction: 0.5, // Коэффициент трения
     restitution: 0.7, // Коэффициент упругости
 });
@@ -14,7 +14,7 @@ export const contactItemItemMaterial = new CANNON.ContactMaterial(pItemMaterial,
 });
 
 // все Sphere одинакого взаимодействуют с Polyhedron
-export const contactItemPolyhedronMaterial = new CANNON.ContactMaterial(pItemMaterial, pPolyhedronMaterial, {
+export const contactItemPolyhedronMaterial = new CANNON.ContactMaterial(pItemMaterial, pWallMaterial, {
     friction: 0.5, // Коэффициент трения
     restitution: 0.7, // Коэффициент упругости
 });

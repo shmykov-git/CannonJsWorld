@@ -43,10 +43,28 @@ export const normed = v => div(v, len(v))
 export const multV = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
 export const multS = (v, x) => doVi(v, x, (a, b) => a * b)
 export const multC = dot;
+export const sumC = v => agri(v, (a, i) => a + v[i]);
+export const maxC = v => agri1(v, (a, i) => a < v[i] ? v[i] : a, v[0]);
 export const proj = (a, b) => mult(a, multS(a, b) / len2(a))
 
 export const maxBy = (vs, f) => agri1(vs, (v, i) => { let fi = f(vs[i]); return v[0] < fi ? [fi, i] : v }, [f(vs[0]), 0])
 export const minBy = (vs, f) => agri1(vs, (v, i) => { let fi = f(vs[i]); return v[0] > fi ? [fi, i] : v }, [f(vs[0]), 0])
+
+export function* circlePairMap(vs) {
+    const iterator = vs[Symbol.iterator]();
+    let r0 = iterator.next();
+    if (r0.done) return;
+
+    let x0 = r0.value;
+    let px = x0;
+    let r = iterator.next();
+    while (!r.done) {
+        yield [px, r.value];
+        px = r.value
+        r = iterator.next();
+    }
+    yield [px, x0]
+}
 
 export function sumA(vs) {
     const n = vs[0].length

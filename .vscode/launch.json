@@ -10,7 +10,7 @@
             "name": "Open index.html",
             "url3": "http://localhost:3333/index.html",
             "url1": "http://localhost:3333/views/MazeCube.html",
-            "url": "http://localhost:3333/views/BoxWithBalls.html",
+            "url": "http://localhost:3333/views/Ground.html",
             "url2": "http://localhost:3333/views/Test.html",
             "sourceMaps": true,
             "skipFiles": ["node_modules/**"]

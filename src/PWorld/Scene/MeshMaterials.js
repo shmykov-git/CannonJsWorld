@@ -5,6 +5,10 @@ import dice from '../../../textures/dice.png'
 import earth from '../../../textures/earth.jpg'
 import { rMN } from '../VecFuncs'
 
+
+export const getPlaneMaterial = color => new THREE.MeshStandardMaterial({ color: color, side: THREE.DoubleSide });
+
+
 export function getMeshNoneMaterial(color) {
     return new THREE.MeshStandardMaterial({ color: color, flatShading: false, opacity: 0, transparent: true });
 }

@@ -12,7 +12,8 @@ const showHelp = queryArgs.showHelp;
 
 const world = new PWorld({
     worldRadius: 20,
-    cameraPosition: [0, 0, 50]
+    cameraPosition: [0, 0, 50],
+    changeGravityByCamera: true
 });
 
 const objects = [

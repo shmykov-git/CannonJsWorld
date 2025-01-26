@@ -3,7 +3,8 @@ import { getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../P
 
 
 const world = new PWorld({
-    cameraPosition: [0, 0, 50]
+    cameraPosition: [0, 0, 50],
+    changeGravityByCamera: true
 });
 
 // кубик, сдвиг, поворот, размер

@@ -4,10 +4,12 @@ import { getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../P
 
 const world = new PWorld({
     cameraPosition: [0, 20, 30],
-    useGround: true,
+    // useGround: true,
     groundSize: [50, 50],
-    useWorldRadius: false,
-    changeGravityByCamera: false
+    useWorldRadius: true,
+    worldRadius: 15,
+    worldRadiusStrategy: "RejectSpeed"
+    // changeGravityByCamera: true
 });
 
 const objects = [
@@ -24,12 +26,23 @@ const objects = [
     //     complexStrategy: "NormalVolumeAsBox" // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
     // }),
 
-    // new PBox({
-    //     position: [2, 8, 2],
-    //     size: [4,4,4],
-    //     color: 0xff0000,
-    //     meshMaterialFn: getDiceCubeMaterial
-    // }),
+    new PShere({
+        id: "debugWorldRadius",
+        radius: 15,
+        static: true,
+        useCollision: false,
+        geometry: {
+            type: 'icosahedron',
+            detail: 15
+        }
+    }),
+
+    new PBox({
+        position: [2, 15, 2],
+        size: [4,4,4],
+        color: 0xff0000,
+        meshMaterialFn: getDiceCubeMaterial
+    }),
 
     new PJumpSphere({ 
         id: "Earth", 
@@ -40,13 +53,13 @@ const objects = [
         // modelPath: "../models/santa_model.glb", // todo
     }),        
 
-    // ...Array(4).keys().map(i => 
-    //     new PJumpSphere({ 
-    //         id: "ball", 
-    //         radius: 1 + i/5,
-    //         position: [-2, 2.1 * i, -2], 
-    //         color: 0x0000ff + 256 * i * 50 
-    // }))        
+    ...Array(4).keys().map(i => 
+        new PJumpSphere({ 
+            id: "ball", 
+            radius: 1 + i/5,
+            position: [-2, 10.1 * i, -2], 
+            color: 0x0000ff + 256 * i * 50 
+    }))        
 ];
 
 world.init(objects);

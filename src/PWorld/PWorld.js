@@ -11,12 +11,14 @@ export class PWorld {
         // default PWorld args
         args = {
             gravity: [0, -9.82, 0],
-            worldRadius: 50,
+            worldRadius: 100,
             cameraPosition: [0, 0, 50],
             cameraLookAt: [0, 0, 0],
-            changeGravityByCamera: true,
+            changeGravityByCamera: false,
             useOrbitControlForCamera: true,
             useWorldRadius: true,
+            worldRadiusStrategy: "FixPosition",
+            worldRadiusFriction: 0.5,
             useGravity: true,
             useGround: false,
             groundSize: [20, 20],
@@ -24,6 +26,7 @@ export class PWorld {
             ...args
         };
         args.gravityPower = vfn.len(args.gravity)
+        args.worldRadiusSquared = args.worldRadius * args.worldRadius
 
         this.args = args;
         this.clock = new THREE.Clock();
@@ -140,13 +143,44 @@ export class PWorld {
 
     // Функция для ограничения радиуса
     enforceWorldRadius(body) {
-        const distance = body.position.length();
-        if (distance < this.args.worldRadius) return;
+        const distanceSquared = body.position.lengthSquared();
+        if (distanceSquared < this.args.worldRadiusSquared) return;
 
-        // Нормализуем вектор направления
-        const scale = this.args.worldRadius / distance;
-        body.position.x *= scale;
-        body.position.y *= scale;
-        body.position.z *= scale;
+        const worldRadius = this.args.worldRadius
+        const friction = this.args.worldRadiusFriction
+
+        function fixPosition() { 
+            const scale = worldRadius / Math.sqrt(distanceSquared);
+            body.position.x *= scale;
+            body.position.y *= scale;
+            body.position.z *= scale;
+        }
+
+        function rejectSpeed() {
+            const normal = body.position.unit();
+            // Отразить скорость относительно нормали
+            const dotProduct = body.velocity.dot(normal);
+
+            if (dotProduct > 0) {
+                const reflectedVelocity = body.velocity.vsub(normal.scale(2 * dotProduct));
+                body.velocity.copy(reflectedVelocity);
+            }
+
+            // Дополнительно: можно немного уменьшить скорость для эффекта потери энергии
+            body.velocity.scale(friction);
+            body.angularVelocity.scale(-friction);
+        }
+
+        switch (this.args.worldRadiusStrategy) {
+            case "FixPosition":
+                fixPosition()
+                break;
+            case "RejectSpeed":
+                rejectSpeed()
+                break;
+            default:
+                fixPosition()
+                break;
+        }
     }
 }

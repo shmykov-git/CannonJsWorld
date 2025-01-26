@@ -48,10 +48,12 @@ export function getBallMaterial(color) {
 
 export function getDiceCubeMaterial(color) {
     const texture = new THREE.TextureLoader().load(dice);
+    let needClone = false
 
     return [...rMN(3, 2).map(v => {
         const [i, j] = v
-        const t = texture.clone()
+        const t = needClone ? texture.clone() : texture
+        needClone = true
 
         t.repeat.set(1/2, 1/3);
         t.offset.set(j/2, i/3);

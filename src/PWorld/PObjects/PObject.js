@@ -79,10 +79,9 @@ export class PObject {
         console.log(`Debug mesh for ${this.id} is not implemented`)
     }
 
-    init(pWorld) {
-        this.pWorld = pWorld;
-        this.world = pWorld.world;
-        this.scene = pWorld.scene;
+    init() {
+        this.world = this.pWorld.world;
+        this.scene = this.pWorld.scene;
 
         // use physics bodies in the world
         if (this.args.usePhysic)

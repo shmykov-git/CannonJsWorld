@@ -17,7 +17,7 @@ export class PWorld {
             changeGravityByCamera: false,
             useOrbitControlForCamera: true,
             useWorldRadius: true,
-            worldRadiusStrategy: "FixPosition",
+            worldRadiusStrategy: "RejectSpeed",
             worldRadiusFriction: 0.5,
             useGravity: true,
             useGround: false,
@@ -73,7 +73,10 @@ export class PWorld {
         
         lights.forEach(light => this.scene.add(light));
         contactMaterials.forEach(cM => this.world.addContactMaterial(cM));        
-        objects.forEach(o => o.init(this));
+        objects.forEach(o => {
+            o.pWorld = this
+            o.init()
+        });
 
         // Set camera position        
         this.camera.position.x = this.args.cameraPosition[0];
@@ -158,17 +161,16 @@ export class PWorld {
 
         function rejectSpeed() {
             const normal = body.position.unit();
-            // Отразить скорость относительно нормали
             const dotProduct = body.velocity.dot(normal);
 
             if (dotProduct > 0) {
                 const reflectedVelocity = body.velocity.vsub(normal.scale(2 * dotProduct));
                 body.velocity.copy(reflectedVelocity);
+                body.angularVelocity.scale(-friction);
+            } else {
+                body.velocity.scale(friction);
+                body.angularVelocity.scale(friction);
             }
-
-            // Дополнительно: можно немного уменьшить скорость для эффекта потери энергии
-            body.velocity.scale(friction);
-            body.angularVelocity.scale(-friction);
         }
 
         switch (this.args.worldRadiusStrategy) {
@@ -179,7 +181,7 @@ export class PWorld {
                 rejectSpeed()
                 break;
             default:
-                fixPosition()
+                rejectSpeed()
                 break;
         }
     }

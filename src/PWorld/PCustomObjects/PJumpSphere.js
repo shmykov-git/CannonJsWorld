@@ -12,8 +12,8 @@ export class PJumpSphere extends PShere {
         super(args)
     }
 
-    initPhysic() {
-        super.initPhysic()
+    init() {
+        super.init()
 
         this.canJamp = false;
         this.collideCount = 0;

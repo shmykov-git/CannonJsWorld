@@ -4,10 +4,10 @@ import { getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../P
 
 const world = new PWorld({
     cameraPosition: [0, 20, 30],
-    // useGround: true,
+    useGround: true,
     groundSize: [50, 50],
     useWorldRadius: true,
-    worldRadius: 15,
+    worldRadius: 13,
     worldRadiusStrategy: "RejectSpeed"
     // changeGravityByCamera: true
 });
@@ -28,12 +28,11 @@ const objects = [
 
     new PShere({
         id: "debugWorldRadius",
-        radius: 15,
-        static: true,
-        useCollision: false,
+        radius: 13,
+        usePhysic: false,
         geometry: {
             type: 'icosahedron',
-            detail: 15
+            detail: 10
         }
     }),
 

@@ -27,13 +27,14 @@ export class PShere extends PObject {
             ...args
         }
 
+        // calculated args
         if (args.massByVolume && !args.mass)
             args.mass = getVolume(args.radius);
 
-        // Create shape
+        // Create physics shape
         const shape = new CANNON.Sphere(args.radius);
 
-        // Create visual representation
+        // Create geometry of view
         let geometry;
         if (args.geometry.type == 'sphere')
             geometry = new THREE.SphereGeometry(args.radius, args.geometry.size[0], args.geometry.size[1]);

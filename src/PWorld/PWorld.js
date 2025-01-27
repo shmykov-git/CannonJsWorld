@@ -16,6 +16,7 @@ export class PWorld {
             cameraLookAt: [0, 0, 0],
             changeGravityByCamera: false,
             useOrbitControlForCamera: true,
+            orbitControlDistance: [1, 100],
             useWorldRadius: true,
             worldRadiusStrategy: "RejectSpeed",
             worldRadiusFriction: 0.5,
@@ -89,8 +90,8 @@ export class PWorld {
         orbitControls.enableDamping = true
         orbitControls.dampingFactor = 0.1
         orbitControls.screenSpacePanning = false
-        orbitControls.minDistance = 1
-        orbitControls.maxDistance = 100
+        orbitControls.minDistance = this.args.orbitControlDistance[0]
+        orbitControls.maxDistance = this.args.orbitControlDistance[1]
         this.orbitControls = orbitControls;
 
         // Handle window resize

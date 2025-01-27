@@ -22,6 +22,7 @@ export class BoxComposer extends Composer {
     constructor(args) {
         args = {
             pMaterial: pPlasticMaterial,
+            itemMass: undefined,
             ...args
         }
         super(args)
@@ -32,11 +33,13 @@ export class BoxComposer extends Composer {
         const pMaterial = this.args.pMaterial
         const pos = this.args.position
         const sum = vfn.sum
+        const mass = this.args.itemMass
 
         function getObj(item) {
             const [size, center, quaternion] = item
 
             return new PBox({
+                mass: mass,
                 size: size,                
                 position: sum(center, pos),
                 quaternion: quaternion,

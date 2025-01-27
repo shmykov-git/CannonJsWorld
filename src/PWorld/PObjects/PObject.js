@@ -113,4 +113,12 @@ export class PObject {
         this.mesh.position.set(p.x, p.y, p.z);
         this.mesh.quaternion.set(q.x, q.y, q.z, q.w);
     }            
+
+    get upFactor() {
+        const q = this.body.quaternion
+        const uY = CANNON.Vec3.UNIT_Y.clone()
+        const quY = q.vmult(uY)
+        const factor = quY.dot(CANNON.Vec3.UNIT_Y)
+        return factor
+    }
 }

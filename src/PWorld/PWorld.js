@@ -54,7 +54,7 @@ export class PWorld {
                 size: this.args.groundSize,
                 color: this.args.groundColor
             });
-            objects = [ground, ...objects]
+            objects = [...objects, ground]
         }
 
         if (this.args.useGravity)

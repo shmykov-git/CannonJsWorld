@@ -2,10 +2,12 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { PBox } from '../PObjects'
 import { pPlasticMaterial } from '../World/PhysicMaterials'
+import * as vfn from '../VecFuncs'
 
 export class Composer {
     constructor(args) {
         args = {
+            position: [0, 0, 0],
             ...args
         }
         this.args = args
@@ -28,18 +30,22 @@ export class BoxComposer extends Composer {
     getObjects() {
         const defaultColor = this.args.color
         const pMaterial = this.args.pMaterial
+        const pos = this.args.position
+        const sum = vfn.sum
 
-        return this.args.data.map(item => {
+        function getObj(item) {
             const [size, center, quaternion] = item
 
             return new PBox({
                 size: size,                
-                position: center,
+                position: sum(center, pos),
                 quaternion: quaternion,
                 color: defaultColor,
                 pMaterial: pMaterial
             })
-        })
+        }
+
+        return this.args.data.map(item => getObj(item))
     }
 }
 

@@ -1,5 +1,5 @@
 export { PWorld } from './PWorld.js';
-export { PShere } from './PObjects/PShere.js';
+export { PSphere as PSphere } from './PObjects/PSphere.js';
 export { PPolyhedron } from './PObjects/PPolyhedron.js';
 export { PBox } from './PObjects/PBox.js';
 export { PCylinder } from './PObjects/PCylinder.js';

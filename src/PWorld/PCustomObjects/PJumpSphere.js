@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
-import { PShere } from '../PObjects.js'
+import { PSphere } from '../PObjects.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-export class PJumpSphere extends PShere {
+export class PJumpSphere extends PSphere {
     constructor(args) {
         args = {
             jumpPower: 500, 

@@ -1,4 +1,4 @@
-import {PWorld, PShere, PJumpSphere, PPolyhedron } from '../PWorld/PObjects.js'
+import {PWorld, PSphere, PJumpSphere, PPolyhedron } from '../PWorld/PObjects.js'
 import { getMeshItemMaterial, getMazeBallMaterial } from '../PWorld/Scene/MeshMaterials.js'
 
 function getQueryParams() {

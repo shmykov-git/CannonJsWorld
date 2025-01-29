@@ -10,7 +10,7 @@ function getVolume(radius) {
 }
 
 // Class to handle physics and visual representation of shpere
-export class PShere extends PObject {
+export class PSphere extends PObject {
     constructor(args) {
         args = {
             id: "sphere",

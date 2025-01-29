@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { Vec3 } from 'cannon-es';
 import { Vector3 } from 'three';
-import {PWorld, PShere, PJumpSphere, PPolyhedron } from '../PWorld/PObjects.js'
+import {PWorld, PSphere, PJumpSphere, PPolyhedron } from '../PWorld/PObjects.js'
 import { getMeshItemMaterial } from '../PWorld/Scene/MeshMaterials.js'
 import { alignObjectToCamera } from '../PWorld/PFuncs.js'
 

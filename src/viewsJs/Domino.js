@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import {PWorld, PSphere, PJumpSphere, PPolyhedron, PBox } from '../PWorld/PObjects.js'
-import { getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../PWorld/Scene/MeshMaterials.js'
+import { getMeshTransparentMaterial2, getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../PWorld/Scene/MeshMaterials.js'
 import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { rand } from 'three/tsl';
 
@@ -10,10 +10,15 @@ const world = new PWorld({
     cameraPosition: [100, 20, 20],
     gravity: [0, -100, 0],
     useGround: true,
-    groundSize: [220, 220],
+    ground: {
+        size: [100, 100, 5, 100],
+        color: 0x22ff44,
+        type: "cylinder",
+        meshMaterialFn: getMeshTransparentMaterial2
+    },
     useWorldRadius: true,    
-    worldRadius: 200,
-    orbitControlDistance: [1, 2000]
+    worldRadius: 100,
+    orbitControlDistance: [1, 200]
 });
 
 const boxComposer = new BoxComposer({

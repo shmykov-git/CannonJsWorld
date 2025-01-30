@@ -5,6 +5,8 @@ import contactMaterials from './World/ContractMaterials.js'
 import lights from './Scene/Lights.js'
 import { PPlane } from './PObjects/PPlane.js'
 import * as vfn from './VecFuncs.js'
+import { pWallMaterial } from './World/PhysicMaterials.js'
+import { getPlaneMaterial } from './Scene/MeshMaterials.js'
 
 export class PWorld {
     constructor(args) {
@@ -22,8 +24,13 @@ export class PWorld {
             worldRadiusFriction: 0.5,
             useGravity: true,
             useGround: false,
-            groundSize: [20, 20],
-            groundColor: 0x008800,
+            ground: {
+                size: [20, 20, 1],
+                color: 0x008800,
+                type: "box",
+                pMaterial: pWallMaterial,
+                getMeshMaterialFn: getPlaneMaterial
+            },
             ...args
         };
         args.gravityPower = vfn.len(args.gravity)
@@ -52,8 +59,10 @@ export class PWorld {
             const ground = new PPlane({
                 id: "ground",
                 static: true,
-                size: this.args.groundSize,
-                color: this.args.groundColor
+                size: this.args.ground.size,
+                color: this.args.ground.color,
+                type: this.args.ground.type,
+                meshMaterialFn: this.args.ground.meshMaterialFn
             });
             objects = [...objects, ground]
         }

@@ -10,7 +10,7 @@ const world = new PWorld({
     cameraPosition: [1, 1, 1],
     // gravity: [0, -100, 0],
     useGround: true,
-    groundSize: [20, 20],
+    ground: { size: [20, 20], },
     useWorldRadius: true,    
     worldRadius: 10,
     orbitControlDistance: [1, 20]

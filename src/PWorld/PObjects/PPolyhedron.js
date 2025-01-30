@@ -21,71 +21,90 @@ export class PPolyhedron extends PObject {
             debugColor: 0xff0000,
             asBoxNumber: undefined,
             asBoxRotate: false,
+            // collider: {
+            //     vertices: [],
+            //     faces: []
+            // },
             ...args
         }
 
-        if (args.scale)
+        if (args.scale) {
             args.vertices = vfn.scaleA(args.vertices, args.scale);
+            
+            if (args.collider)
+                args.collider.vertices = vfn.scaleA(args.collider.vertices, args.scale);
+        }
         
         // see shmykov-dev Algo, to build this one. Example: take cube, make it smaller then join vertices and faces, keep faces perfect
-        function getNormalVolumeStrategyShapes() {
-            let n = args.faces.length / 2;
-            let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1], args.faces[2*i+n], args.faces[2*i+1+n]])];
-            return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
+        function getNormalVolumeStrategyShapes(vertices, faces) {
+            let n = faces.length / 2;
+            let bodiesFaces = [...Array(n/2).keys().map(i => [faces[2*i], faces[2*i+1], faces[2*i+n], faces[2*i+1+n]])];
+            return getPolyhedronShapesByFaces(vertices, bodiesFaces);
         }
 
-        function getNormalVolumeAsBoxStrategyShapes(n = undefined) {
-            n ??= args.faces.length / 2;
-            let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1], args.faces[2*i+n], args.faces[2*i+1+n]])];
-            return getBoxShapesByFaces(args.vertices, bodiesFaces, args.asBoxRotate);
+        function getNormalVolumeAsBoxStrategyShapes(vertices, faces, n = undefined) {
+            n ??= faces.length / 2;
+            let bodiesFaces = [...Array(n/2).keys().map(i => [faces[2*i], faces[2*i+1], faces[2*i+n], faces[2*i+1+n]])];
+            return getBoxShapesByFaces(vertices, bodiesFaces, args.asBoxRotate);
         }
 
-        function getNormalVolumeNearStrategyShapes() {
-            let n = args.faces.length / 2;
-            let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i], args.faces[2*i+1]])];
-            return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
+        function getNormalVolumeNearStrategyShapes(vertices, faces) {
+            let n = faces.length / 2;
+            let bodiesFaces = [...Array(n/2).keys().map(i => [faces[2*i], faces[2*i+1]])];
+            return getPolyhedronShapesByFaces(vertices, bodiesFaces);
         }
 
-        function getNormalVolumeFarStrategyShapes() {
-            let n = args.faces.length / 2;
-            let bodiesFaces = [...Array(n/2).keys().map(i => [args.faces[2*i+n], args.faces[2*i+1+n]])];
-            return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
+        function getColliderAsBoxStrategyShapes(vertices, faces) {
+            let n = faces.length;
+            let bodiesFaces = [...Array(n/2).keys().map(i => [faces[2*i], faces[2*i+1]])];
+            return getPolyhedronShapesByFaces(vertices, bodiesFaces);
+        }
+
+        function getNormalVolumeFarStrategyShapes(vertices, faces) {
+            let n = faces.length / 2;
+            let bodiesFaces = [...Array(n/2).keys().map(i => [faces[2*i+n], faces[2*i+1+n]])];
+            return getPolyhedronShapesByFaces(vertices, bodiesFaces);
         }
 
         // see shmykov-dev Algo, to build this one. Example: take many cubes, join them to a single shape, it takes them back
-        function getManyCubesStrategyShapes() {
+        function getManyCubesStrategyShapes(vertices, faces) {
             let m = 12;
-            let n = args.faces.length / m;
-            let bodiesFaces = Array(n).keys().map(i => args.faces.slice(m*i, m*i+m))
-            return getPolyhedronShapesByFaces(args.vertices, bodiesFaces);
+            let n = faces.length / m;
+            let bodiesFaces = Array(n).keys().map(i => faces.slice(m*i, m*i+m))
+            return getPolyhedronShapesByFaces(vertices, bodiesFaces);
         }
 
         // Создаем многогранник (Polyhedron) в мире
         let shapes = []
         if (args.usePhysic) {
+            const vertices = args.collider ? args.collider.vertices : args.vertices
+            const faces = args.collider ? args.collider.faces : args.faces
             if (args.complex) {       
                 switch (args.complexStrategy)
                 {
                     case "NormalVolume":
-                        shapes = getNormalVolumeStrategyShapes();
+                        shapes = getNormalVolumeStrategyShapes(vertices, faces);
                         break;
                     case "NormalVolumeAsBox":
-                        shapes = getNormalVolumeAsBoxStrategyShapes(args.asBoxNumber);
+                        shapes = getNormalVolumeAsBoxStrategyShapes(vertices, faces, args.asBoxNumber);
                         break;
                     case "NormalVolumeFar":
-                        shapes = getNormalVolumeFarStrategyShapes();
+                        shapes = getNormalVolumeFarStrategyShapes(vertices, faces);
                         break;
                     case "NormalVolumeNear":
-                        shapes = getNormalVolumeNearStrategyShapes();
+                        shapes = getNormalVolumeNearStrategyShapes(vertices, faces);
                         break;
                     case "ManyCubes":
-                        shapes = getManyCubesStrategyShapes();
+                        shapes = getManyCubesStrategyShapes(vertices, faces);
                         break;
+                    case "ColliderAsBox":
+                        shapes = getColliderAsBoxStrategyShapes(vertices, faces);
+                        break;                            
                     default:
                         throw new Error(`${args.complexStrategy} is not implemented`);
                 }
             } else {
-                shapes = getPolyhedronShapesByFaces(args.vertices, [args.faces]);
+                shapes = getPolyhedronShapesByFaces(vertices, [faces]);
             }
         }
 

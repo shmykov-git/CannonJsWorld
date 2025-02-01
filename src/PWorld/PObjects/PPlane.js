@@ -2,7 +2,10 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { PObject } from './PObject.js';
 import { getMeshWireMaterial, getPlaneMaterial } from '../Scene/MeshMaterials.js'
+import { getBufferGeometry } from '../PFuncs.js'
 import { pWallMaterial } from '../World/PhysicMaterials.js'
+import { madelbrotData } from '../data.js'
+import { scaleA, addA } from '../VecFuncs.js'
 
 export class PPlane extends PObject {
     constructor(args) {
@@ -37,6 +40,11 @@ export class PPlane extends PObject {
             case "cylinder":
                 geometry = new THREE.CylinderGeometry(...args.size)
                 pG = [0, -args.size[2]/2, 0]
+                qG = new CANNON.Quaternion(0, 0, 0, 1)
+                break;
+            case "mandelbrot":
+                const max = Math.max(...args.size) * 1.3
+                geometry = getBufferGeometry(scaleA(addA(madelbrotData.vertices, [0, 0, 0.2]), [max, max, max]), madelbrotData.faces)
                 qG = new CANNON.Quaternion(0, 0, 0, 1)
                 break;
             default:

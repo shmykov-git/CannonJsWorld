@@ -4,7 +4,7 @@ import { PObject } from './PObject.js';
 import { getMeshTransparentMaterial, getMeshWireMaterial } from '../Scene/MeshMaterials.js'
 import { pWallMaterial } from '../World/PhysicMaterials.js'
 import * as vfn from '../VecFuncs.js'
-import { getPolyhedronShapesByFaces, getBoxShapesByFaces } from '../PFuncs.js'
+import { getBufferGeometry, getPolyhedronShapesByFaces, getBoxShapesByFaces } from '../PFuncs.js'
 
 export class PPolyhedron extends PObject {
     constructor(args) {
@@ -109,11 +109,7 @@ export class PPolyhedron extends PObject {
         }
 
         // Создаем представление многогранника на сцене
-        const gVertices = new Float32Array(args.vertices.flatMap(v => v))
-        const gIndices = new Uint16Array(args.faces.flatMap(fs => fs.flatMap(i => i)))
-        const geometry = new THREE.BufferGeometry()
-        geometry.setAttribute('position', new THREE.BufferAttribute(gVertices, 3))
-        geometry.setIndex(new THREE.BufferAttribute(gIndices, 1))
+        const geometry = getBufferGeometry(args.vertices, args.faces)
 
         super(args, shapes, geometry)
     }

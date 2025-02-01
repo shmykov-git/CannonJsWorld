@@ -5,6 +5,15 @@ import * as vfn from './VecFuncs'
 
 export const Q1 = new CANNON.Quaternion(0, 0, 0, 1);
 
+export function getBufferGeometry(vertices, faces){
+    const gVertices = new Float32Array(vertices.flatMap(v => v))
+    const gIndices = new Uint16Array(faces.flatMap(fs => fs.flatMap(i => i)))
+    const geometry = new THREE.BufferGeometry()
+    geometry.setAttribute('position', new THREE.BufferAttribute(gVertices, 3))
+    geometry.setIndex(new THREE.BufferAttribute(gIndices, 1))
+    return geometry
+}
+
 export function getConvexPolyhedronShape(vertices, faces) {
     return new CANNON.ConvexPolyhedron({
         vertices: [...vertices.map(p => new CANNON.Vec3(...p))],

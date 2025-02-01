@@ -25,14 +25,18 @@ export class PObject {
         this.id = args.id
         this.shapes = shapes
         this.geometry = geometry
+    }
 
-        args.quaternion.mu
+    getArgQ() {
+        return Array.isArray(this.args.quaternion)
+            ? new CANNON.Quaternion(...this.args.quaternion)
+            : this.args.quaternion
     }
 
     getVcq(vcq) {
         return Array.isArray(vcq) 
-            ? [vcq[0], vfn.sum(vcq[1], this.args.position), new CANNON.Quaternion().mult(vcq[2], new CANNON.Quaternion(...this.args.quaternion))]
-            : [vcq, this.args.position, new CANNON.Quaternion(...this.args.quaternion)];
+            ? [vcq[0], vfn.sum(vcq[1], this.args.position), new CANNON.Quaternion().mult(vcq[2], this.getArgQ())]
+            : [vcq, this.args.position, this.getArgQ()];
     }
 
     initView() {

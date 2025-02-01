@@ -2,6 +2,14 @@
 
 https://cannon.programbus.ru
 
+# Algo
+
+This progect is used for some scene generations
+https://github.com/shmykov-git/Algo
+
+Algo youtube
+https://www.youtube.com/@shmykov-tube
+
 # Vite.js Project
 
 Welcome to Cannon Js World application. You can use it to simplify your Cannon application

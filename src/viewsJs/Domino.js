@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import {PWorld, PSphere, PJumpSphere, PPolyhedron, PBox } from '../PWorld/PObjects.js'
-import { getMeshTransparentMaterial2, getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../PWorld/Scene/MeshMaterials.js'
+import { getMeshTransparentMaterial03, getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../PWorld/Scene/MeshMaterials.js'
 import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { rand } from 'three/tsl';
 
@@ -14,7 +14,7 @@ const world = new PWorld({
         size: [100, 100, 5, 100],
         color: 0x22ff44,
         type: "cylinder",
-        meshMaterialFn: getMeshTransparentMaterial2
+        meshMaterialFn: getMeshTransparentMaterial03
     },
     useWorldRadius: true,    
     worldRadius: 100,

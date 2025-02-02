@@ -6,15 +6,15 @@ import lights from './Scene/Lights.js'
 import { PPlane } from './PObjects/PPlane.js'
 import * as vfn from './VecFuncs.js'
 import { pWallMaterial } from './World/PhysicMaterials.js'
-import { getPlaneMaterial } from './Scene/MeshMaterials.js'
+import { getPlaneMaterial, getMeshTransparentMaterial } from './Scene/MeshMaterials.js'
 
 export class PWorld {
     constructor(args) {
         // default PWorld args
         args = {
             gravity: [0, -9.82, 0],
-            worldRadius: 100,
-            cameraPosition: [0, 0, 50],
+            worldRadius: 30,
+            cameraPosition: [10, 20, 30],
             cameraLookAt: [0, 0, 0],
             changeGravityByCamera: false,
             useOrbitControlForCamera: true,
@@ -23,13 +23,13 @@ export class PWorld {
             worldRadiusStrategy: "RejectSpeed",
             worldRadiusFriction: 0.5,
             useGravity: true,
-            useGround: false,
+            useGround: true,
             ground: {
-                size: [20, 20, 1],
+                size: [30, 30, 0.5],
                 color: 0x008800,
                 type: "box",
                 pMaterial: pWallMaterial,
-                getMeshMaterialFn: getPlaneMaterial
+                meshMaterialFn: getMeshTransparentMaterial
             },
             ...args
         };
@@ -176,11 +176,11 @@ export class PWorld {
             if (dotProduct > 0) {
                 const reflectedVelocity = body.velocity.vsub(normal.scale(2 * dotProduct));
                 body.velocity.copy(reflectedVelocity);
-                body.angularVelocity.scale(-friction);
             } else {
                 body.velocity.scale(friction);
-                body.angularVelocity.scale(friction);
             }
+
+            body.angularVelocity.scale(friction);
         }
 
         switch (this.args.worldRadiusStrategy) {

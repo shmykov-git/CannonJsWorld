@@ -17,7 +17,7 @@ const world = new PWorld({
         meshMaterialFn: getMeshTransparentMaterial03
     },
     useWorldRadius: true,    
-    worldRadius: 50,
+    worldRadius: 30,
     orbitControlDistance: [1, 100]
 });
 

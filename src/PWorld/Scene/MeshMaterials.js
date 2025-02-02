@@ -21,7 +21,7 @@ export function getMeshTransparentMaterial03(color) {
     return new THREE.MeshStandardMaterial({ color: color, flatShading: false, opacity: 0.3, transparent: true });
 }
 
-export function getMeshTransparentMaterial2(color) {
+export function getMeshTransparentMaterial45(color) {
     return new THREE.MeshStandardMaterial({ color: color, flatShading: false, opacity: 0.45, transparent: true });
 }
 

@@ -3,6 +3,7 @@ import { getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../P
 
 
 const world = new PWorld({
+    useGround: false,
     cameraPosition: [0, 0, 50],
     changeGravityByCamera: true
 });

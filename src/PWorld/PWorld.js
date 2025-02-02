@@ -7,6 +7,7 @@ import { PPlane } from './PObjects/PPlane.js'
 import * as vfn from './VecFuncs.js'
 import { pWallMaterial } from './World/PhysicMaterials.js'
 import { getPlaneMaterial, getMeshTransparentMaterial } from './Scene/MeshMaterials.js'
+import { cameraPosition } from 'three/tsl';
 
 export class PWorld {
     constructor(args) {
@@ -40,6 +41,21 @@ export class PWorld {
         this.clock = new THREE.Clock();
     }
 
+    attachCamera(id, args) {
+        args = {
+            offset: new THREE.Vector3(0, 5, -10),
+            distance: [10, 30],
+            strategy: "SimpleFollowing",
+            acceleration: 0.02,
+            ...args
+        }
+
+        this.cameraAttach = {
+            object: this.get(id),
+            ...args
+        }
+    }
+    
     get(id) {
         return this.objects.find(o => o.id === id)
     }
@@ -93,6 +109,7 @@ export class PWorld {
         this.camera.position.y = this.args.cameraPosition[1];
         this.camera.position.z = this.args.cameraPosition[2];
         this.camera.lookAt(this.args.cameraLookAt[0], this.args.cameraLookAt[1], this.args.cameraLookAt[2]);
+        this.cameraLookAt = new THREE.Vector3(...this.args.cameraLookAt)
 
         // возможность вращать сцену
         const orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
@@ -109,27 +126,6 @@ export class PWorld {
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         });
-    }
-
-    update() {
-        const deltaTime = this.clock.getDelta(); // Time step
-    
-        // Обновляем физику всех объектов
-        this.world.step(1 / 60, deltaTime, 3);
-
-        // Рисуем объекты в соответствии с физикой
-        this.objects.forEach(obj => obj.update());
-        
-        // Позволяем вращать сцену
-        if (this.args.useOrbitControlForCamera)
-            this.orbitControls.update()
-
-        // Гравитация всегда направлена вниз к оси направления камеры
-        if (this.args.changeGravityByCamera && this.args.useGravity)
-            this.updateGravity()
-
-        // Обновляем визуализацию сцены
-        this.renderer.render(this.scene, this.camera);
     }
 
     getOrtDown(a, b) {
@@ -194,5 +190,80 @@ export class PWorld {
                 rejectSpeed()
                 break;
         }
+    }
+
+    updateCameraPosition(cameraPosition) {
+        this.camera.position.lerp(cameraPosition, this.cameraAttach.acceleration)
+    }
+
+    updateCameraLookAt(targetPosition) {
+        this.cameraLookAt.lerp(targetPosition, this.cameraAttach.acceleration)
+
+        if (this.args.useOrbitControlForCamera)
+            this.orbitControls.target.copy(this.cameraLookAt);
+        else
+            this.camera.lookAt(this.cameraLookAt)
+    }
+
+    updateCameraOffsetFollowing() {
+        const offsetPosition = this.cameraAttach.object.position.clone().add(this.cameraAttach.offset)
+        this.updateCameraPosition(offsetPosition)
+        this.updateCameraLookAt(this.cameraAttach.object.position)
+    }
+
+    updateCameraDistanceFollowing() {
+        const [min, max] = this.cameraAttach.distance
+        const direction = this.cameraLookAt.clone().sub(this.camera.position)
+        const dir2 = direction.lengthSq()
+        let cameraPosition
+
+        if (dir2 < min*min)
+            cameraPosition = this.cameraLookAt.clone().add(direction.multiplyScalar(-min/Math.sqrt(dir2)))
+
+        if (dir2 > max*max)
+            cameraPosition = this.cameraLookAt.clone().add(direction.multiplyScalar(-max/Math.sqrt(dir2)))
+
+        if (cameraPosition)
+            this.updateCameraPosition(cameraPosition)
+
+        this.updateCameraLookAt(this.cameraAttach.object.position)
+    }
+
+    update() {
+        const deltaTime = this.clock.getDelta(); // Time step
+    
+        // Обновляем физику всех объектов
+        this.world.step(1 / 60, deltaTime, 3);
+
+        // Рисуем объекты в соответствии с физикой
+        this.objects.forEach(obj => obj.update());
+        
+        // Позволяем вращать сцену
+        if (this.args.useOrbitControlForCamera)
+            this.orbitControls.update()
+        
+        if (this.cameraAttach) {
+            switch (this.cameraAttach.strategy) {
+                case "SimpleFollowing":
+                    this.updateCameraLookAt(this.cameraAttach.object.position)
+                    break
+                case "DistanceFollowing":
+                    this.updateCameraDistanceFollowing()
+                    break
+                case "OffsetFollowing":
+                    this.updateCameraOffsetFollowing()
+                    break
+                default:
+                    this.updateCameraSimpleFollowing()
+                    break
+            }
+        }
+
+        // Гравитация всегда направлена вниз к оси направления камеры
+        if (this.args.changeGravityByCamera && this.args.useGravity)
+            this.updateGravity()
+
+        // Обновляем визуализацию сцены
+        this.renderer.render(this.scene, this.camera);
     }
 }

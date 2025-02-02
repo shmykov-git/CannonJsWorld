@@ -30,6 +30,10 @@ const objects = [
 ];
 
 world.init(objects);
+world.attachCamera("earth", {
+    distance: [10, 30],
+    strategy: "DistanceFollowing"
+})
 
 document.getElementById("btnBum").addEventListener("click", event => { 
     world.get("earth").body.applyForce(new CANNON.Vec3(0, 10000*Math.random(), 0))

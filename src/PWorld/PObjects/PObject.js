@@ -5,7 +5,7 @@ import { getMeshWireMaterial } from '../Scene/MeshMaterials.js'
 import * as vfn from '../VecFuncs.js'
 
 export class PObject {
-    constructor(args, shapes, geometry, debugMesh = undefined) {
+    constructor(args, shapes, geometry) {
         args = {
             id: 'object',
             static: false,
@@ -102,6 +102,19 @@ export class PObject {
             this.initDebugMesh()
     }
 
+    get upFactor() {
+        const q = this.body.quaternion
+        const uY = CANNON.Vec3.UNIT_Y.clone()
+        const quY = q.vmult(uY)
+        const factor = quY.dot(CANNON.Vec3.UNIT_Y)
+        return factor
+    }
+
+    get position() {
+        const p = this.body.position
+        return new THREE.Vector3(p.x, p.y, p.z)
+    }
+
     update() {
         if (!this.args.usePhysic || this.args.static || !this.body) // todo: single body physic only
             return;
@@ -117,12 +130,4 @@ export class PObject {
         this.mesh.position.set(p.x, p.y, p.z);
         this.mesh.quaternion.set(q.x, q.y, q.z, q.w);
     }            
-
-    get upFactor() {
-        const q = this.body.quaternion
-        const uY = CANNON.Vec3.UNIT_Y.clone()
-        const quY = q.vmult(uY)
-        const factor = quY.dot(CANNON.Vec3.UNIT_Y)
-        return factor
-    }
 }

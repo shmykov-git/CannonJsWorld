@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cannon.js Scenes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f3f3f3;
+      color: #333;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    .header p {
+      color: #666;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card h2 {
+      font-size: 1.25rem;
+      margin: 0;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Cannon.js Scenes</h1>
+      <p>Select a scene to explore the physics simulations.</p>
+    </div>
+
+    <div class="grid" id="scene-grid">
+      <!-- Cards will be inserted dynamically -->
+    </div>
+  </div>
+
+  <script>
+    const scenes = [
+      { id: 1, name: "Maze cube", description: "Path the ball from top to button using screen rotation", file: "MazeCube.html" },
+      { id: 2, name: "Maze cube solved", description: "Check out the Maze cube solution", file: "MazeCube.html?showHelp=true" },
+      { id: 3, name: "Box with objects", description: "Box with some objects inside", file: "BoxWithBalls.html" },
+      { id: 4, name: "Rotation", description: "Something will try to look at you", file: "SomeRotation.html" },
+      { id: 5, name: "Domino", description: "Let's run domino figure", file: "Domino.html" },
+      { id: 6, name: "Spiral", description: "Simple relax spiral form", file: "Spiral.html" },
+    ];
+
+    const sceneGrid = document.getElementById('scene-grid');
+
+    scenes.forEach(scene => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h2>${scene.name}</h2>
+        <p>${scene.description}</p>
+      `;
+      card.addEventListener('click', () => {
+        window.location.href = `views/${scene.file}`;
+      });
+      sceneGrid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,10 @@
+.vscode
+deploy_local
+deploy_prod
+node_modules
+dist
+.git
+.env
+*.log
+Dockerfile
+docker-compose.yml

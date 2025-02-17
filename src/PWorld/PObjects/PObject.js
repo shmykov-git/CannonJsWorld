@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { pItemMaterial } from '../World/PhysicMaterials.js'
 import { getMeshWireMaterial } from '../Scene/MeshMaterials.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as vfn from '../VecFuncs.js'
 
 export class PObject {
@@ -11,14 +12,23 @@ export class PObject {
             static: false,
             mass: 1,
             position: [0, 0, 0],
-            quaternion: [0, 0, 0, 1],
+            quaternion: [0, 0, 0, 1],            
             usePhysic: true,
             useView: true,
+            useModel: false,
             useCollision: true,
             angularDamping: 0.5,
             pMaterial: pItemMaterial,
             debugBody: false,
-            ...args
+            ...args,
+
+            model: {
+                url: "santa.glb",
+                scale: [0.9, 0.9, 0.9],
+                position: [0, -1.2, 0],
+                color: undefined,
+                ...args.model
+            }
         }
 
         this.args = args
@@ -49,6 +59,24 @@ export class PObject {
 
         this.mesh = mesh;
         this.scene.add(this.mesh);
+    }
+
+    initModel(model) {
+        const modelGroup = new THREE.Group()
+
+        model.scale.set(...this.args.model.scale)
+        model.position.set(...this.args.model.position)
+
+        model.traverse((object) => {
+            if (object.isMesh) {
+                if (this.args.model.color)
+                    object.material.color.set(this.args.model.color)
+            }
+        })
+                
+        modelGroup.add(model)
+        this.model = modelGroup
+        this.scene.add(this.model)
     }
 
     initPhysic() {
@@ -98,8 +126,28 @@ export class PObject {
         if (this.args.useView) 
             this.initView()
 
+        if (this.args.useModel) {
+            this.loadModel()
+        } 
+
         if (this.args.debugMesh)
             this.initDebugMesh()
+    }
+
+    loadModel() {
+        const loader = new GLTFLoader();
+        loader.load(
+            `/models/${this.args.model.url}`,
+            (gltf) => {
+                this.initModel(gltf.scene)
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% загружено');
+            },
+            (error) => {
+                console.error('Ошибка при загрузке модели:', error);
+            }
+        )
     }
 
     get upFactor() {
@@ -122,12 +170,20 @@ export class PObject {
         if (this.pWorld.args.useWorldRadius && this.body)
             this.pWorld.enforceWorldRadius(this.body);
 
-        // physics position and rotation
         let p = this.body.position;
         let q = this.body.quaternion;
 
-        // apply world (physics) state to view state (scene meshe)
-        this.mesh.position.set(p.x, p.y, p.z);
-        this.mesh.quaternion.set(q.x, q.y, q.z, q.w);
+        // move and rotate view by the phisics model
+        if (this.args.useView) {
+            this.mesh.position.set(p.x, p.y, p.z);
+            this.mesh.quaternion.set(q.x, q.y, q.z, q.w);
+        }
+
+        // move and rotate view by the phisics model
+        if (this.args.useModel && this.model) {
+            this.model.position.set
+            this.model.position.set(p.x, p.y, p.z);
+            this.model.quaternion.set(q.x, q.y, q.z, q.w);
+        }
     }            
 }

@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import { PSphere } from '../PObjects.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export class PJumpSphere extends PSphere {
     constructor(args) {
@@ -20,12 +19,6 @@ export class PJumpSphere extends PSphere {
         this.body.addEventListener("collide", event => {
             this.canJamp = true;
         });         
-
-        if (this.args.modelPath) {
-            this.loadModel().then(model =>{
-
-            })
-        } 
     }
 
     jump() {
@@ -36,27 +29,5 @@ export class PJumpSphere extends PSphere {
         g.copy(this.world.gravity)
         const force = g.multiplyScalar(-this.args.jumpPower); // Направление и сила прыжка в обратном гравитации направлении
         this.body.applyForce(force); // Применяем силу к мячу
-    }    
-    
-    async loadModel() {
-        // Загрузчик модели
-        let model = null;
-        const loader = new GLTFLoader();
-        await loader.load(
-            this.args.modelPath, // Путь к модели
-            (gltf) => {
-                model = gltf.scene; // Достаем сцену из модели
-                model.scale.set(0.5, 0.5, 0.5); // Масштабируем модель, если она слишком большая
-                model.position.set(0, 0, 0); // Устанавливаем позицию модели
-                // scene.add(model); // Добавляем модель в сцену
-            },
-            (xhr) => {
-                console.log((xhr.loaded / xhr.total) * 100 + '% загружено'); // Прогресс загрузки
-            },
-            (error) => {
-                console.error('Ошибка при загрузке модели:', error);
-            }
-        );
-        return model;
-    }
+    }        
 }

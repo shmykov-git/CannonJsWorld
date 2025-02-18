@@ -17,6 +17,7 @@ export class PObject {
             useView: true,
             useModel: false,
             useCollision: true,
+            useSelection: true,
             angularDamping: 0.5,
             pMaterial: pItemMaterial,
             debugBody: false,
@@ -28,6 +29,11 @@ export class PObject {
                 position: [0, -1.2, 0],
                 color: undefined,
                 ...args.model
+            },
+            selection: {
+                type: "byView",
+                onSelect: obj => {},
+                ...args.selection
             }
         }
 
@@ -110,6 +116,15 @@ export class PObject {
         this.body = this.bodies[0]; // todo: many bodies physic support
     }
 
+    initSelection() {
+        this.selection = {
+            raycaster: new THREE.Raycaster(),
+            mouse: new THREE.Vector2()
+        }
+
+        window.addEventListener('click', event => this.onSelect(event));
+    }
+
     initDebugMesh() {
         console.log(`Debug mesh for ${this.id} is not implemented`)
     }
@@ -126,9 +141,15 @@ export class PObject {
         if (this.args.useView) 
             this.initView()
 
+        // show mesh (model)
         if (this.args.useModel) {
             this.loadModel()
         } 
+
+        // allow the object to be selected
+        if (this.args.useSelection) {
+            this.initSelection()
+        }
 
         if (this.args.debugMesh)
             this.initDebugMesh()
@@ -148,6 +169,20 @@ export class PObject {
                 console.error('Ошибка при загрузке модели:', error);
             }
         )
+    }
+
+    onSelect(clickEvent) {
+        this.selection.mouse.x = (clickEvent.clientX / window.innerWidth) * 2 - 1;
+        this.selection.mouse.y = -(clickEvent.clientY / window.innerHeight) * 2 + 1;
+        this.selection.raycaster.setFromCamera(this.selection.mouse, this.pWorld.camera);
+
+        if (this.args.selection.type == "byView") {
+            const intersects = this.selection.raycaster.intersectObject(this.mesh);
+            
+            if (intersects.length > 0 && this.args.selection.onSelect) {
+                this.args.selection.onSelect(this)
+            }
+        }    
     }
 
     get upFactor() {

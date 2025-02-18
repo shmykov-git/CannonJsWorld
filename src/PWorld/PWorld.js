@@ -25,14 +25,16 @@ export class PWorld {
             worldRadiusFriction: 0.5,
             useGravity: true,
             useGround: true,
+            ...args,
+
             ground: {
                 size: [30, 30, 0.5],
                 color: 0x008800,
                 type: "box",
                 pMaterial: pWallMaterial,
-                meshMaterialFn: getMeshTransparentMaterial
-            },
-            ...args
+                meshMaterialFn: getMeshTransparentMaterial,
+                ...args.ground
+            }
         };
         args.gravityPower = vfn.len(args.gravity)
         args.worldRadiusSquared = args.worldRadius * args.worldRadius

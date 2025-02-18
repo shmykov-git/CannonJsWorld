@@ -12,10 +12,10 @@ const world = new PWorld({
 // one body - one mesh
 const objects = [
     new PJumpSphere({ 
-        id: "earth",
+        id: "w30",
         radius: 1.5,
         position: [6.8, 18.5, 8], 
-        color: 0xdddddd,
+        color: 0x333333,
         meshMaterialFn: getMeshTransparentMaterial,
         useView: true,
         useModel: true,
@@ -24,14 +24,40 @@ const objects = [
             scale: [2, 2, 5],
             position: [0, -1, 0],
             color: 0xff0000
+        },
+        useSelection: true,
+        selection: {
+            onSelect: objectSelected
         }
     }), 
+    new PJumpSphere({ 
+        id: "santa",
+        radius: 1.5,
+        position: [-4, 18.5, -3], 
+        color: 0x333333,
+        meshMaterialFn: getMeshTransparentMaterial,
+        useView: true,
+        useModel: true,
+        model: {
+            url: "santa.glb",
+            scale: [0.9, 0.9, 0.9],
+            position: [0, -1.2, 0]
+        },
+        useSelection: true,
+        selection: {
+            onSelect: objectSelected
+        }
+    }),
 ];
+
+function objectSelected(obj) {
+    obj.jump()
+}
 
 world.init(objects);
 
 document.getElementById("btnBum").addEventListener("click", event => { 
-    world.get("earth").body.applyForce(new CANNON.Vec3(0, 10000*Math.random(), 0))
+    world.getInstancesOf(PJumpSphere).forEach(o => o.jump())
 });
 
 // Animation loop

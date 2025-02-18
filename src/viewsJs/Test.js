@@ -31,7 +31,7 @@ const objects = [
         }
     }), 
     new PJumpSphere({ 
-        id: "santa",
+        id: "2",
         radius: 1.5,
         position: [-4, 18.5, -3], 
         color: 0x333333,
@@ -39,9 +39,9 @@ const objects = [
         useView: true,
         useModel: true,
         model: {
-            url: "santa.glb",
-            scale: [0.9, 0.9, 0.9],
-            position: [0, -1.2, 0]
+            url: "vually.glb",
+            scale: [500, 500, 500],
+            position: [0, 0, 0]
         },
         useSelection: true,
         selection: {

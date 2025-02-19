@@ -30,17 +30,17 @@ const objects = [
             onSelect: objectSelected
         }
     }), 
-    new PJumpSphere({ 
+    new PBox({ 
         id: "2",
-        radius: 1.5,
-        position: [-4, 18.5, -3], 
+        size: [4, 4, 4],
+        position: [-4, 8.5, -3], 
         color: 0x333333,
         meshMaterialFn: getMeshTransparentMaterial,
         useView: true,
         useModel: true,
         model: {
             url: "vually.glb",
-            scale: [500, 500, 500],
+            scale: [4, 4, 4],
             position: [0, 0, 0]
         },
         useSelection: true,
@@ -51,7 +51,7 @@ const objects = [
 ];
 
 function objectSelected(obj) {
-    obj.jump()
+    if (obj.jump) obj.jump()
 }
 
 world.init(objects);

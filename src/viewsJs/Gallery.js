@@ -112,7 +112,10 @@ const objects = models.map((model, i) =>
     new PSphere({
         ...baseArgs,
         position: positions[i], 
-        model: model
+        model: {
+            ...model,
+            url: `gallery/${model.url}`
+        }
     })
 )
 

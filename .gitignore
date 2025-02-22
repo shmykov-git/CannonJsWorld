@@ -27,3 +27,6 @@ Thumbs.db
 
 # deploy folders
 deploy_prod/
+
+# skip tattoos upload, see readme.md
+public/models/tattoos

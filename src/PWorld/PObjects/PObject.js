@@ -185,6 +185,20 @@ export class PObject {
         }    
     }
 
+    hideView() {
+        if (this.args.useView) {
+            this.args.useView = false
+            this.scene.remove(this.mesh);
+        }
+    }
+
+    showView() {
+        if (!this.args.useView) {
+            this.args.useView = true
+            this.scene.add(this.mesh);
+        }
+    }
+
     get upFactor() {
         const q = this.body.quaternion
         const uY = CANNON.Vec3.UNIT_Y.clone()

@@ -30,7 +30,9 @@ const objects = [
 ];
 
 world.init(objects);
-world.attachCamera("earth", {
+
+world.attachCamera({
+    object: world.get("earth"),
     distance: [10, 30],
     strategy: "DistanceFollowing"
 })

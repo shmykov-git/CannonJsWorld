@@ -9,7 +9,8 @@ import { alignObjectToCamera } from '../PWorld/PFuncs.js'
 export const world = new PWorld({
     worldRadius: 20,
     cameraPosition: [0, 0, 50],
-    useGravity: false
+    useGravity: false,
+    useGround: false
 });
 
 const sphere = {

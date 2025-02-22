@@ -19,12 +19,14 @@ export class PSphere extends PObject {
             position: [0, 0, 0],
             meshMaterialFn: getMeshWireMaterial,
             color: 0xff0000,
+            ...args,
+
             geometry: {
                 type: 'sphere',
                 size: [20, 10],
-                detail: 2
-            },
-            ...args
+                detail: 2,
+                ...args.geometry
+            }
         }
 
         // calculated args

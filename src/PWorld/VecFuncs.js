@@ -15,6 +15,16 @@ export function* rMN(m, n) {
             yield [i, j] 
 }
 
+export function* rCircle(n, r = 1) {
+    const dF = 2 * Math.PI / n;
+    let f = 0;
+    while (n > 0) {
+        yield [r * Math.sin(f), r * Math.cos(f)]
+        f += dF
+        n--;
+    }
+}
+
 export const agri = (v, f, a0 = 0) => rN(v.length).reduce((a, i) => f(a, i), a0)
 export const agri1 = (v, f, a0) => rN(v.length-1).reduce((a, i) => f(a, i+1), a0)
 

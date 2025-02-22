@@ -24,3 +24,4 @@ export function multPoints(mult, points) {
 export function addPoints(v, points) {
     return points.map(p => [v + p[0], v + p[1], v + p[2]])
 }
+

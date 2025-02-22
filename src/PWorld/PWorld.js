@@ -25,6 +25,7 @@ export class PWorld {
             worldRadiusFriction: 0.5,
             useGravity: true,
             useGround: true,
+            lights: lights,
             ...args,
 
             ground: {
@@ -43,21 +44,32 @@ export class PWorld {
         this.clock = new THREE.Clock();
     }
 
-    attachCamera(id, args) {
-        args = {
+    attachCamera(attachArgs) {
+        attachArgs = {
+            object: undefined,
+            targetPositionFn: undefined,
             offset: new THREE.Vector3(0, 5, -10),
             distance: [10, 30],
             strategy: "SimpleFollowing",
             acceleration: 0.02,
-            ...args
+            ...attachArgs
         }
 
-        this.cameraAttach = {
-            object: this.get(id),
-            ...args
+        if (!attachArgs.targetPositionFn) {
+            if (!attachArgs.object) {
+                throw new Error("Unknown target position. Set object or targetPositionFn")
+            }
+
+            attachArgs.targetPositionFn = () => attachArgs.object.position
         }
+
+        this.attachArgs = attachArgs
     }
     
+    detachCamera() {
+        this.attachArgs = undefined
+    }
+
     get(id) {
         return this.objects.find(o => o.id === id)
     }
@@ -99,7 +111,7 @@ export class PWorld {
         document.querySelectorAll('canvas').forEach(canvas => canvas.outerHTML = '')
         document.body.appendChild(this.renderer.domElement);
         
-        lights.forEach(light => this.scene.add(light));
+        this.args.lights.forEach(light => this.scene.add(light));
         contactMaterials.forEach(cM => this.world.addContactMaterial(cM));        
         objects.forEach(o => {
             o.pWorld = this
@@ -195,11 +207,12 @@ export class PWorld {
     }
 
     updateCameraPosition(cameraPosition) {
-        this.camera.position.lerp(cameraPosition, this.cameraAttach.acceleration)
+        this.camera.position.lerp(cameraPosition, this.attachArgs.acceleration)
     }
 
-    updateCameraLookAt(targetPosition) {
-        this.cameraLookAt.lerp(targetPosition, this.cameraAttach.acceleration)
+    updateCameraLookAt() {
+        const targetPosition = this.attachArgs.targetPositionFn()
+        this.cameraLookAt.lerp(targetPosition, this.attachArgs.acceleration)
 
         if (this.args.useOrbitControlForCamera)
             this.orbitControls.target.copy(this.cameraLookAt);
@@ -208,13 +221,13 @@ export class PWorld {
     }
 
     updateCameraOffsetFollowing() {
-        const offsetPosition = this.cameraAttach.object.position.clone().add(this.cameraAttach.offset)
+        const offsetPosition = this.attachArgs.targetPositionFn().clone().add(this.attachArgs.offset)
         this.updateCameraPosition(offsetPosition)
-        this.updateCameraLookAt(this.cameraAttach.object.position)
+        this.updateCameraLookAt()
     }
 
     updateCameraDistanceFollowing() {
-        const [min, max] = this.cameraAttach.distance
+        const [min, max] = this.attachArgs.distance
         const direction = this.cameraLookAt.clone().sub(this.camera.position)
         const dir2 = direction.lengthSq()
         let cameraPosition
@@ -228,7 +241,7 @@ export class PWorld {
         if (cameraPosition)
             this.updateCameraPosition(cameraPosition)
 
-        this.updateCameraLookAt(this.cameraAttach.object.position)
+        this.updateCameraLookAt()
     }
 
     update() {
@@ -244,10 +257,10 @@ export class PWorld {
         if (this.args.useOrbitControlForCamera)
             this.orbitControls.update()
         
-        if (this.cameraAttach) {
-            switch (this.cameraAttach.strategy) {
+        if (this.attachArgs) {
+            switch (this.attachArgs.strategy) {
                 case "SimpleFollowing":
-                    this.updateCameraLookAt(this.cameraAttach.object.position)
+                    this.updateCameraLookAt(this.attachArgs.object.position)
                     break
                 case "DistanceFollowing":
                     this.updateCameraDistanceFollowing()

@@ -19,6 +19,10 @@ const objects = [
         meshMaterialFn: getMeshTransparentMaterial,
         useView: true,
         useModel: true,
+        geometry: {
+            type: 'icosahedron',
+            detail: 5
+        },
         model: {
             url: "w30.glb",
             scale: [2, 2, 5],

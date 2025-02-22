@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 //create public.json
-function getDirJson(dir, s) {
+function getDirJson(dir) {
   let totalCount = 0
 
   const res = fs
@@ -11,7 +11,7 @@ function getDirJson(dir, s) {
     .filter(folder => fs.statSync(path.join(dir, folder)).isDirectory())
     .sort()
     .reduce((acc, folder) => {
-      acc[folder] = getDirJson(path.join(dir, folder), s)
+      acc[folder] = getDirJson(path.join(dir, folder))
       totalCount += acc[folder].totalCount
       return acc
     }, {})
@@ -26,7 +26,7 @@ function getDirJson(dir, s) {
   return res
 }
  
-const publicJson = getDirJson("public", "public".length)
+const publicJson = getDirJson("public")
 fs.writeFileSync("public/public.json", JSON.stringify(publicJson, null, 2), "utf8")
 console.log(`public.json created with total files count: ${publicJson.totalCount}`)
 console.log()

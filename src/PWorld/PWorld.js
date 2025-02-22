@@ -150,6 +150,11 @@ export class PWorld {
         return aba.normalize();
     }
     
+    async loadPublicJson() {
+        const response = await fetch('/public.json');
+        const publicJson = await response.json();        
+        return publicJson
+    }
     // updateCameraUp() {
     //     const direction = new THREE.Vector3();
     //     camera.getWorldDirection(direction); // Получаем направление камеры

@@ -2,15 +2,37 @@ import { defineConfig } from 'vite';
 import fs from 'fs';
 import path from 'path';
 
-function getAllFiles(dir) {
-  return fs
-    .readdirSync(dir)
-    .reduce((entries, file) => {
-      entries[path.parse(file).name] = path.resolve(dir, file);
-      return entries;
-    }, {});
-}
+//create public.json
+function getDirJson(dir, s) {
+  let totalCount = 0
 
+  const res = fs
+    .readdirSync(dir)
+    .filter(folder => fs.statSync(path.join(dir, folder)).isDirectory())
+    .sort()
+    .reduce((acc, folder) => {
+      acc[folder] = getDirJson(path.join(dir, folder), s)
+      totalCount += acc[folder].totalCount
+      return acc
+    }, {})
+
+  res.files = fs
+    .readdirSync(dir)
+    .filter(file => !fs.statSync(path.join(dir, file)).isDirectory())
+    .sort()
+
+  res.totalCount = totalCount + res.files.length
+
+  return res
+}
+ 
+const publicJson = getDirJson("public", "public".length)
+fs.writeFileSync("public/public.json", JSON.stringify(publicJson, null, 2), "utf8")
+console.log(`public.json created with total files count: ${publicJson.totalCount}`)
+console.log()
+
+
+// find build input files
 function getHtmlFiles(dir) {
   return fs
     .readdirSync(dir)
@@ -21,7 +43,6 @@ function getHtmlFiles(dir) {
     }, {});
 }
 
-
 const files = {
   ...getHtmlFiles("."),
   ...getHtmlFiles("views")
@@ -29,6 +50,8 @@ const files = {
 
 console.log(files)
 
+
+// configure
 export default defineConfig({
   type: "module",
   root:'.',

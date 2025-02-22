@@ -9,10 +9,13 @@ const world = new PWorld({
     useGround: true,
 });
 
+const publicJson = await world.loadPublicJson()
+
+const w30 = publicJson.models.gallery.files[11]
+
 // one body - one mesh
 const objects = [
     new PJumpSphere({ 
-        id: "w30",
         radius: 1.5,
         position: [6.8, 18.5, 8], 
         color: 0x333333,
@@ -24,7 +27,7 @@ const objects = [
             detail: 5
         },
         model: {
-            url: "w30.glb",
+            url: `/gallery/${w30}`,
             scale: [2, 2, 5],
             position: [0, -1, 0],
             color: 0xff0000
@@ -33,25 +36,7 @@ const objects = [
         selection: {
             onSelect: objectSelected
         }
-    }), 
-    new PBox({ 
-        id: "2",
-        size: [4, 4, 4],
-        position: [-4, 8.5, -3], 
-        color: 0x333333,
-        meshMaterialFn: getMeshTransparentMaterial,
-        useView: true,
-        useModel: true,
-        model: {
-            url: "vually.glb",
-            scale: [4, 4, 4],
-            position: [0, 0, 0]
-        },
-        useSelection: true,
-        selection: {
-            onSelect: objectSelected
-        }
-    }),
+    })
 ];
 
 function objectSelected(obj) {

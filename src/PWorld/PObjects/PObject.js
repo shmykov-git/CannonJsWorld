@@ -156,9 +156,13 @@ export class PObject {
     }
 
     loadModel() {
+        let url = this.args.model.url
+        if (!url.startsWith('/')) url = '/' + url
+        if (!url.startsWith('/models')) url = '/models' + url
+
         const loader = new GLTFLoader();
         loader.load(
-            `/models/${this.args.model.url}`,
+            url,
             (gltf) => {
                 this.initModel(gltf.scene)
             },

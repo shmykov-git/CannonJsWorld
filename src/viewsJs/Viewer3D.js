@@ -13,7 +13,7 @@ const cameraBasePosition = [-10, 0, 20]
 const world = new PWorld({
     useGround: false,
     useGravity: false,    
-    orbitControlDistance: [3, 100],
+    orbitControlDistance: [3, 300],
     backgroundColor: 0x999999,
     cameraPosition: cameraBasePosition,
     lights: [ambientLight, directionalLight]
@@ -36,8 +36,9 @@ world.loadPublicJson().then(publicJson => {
 
     if (urlParams.get('id')) {
         let fileName = decodeURIComponent(urlParams.get('id')).toLowerCase()
-        if (!fileName.includes(".")) fileName = `${fileName}.glb`
         index = files.findIndex(f => f.toLowerCase() == fileName)
+        if (index < 0) index = files.findIndex(f => f.toLowerCase().startsWith(fileName))
+        if (index < 0) index = files.findIndex(f => f.toLowerCase().includes(fileName))
         if (index < 0) index = 0
     }
     showModel()

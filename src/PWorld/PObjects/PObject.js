@@ -73,23 +73,29 @@ export class PObject {
         const args = this.args.model
 
         if (args.centered) {
-            const box = new THREE.Box3().setFromObject(model);
+            const box = new THREE.Box3().setFromObject(model, true);
             const center = new THREE.Vector3();
             box.getCenter(center);
-            model.position.sub(center);
+            if (!isNaN(center.x) && !isNaN(center.y) && !isNaN(center.z))
+                model.position.sub(center);
         }
 
         if (args.normed) {
-            const box = new THREE.Box3().setFromObject(model);
+            const box = new THREE.Box3().setFromObject(model, true);
             const size = new THREE.Vector3();
             box.getSize(size);
             const maxSize = Math.max(size.x, size.y, size.z);
             const scale = 1 / maxSize;  // Приводим наибольшую сторону к 1
-            model.scale.set(scale, scale, scale);
+            if (!isNaN(scale))
+                model.scale.set(scale, scale, scale);
         }
 
-        model.scale.set(...args.scale)
-        model.position.set(...args.position)
+        model.scale.x *= args.scale[0]
+        model.scale.y *= args.scale[1]
+        model.scale.z *= args.scale[2]
+        model.position.x += args.position[0]
+        model.position.y += args.position[1]
+        model.position.z += args.position[2]
 
         model.traverse((object) => {
             if (object.isMesh) {

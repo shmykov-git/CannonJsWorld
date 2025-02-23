@@ -82,7 +82,7 @@ function showModel(btn) {
     if (btn == btnRight) btn.classList.add('spin-right')
     updateQueryParam("id", encodeURIComponent(files[index]))
     const obj = world.get("object")
-    obj.args.model.url = files[index].replace("--", "/")
+    obj.args.model.url = files[index].replaceAll("--", "/")
 
     obj.loadModel(m => {
         world.setCameraPosition(cameraBasePosition, [0, 0, 0])

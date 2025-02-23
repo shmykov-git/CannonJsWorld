@@ -25,8 +25,10 @@ export class PObject {
 
             model: {
                 url: "santa.glb",
-                scale: [0.9, 0.9, 0.9],
-                position: [0, -1.2, 0],
+                centered: true,
+                normed: true,
+                scale: [1, 1, 1],
+                position: [0, 0, 0],
                 color: undefined,
                 ...args.model
             },
@@ -68,18 +70,38 @@ export class PObject {
     }
 
     initModel(model) {
-        const modelGroup = new THREE.Group()
+        const args = this.args.model
 
-        model.scale.set(...this.args.model.scale)
-        model.position.set(...this.args.model.position)
+        if (args.centered) {
+            const box = new THREE.Box3().setFromObject(model);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+            model.position.sub(center);
+        }
+
+        if (args.normed) {
+            const box = new THREE.Box3().setFromObject(model);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const maxSize = Math.max(size.x, size.y, size.z);
+            const scale = 1 / maxSize;  // Приводим наибольшую сторону к 1
+            model.scale.set(scale, scale, scale);
+        }
+
+        model.scale.set(...args.scale)
+        model.position.set(...args.position)
 
         model.traverse((object) => {
             if (object.isMesh) {
-                if (this.args.model.color)
-                    object.material.color.set(this.args.model.color)
+                if (args.color)
+                    object.material.color.set(args.color)
             }
         })
                 
+        // remove old model
+        if (this.model) this.scene.remove(this.model)
+
+        const modelGroup = new THREE.Group()
         modelGroup.add(model)
         this.model = modelGroup
         this.scene.add(this.model)
@@ -176,6 +198,8 @@ export class PObject {
     }
 
     onSelect(clickEvent) {
+        if (!this.args.useSelection) return
+
         this.selection.mouse.x = (clickEvent.clientX / window.innerWidth) * 2 - 1;
         this.selection.mouse.y = -(clickEvent.clientY / window.innerHeight) * 2 + 1;
         this.selection.raycaster.setFromCamera(this.selection.mouse, this.pWorld.camera);

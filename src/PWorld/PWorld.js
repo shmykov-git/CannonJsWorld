@@ -26,6 +26,7 @@ export class PWorld {
             useGravity: true,
             useGround: true,
             lights: lights,
+            backgroundColor: 0x202020,
             ...args,
 
             ground: {
@@ -104,6 +105,8 @@ export class PWorld {
 
         // Set up the scene, camera, and renderer
         this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(this.args.backgroundColor);
+
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -118,12 +121,7 @@ export class PWorld {
             o.init()
         });
 
-        // Set camera position        
-        this.camera.position.x = this.args.cameraPosition[0];
-        this.camera.position.y = this.args.cameraPosition[1];
-        this.camera.position.z = this.args.cameraPosition[2];
-        this.camera.lookAt(this.args.cameraLookAt[0], this.args.cameraLookAt[1], this.args.cameraLookAt[2]);
-        this.cameraLookAt = new THREE.Vector3(...this.args.cameraLookAt)
+        this.setCameraPosition(this.args.cameraPosition, this.args.cameraLookAt)
 
         // возможность вращать сцену
         const orbitControls = new OrbitControls(this.camera, this.renderer.domElement)
@@ -208,6 +206,21 @@ export class PWorld {
             default:
                 rejectSpeed()
                 break;
+        }
+    }
+
+    setCameraPosition(position, lookAt = undefined) {
+        this.camera.position.x = position[0];
+        this.camera.position.y = position[1];
+        this.camera.position.z = position[2];
+        
+        if (lookAt) {
+            this.cameraLookAt = new THREE.Vector3(...lookAt)
+
+            if (this.args.useOrbitControlForCamera && this.orbitControls)
+                this.orbitControls.target.copy(this.cameraLookAt);
+            else
+                this.camera.lookAt(this.cameraLookAt)
         }
     }
 

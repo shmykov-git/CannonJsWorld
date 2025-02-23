@@ -10,8 +10,7 @@ const world = new PWorld({
 });
 
 const publicJson = await world.loadPublicJson()
-
-const w30 = publicJson.models.gallery.files[11]
+const files = publicJson.models.tattoos.files
 
 // one body - one mesh
 const objects = [

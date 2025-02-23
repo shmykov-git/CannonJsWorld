@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Open index.html",
             "url1": "http://localhost:3333/index.html",
-            "url": "http://localhost:3333/views/Test.html",
+            "url": "http://localhost:3333/views/Viewer3D.html",
             "sourceMaps": true,
             "skipFiles": ["node_modules/**"]
         }

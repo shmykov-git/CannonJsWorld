@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+        .floating-button {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            color: white;
+            border: none;
+            border-radius: 50%; /* Делаем кнопку круглой */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10; /* Кнопка находится поверх остальных элементов */
+        }
+        .control-button
+        {
+            background-color: rgba(0, 123, 255, 0.2);
+        }
+        .control-button:hover {
+            background-color: #4d47ff;
+        }
+        .left-button {
+            top: 50%;
+            left: 10px;
+        }
+        .right-button {
+            top: 50%;
+            right: 10px;
+        }
+        .bg1-button
+        {
+            bottom: 10px;
+            left: 25%;
+            background-color: #202020;
+        }
+        .bg2-button
+        {
+            bottom: 10px;
+            left: 50%;
+            background-color: #EEEEEE;
+        }
+        .bg3-button
+        {
+            bottom: 10px;
+            left: 75%;
+            background-color: #999999;
+        }
+    </style>
+    <title>3D viewer</title>
+</head>
+<body>    
+    <button class="floating-button control-button left-button" id="btnLeft">Left</button>
+    <button class="floating-button control-button right-button" id="btnRight">Right</button>
+    <button class="floating-button bg1-button" id="btnBg1"></button>
+    <button class="floating-button bg2-button" id="btnBg2"></button>
+    <button class="floating-button bg3-button" id="btnBg3"></button>
+    <script type="module" src="../src/viewsJs/Viewer3D.js"></script>
+</body>
+</html>

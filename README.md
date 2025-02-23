@@ -18,7 +18,7 @@ Welcome to Cannon Js World application. You can use it to simplify your Cannon a
 
 - Simple Cannon World objects organizing to be convenient with
 
-- You can find all tatoos models in Algo repository https://github.com/shmykov-git/Algo/tree/master/View3D/Scene
+- You can find all models in Algo repository https://github.com/shmykov-git/Algo/tree/master/View3D/Scene
 
 ## Getting Started
 

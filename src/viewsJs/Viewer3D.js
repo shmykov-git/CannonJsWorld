@@ -25,7 +25,15 @@ updateQueryParam('index', undefined)
 let files = []
 
 world.loadPublicJson().then(publicJson => {
-    files = publicJson.models.tattoos.files
+    files = [
+        ...publicJson.models.tattoos.files.map(f => `tattoos--${f}`),
+        ...publicJson.models.mains.files.map(f => `mains--${f}`),
+        ...publicJson.models.Composed.files.map(f => `Composed--${f}`),
+        ...publicJson.models.development.files.map(f => `development--${f}`),
+        ...publicJson.models.forms.files.map(f => `forms--${f}`),
+        ...publicJson.models.Composed.SimpleBeauty.files.map(f => `Composed--SimpleBeauty--${f}`),
+    ]
+
     if (urlParams.get('id')) {
         let fileName = decodeURIComponent(urlParams.get('id')).toLowerCase()
         if (!fileName.includes(".")) fileName = `${fileName}.glb`
@@ -73,7 +81,7 @@ function showModel(btn) {
     if (btn == btnRight) btn.classList.add('spin-right')
     updateQueryParam("id", encodeURIComponent(files[index]))
     const obj = world.get("object")
-    obj.args.model.url = `/tattoos/${files[index]}`
+    obj.args.model.url = files[index].replace("--", "/")
 
     obj.loadModel(m => {
         world.setCameraPosition(cameraBasePosition, [0, 0, 0])

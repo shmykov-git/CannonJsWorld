@@ -19,7 +19,10 @@ const world = new PWorld({
     lights: [ambientLight, directionalLight]
 });
 
-let index = 0
+const urlParams = new URLSearchParams(window.location.search)
+let index = urlParams.get('index')
+
+updateQueryParam("index", index)
 let files = []
 
 world.loadPublicJson().then(publicJson => {
@@ -49,8 +52,14 @@ world.loadPublicJson().then(publicJson => {
     animate();
 })
 
+function updateQueryParam(key, value) {
+    const url = new URL(window.location);
+    url.searchParams.set(key, value); // Устанавливаем новый параметр
+    window.history.pushState({}, '', url); // Меняем URL без перезагрузки
+}
 
 function showModel() {
+    updateQueryParam("index", index)
     const obj = world.get("object")
     obj.args.model.url = `/tattoos/${files[index]}`
     obj.loadModel()

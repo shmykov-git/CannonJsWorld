@@ -20,37 +20,37 @@ const world = new PWorld({
 });
 
 const urlParams = new URLSearchParams(window.location.search)
-let index = urlParams.get('index')
-
-updateQueryParam("index", index)
+let index = urlParams.get('index') ?? 0
 let files = []
 
 world.loadPublicJson().then(publicJson => {
     files = publicJson.models.tattoos.files
-
-    const objects = [
-        new PSphere({ 
-            id: "object",
-            useView: false,
-            useModel: true,
-            useSelection: false,
-            model: {
-                url: `/tattoos/${files[index]}`,
-                scale: [10, 10, 10], 
-            }
-        })
-    ];
-    
-    world.init(objects);    
-
-    // Animation loop
-    function animate() {
-        world.update();
-        requestAnimationFrame(animate);
-    }
-
-    animate();
+    showModel()
 })
+
+const objects = [
+    new PSphere({ 
+        id: "object",
+        useView: false,
+        useModel: true,
+        useSelection: false,
+        model: {
+            url: undefined,
+            scale: [10, 10, 10], 
+        }
+    })
+];
+
+world.init(objects);    
+
+// Animation loop
+function animate() {
+    world.update();
+    requestAnimationFrame(animate);
+}
+
+animate();
+
 
 function updateQueryParam(key, value) {
     const url = new URL(window.location);
@@ -58,44 +58,57 @@ function updateQueryParam(key, value) {
     window.history.pushState({}, '', url); // Меняем URL без перезагрузки
 }
 
-function showModel() {
+function showModel(btn) {
+    btnLeft.disabled = true
+    btnRight.disabled = true
+    if (btn == btnLeft) btn.classList.add('spin-left')
+    if (btn == btnRight) btn.classList.add('spin-right')
     updateQueryParam("index", index)
     const obj = world.get("object")
     obj.args.model.url = `/tattoos/${files[index]}`
-    obj.loadModel()
-    world.setCameraPosition(cameraBasePosition, [0, 0, 0])
+
+    obj.loadModel(m => {
+        world.setCameraPosition(cameraBasePosition, [0, 0, 0])
+        btnLeft.disabled = false
+        btnRight.disabled = false
+        btnLeft.classList.remove('spin-left')
+        btnRight.classList.remove('spin-right')
+    })
 }
 
-document.getElementById("btnLeft").addEventListener("click", event => { 
+const btnLeft = document.getElementById("btnLeft")
+const btnRight = document.getElementById("btnRight")
+
+btnLeft.addEventListener("click", event => { 
     event.stopPropagation();
     event.preventDefault();    
     index = (index - 1 + files.length) % files.length
-    showModel();
+    showModel(btnLeft);
 });
 
-document.getElementById("btnRight").addEventListener("click", event => { 
+btnRight.addEventListener("click", event => { 
     event.stopPropagation();
     event.preventDefault();    
     index = (index + 1) % files.length
-    showModel();
+    showModel(btnRight);
 });
 
 document.getElementById("btnBg1").addEventListener("click", event => { 
     event.stopPropagation();
     event.preventDefault();    
-    world.scene.background = new THREE.Color(0x202020);
+    world.scene.background = new THREE.Color(0xEEEEEE);
 });
 
 document.getElementById("btnBg2").addEventListener("click", event => { 
     event.stopPropagation();
     event.preventDefault();    
-    world.scene.background = new THREE.Color(0xEEEEEE);
+    world.scene.background = new THREE.Color(0x999999);
 });
 
 document.getElementById("btnBg3").addEventListener("click", event => { 
     event.stopPropagation();
     event.preventDefault();    
-    world.scene.background = new THREE.Color(0x999999);
+    world.scene.background = new THREE.Color(0x202020);
 });
 
 

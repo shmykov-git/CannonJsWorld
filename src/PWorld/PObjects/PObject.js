@@ -177,8 +177,10 @@ export class PObject {
             this.initDebugMesh()
     }
 
-    loadModel() {
+    loadModel(onLoad) {
         let url = this.args.model.url
+        if (!url) return
+
         if (!url.startsWith('/')) url = '/' + url
         if (!url.startsWith('/models')) url = '/models' + url
 
@@ -187,6 +189,7 @@ export class PObject {
             url,
             (gltf) => {
                 this.initModel(gltf.scene)
+                if (onLoad) onLoad(this.model)
             },
             (xhr) => {
                 console.log((xhr.loaded / xhr.total) * 100 + '% загружено');

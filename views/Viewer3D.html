@@ -6,6 +6,7 @@
     <style>
         body {
             margin: 0;
+            padding: 0;
             overflow: hidden;
         }
         canvas {
@@ -13,8 +14,8 @@
         }
         .floating-button {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 60px;
+            height: 60px;
             color: white;
             border: none;
             border-radius: 50%; /* Делаем кнопку круглой */
@@ -25,6 +26,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            align-self: center;
             z-index: 10; /* Кнопка находится поверх остальных элементов */
         }
         .control-button
@@ -35,37 +37,57 @@
             background-color: #4d47ff;
         }
         .left-button {
-            top: 50%;
+            bottom: 30%;
             left: 10px;
         }
         .right-button {
-            top: 50%;
+            bottom: 30%;
             right: 10px;
         }
+
+        .spin-right {
+            animation: spinR 0.8s linear infinite;
+        }
+        .spin-left {
+            animation: spinL 0.8s linear infinite;
+        }
+
+        @keyframes spinR {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes spinL {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
         .bg1-button
         {
             bottom: 10px;
-            left: 25%;
-            background-color: #202020;
+            right: 75%;
+            transform: translateX(50%);
+            background-color: rgba(248, 248, 248, 0.5);
         }
         .bg2-button
         {
             bottom: 10px;
-            left: 50%;
-            background-color: #EEEEEE;
+            right: 50%;
+            transform: translateX(50%);
+            background-color: rgba(128, 128, 128, 0.5);
         }
         .bg3-button
         {
             bottom: 10px;
-            left: 75%;
-            background-color: #999999;
+            right: 25%;
+            transform: translateX(50%);
+            background-color: rgba(32, 32, 32, 0.5);
         }
     </style>
     <title>3D viewer</title>
 </head>
 <body>    
-    <button class="floating-button control-button left-button" id="btnLeft">Left</button>
-    <button class="floating-button control-button right-button" id="btnRight">Right</button>
+    <button class="floating-button control-button left-button" id="btnLeft" disabled="true">↩</button>
+    <button class="floating-button control-button right-button" id="btnRight" disabled="true">↪</button>
     <button class="floating-button bg1-button" id="btnBg1"></button>
     <button class="floating-button bg2-button" id="btnBg2"></button>
     <button class="floating-button bg3-button" id="btnBg3"></button>

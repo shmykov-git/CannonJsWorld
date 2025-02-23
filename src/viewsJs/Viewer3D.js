@@ -19,25 +19,36 @@ const world = new PWorld({
     lights: [ambientLight, directionalLight]
 });
 
-const publicJson = await world.loadPublicJson()
-const files = publicJson.models.tattoos.files
-
 let index = 0
+let files = []
 
-const objects = [
-    new PSphere({ 
-        id: "object",
-        useView: false,
-        useModel: true,
-        useSelection: false,
-        model: {
-            url: `/tattoos/${files[index]}`,
-            scale: [10, 10, 10], 
-        }
-    })
-];
+world.loadPublicJson().then(publicJson => {
+    files = publicJson.models.tattoos.files
 
-world.init(objects);
+    const objects = [
+        new PSphere({ 
+            id: "object",
+            useView: false,
+            useModel: true,
+            useSelection: false,
+            model: {
+                url: `/tattoos/${files[index]}`,
+                scale: [10, 10, 10], 
+            }
+        })
+    ];
+    
+    world.init(objects);    
+
+    // Animation loop
+    function animate() {
+        world.update();
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+})
+
 
 function showModel() {
     const obj = world.get("object")
@@ -79,10 +90,3 @@ document.getElementById("btnBg3").addEventListener("click", event => {
 });
 
 
-// Animation loop
-function animate() {
-    world.update();
-    requestAnimationFrame(animate);
-}
-
-animate();

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
-import { PSphere } from '../PObjects.js'
+import { PSphere } from '../PObjects/PSphere'
 
 export class PJumpSphere extends PSphere {
     constructor(args) {

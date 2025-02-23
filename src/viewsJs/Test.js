@@ -9,8 +9,8 @@ const world = new PWorld({
     useGround: true,
 });
 
-const publicJson = await world.loadPublicJson()
-const files = publicJson.models.tattoos.files
+// const publicJson = await world.loadPublicJson()
+// const files = publicJson.models.tattoos.files
 
 // one body - one mesh
 const objects = [
@@ -26,7 +26,7 @@ const objects = [
             detail: 5
         },
         model: {
-            url: `/gallery/${w30}`,
+            url: `/gallery/w30.glb`,
             scale: [2, 2, 5],
             position: [0, -1, 0],
             color: 0xff0000

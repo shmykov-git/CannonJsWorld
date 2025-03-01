@@ -3,6 +3,7 @@ import * as CANNON from 'cannon-es';
 import { PObject } from './PObject.js';
 import { getMeshWireMaterial, getMeshItemMaterial } from '../Scene/MeshMaterials.js'
 import * as vfn from '../VecFuncs.js'
+import { setQuaternionFromProperEuler } from 'three/src/math/MathUtils.js';
 
 // Class to handle physics and visual representation of Box
 export class PBox extends PObject {
@@ -26,4 +27,18 @@ export class PBox extends PObject {
 
         super(args, [shape], geometry)
     }
+
+    // update () {
+    //     super.update()
+
+    //     if (!this.prevPosition) {
+    //         this.prevPosition = new CANNON.Vec3()
+    //         this.prevPosition.copy(this.body.position)
+    //     }
+
+    //     if (!this.prevPosition.almostEquals(this.body.position, 1e-4))
+    //     {
+    //         this.body.position.copy(this.prevPosition)
+    //     }
+    // }
 }

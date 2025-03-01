@@ -1,5 +1,5 @@
 import * as CANNON from 'cannon-es';
-import { pWallMaterial, pItemMaterial, pPlasticMaterial } from './PhysicMaterials.js'
+import { pWallMaterial, pItemMaterial, pPlasticMaterial, pStoneMaterial } from './PhysicMaterials.js'
 
 // все Polyhedron одинакого взаимодействуют друг с другом
 export const contactPolyhedronMaterial = new CANNON.ContactMaterial(pWallMaterial, pWallMaterial, {
@@ -31,10 +31,16 @@ export const contactPlasticPlasticMaterial = new CANNON.ContactMaterial(pPlastic
     restitution: 0.9, // Коэффициент упругости
 });
 
+export const contactStoneStoneMaterial = new CANNON.ContactMaterial(pStoneMaterial, pStoneMaterial, {
+    friction: 0.99, // Коэффициент трения
+    restitution: 0.99, // Коэффициент упругости
+});
+
 export default [
     contactPlasticWallMaterial,
     contactPlasticPlasticMaterial,
     contactPolyhedronMaterial,
     contactItemItemMaterial,
-    contactItemWallMaterial
+    contactItemWallMaterial,
+    contactStoneStoneMaterial
 ];

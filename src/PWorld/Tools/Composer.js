@@ -21,6 +21,10 @@ export class Composer {
 export class BoxComposer extends Composer {
     constructor(args) {
         args = {
+            color: 0x0000ff,
+            position: [0, 0, 0],
+            scale: [1, 1, 1],
+            boxScale: [1, 1, 1],
             pMaterial: pPlasticMaterial,
             itemMass: undefined,
             ...args
@@ -32,16 +36,17 @@ export class BoxComposer extends Composer {
         const defaultColor = this.args.color
         const pMaterial = this.args.pMaterial
         const pos = this.args.position
-        const sum = vfn.sum
         const mass = this.args.itemMass
+        const scale = this.args.scale
+        const sizeScale = vfn.scale(scale, this.args.boxScale)
 
         function getObj(item) {
-            const [size, center, quaternion] = item
+            const [size, center, quaternion] = item.length == 3 ? item : [...item, [0, 0, 0, 1]]
 
             return new PBox({
                 mass: mass,
-                size: size,                
-                position: sum(center, pos),
+                size: vfn.scale(size, sizeScale),      
+                position: vfn.sum(vfn.scale(center, scale), pos),
                 quaternion: quaternion,
                 color: defaultColor,
                 pMaterial: pMaterial

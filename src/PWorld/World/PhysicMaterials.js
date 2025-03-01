@@ -3,6 +3,8 @@ import * as CANNON from 'cannon-es';
 // физический материал для всех Polyhedron
 export const pWallMaterial = new CANNON.Material("wall");
 
+export const pStoneMaterial = new CANNON.Material("stone");
+
 // физический материал для всех шаров сцены
 export const pItemMaterial = new CANNON.Material("item");
 

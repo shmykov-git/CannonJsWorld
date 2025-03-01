@@ -43,9 +43,10 @@ world.init(objects);
 document.getElementById("btnBum").addEventListener("click", event => { 
     const objects = world.getInstancesOf(PBox).filter(o=>o.upFactor > 0.5)
     if (objects.length > 0) {
-        const force = 10000 * (1 + Math.random())
+        const fx = 1500000 * (1 + Math.random())
+        const fy = 1500000 * (1 + Math.random())
         const i = Math.trunc((objects.length - 1) * Math.random())
-        const f = new CANNON.Vec3(0, 0, force)
+        const f = new CANNON.Vec3(fx, fy, 0)
         const q = objects[i].body.quaternion
         const qF = q.vmult(f)
         objects[i].body.applyForce(qF)

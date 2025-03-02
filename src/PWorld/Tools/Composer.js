@@ -26,7 +26,7 @@ export class BoxComposer extends Composer {
             scale: [1, 1, 1],
             boxScale: [1, 1, 1],
             pMaterial: pPlasticMaterial,
-            itemMass: undefined,
+            boxMass: undefined,
             ...args
         }
         super(args)
@@ -36,7 +36,7 @@ export class BoxComposer extends Composer {
         const defaultColor = this.args.color
         const pMaterial = this.args.pMaterial
         const pos = this.args.position
-        const mass = this.args.itemMass
+        const mass = this.args.boxMass
         const scale = this.args.scale
         const sizeScale = vfn.scale(scale, this.args.boxScale)
 

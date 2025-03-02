@@ -6,11 +6,12 @@ import { pStoneMaterial, pPlasticMaterial } from '../PWorld/World/PhysicMaterial
 import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { pyramid1000 } from '../PWorld/composeData.js'
 import { rand } from 'three/tsl';
+import { mx_bilerp_0, mx_bilerp_1 } from 'three/src/nodes/materialx/lib/mx_noise.js';
 
 
 const world = new PWorld({
     cameraPosition: [150, 5, 0],
-    gravity: [0, -100, 0],
+    gravity: [0, -10, 0],
     useGround: true,
     ground: {
         size: [100, 100, 1, 100],
@@ -23,13 +24,14 @@ const world = new PWorld({
     orbitControlDistance: [1, 200]
 });
 
+const k = 1
 const boxComposer = new BoxComposer({
-    // position: [0, 2.5, 0],
-    scale: [6, 3, 6],
-    boxScale: [1.2, 1, 1.2],
+    position: [0, k/2, 0],
+    scale: [k, k, k],
+    boxScale: [1, 1, 1],
     color: 0x0000ff,
-    // itemMass: 200,
-    pMaterial: pPlasticMaterial,
+    boxMass: 1,
+    pMaterial: pStoneMaterial,
     ...pyramid1000
 })
 
@@ -43,8 +45,8 @@ world.init(objects);
 document.getElementById("btnBum").addEventListener("click", event => { 
     const objects = world.getInstancesOf(PBox).filter(o=>o.upFactor > 0.5)
     if (objects.length > 0) {
-        const fx = 1500000 * (1 + Math.random())
-        const fy = 1500000 * (1 + Math.random())
+        const fx = 10000 * (-0.5 + Math.random())
+        const fy = 10000 * (-0.5 + Math.random())
         const i = Math.trunc((objects.length - 1) * Math.random())
         const f = new CANNON.Vec3(fx, fy, 0)
         const q = objects[i].body.quaternion

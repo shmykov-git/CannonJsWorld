@@ -32,8 +32,8 @@ export const contactPlasticPlasticMaterial = new CANNON.ContactMaterial(pPlastic
 });
 
 export const contactStoneStoneMaterial = new CANNON.ContactMaterial(pStoneMaterial, pStoneMaterial, {
-    friction: 0.99, // Коэффициент трения
-    restitution: 0.99, // Коэффициент упругости
+    friction: 1, // Коэффициент трения
+    restitution: 0, // Коэффициент упругости
 });
 
 export default [

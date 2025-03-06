@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+        .floating-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 100px;
+            height: 100px;
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            border-radius: 50%; /* Делаем кнопку круглой */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10; /* Кнопка находится поверх остальных элементов */
+        }
+        .floating-button:hover {
+            background-color: #ff6347;
+        }
+    </style>
+    <title>Maze cube</title>
+</head>
+<body>    
+    <button class="floating-button" id="btnJump">Прыг</button>
+    <script type="module" src="../src/viewsJs/MazeCube.js"></script>
+</body>
+</html>

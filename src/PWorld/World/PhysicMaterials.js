@@ -1,16 +1,22 @@
 import * as CANNON from 'cannon-es';
 
 // физический материал для всех Polyhedron
-export const pPolyhedronMaterial = new CANNON.Material('Polyhedron');
+export const pWallMaterial = new CANNON.Material("wall");
+
+export const pStoneMaterial = new CANNON.Material("stone");
 
 // физический материал для всех шаров сцены
-export const pItemMaterial = new CANNON.Material('sphere');
+export const pItemMaterial = new CANNON.Material("item");
+
+// что-то из пластика
+export const pPlasticMaterial = new CANNON.Material("plastic");
 
 export const pNoContactMaterial = new CANNON.Material('no_contact');
 
 
 export default [
-    pPolyhedronMaterial,
+    pPlasticMaterial,
+    pWallMaterial,
     pItemMaterial,
     pNoContactMaterial
 ]

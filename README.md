@@ -1,3 +1,15 @@
+# The site
+
+https://cannon.programbus.ru
+
+# Algo
+
+This progect is used for some scene generations
+https://github.com/shmykov-git/Algo
+
+Algo youtube
+https://www.youtube.com/@shmykov-tube
+
 # Vite.js Project
 
 Welcome to Cannon Js World application. You can use it to simplify your Cannon application
@@ -5,6 +17,8 @@ Welcome to Cannon Js World application. You can use it to simplify your Cannon a
 ## Features
 
 - Simple Cannon World objects organizing to be convenient with
+
+- You can find all models in Algo repository https://github.com/shmykov-git/Algo/tree/master/View3D/Scene
 
 ## Getting Started
 

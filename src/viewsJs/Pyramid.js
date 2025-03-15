@@ -10,18 +10,18 @@ import { mx_bilerp_0, mx_bilerp_1 } from 'three/src/nodes/materialx/lib/mx_noise
 
 
 const world = new PWorld({
-    cameraPosition: [150, 5, 0],
+    cameraPosition: [50, 5, 0],
     gravity: [0, -10, 0],
     useGround: true,
     ground: {
-        size: [100, 100, 1, 100],
+        size: [30, 30, 0.5, 100],
         color: 0x22ff44,
         type: "cylinder",
         meshMaterialFn: getMeshTransparentMaterial03
     },
     useWorldRadius: true,    
-    worldRadius: 100,
-    orbitControlDistance: [1, 200]
+    worldRadius: 30,
+    orbitControlDistance: [1, 100]
 });
 
 const k = 1

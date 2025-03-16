@@ -14,13 +14,13 @@ const world = new PWorld({
     gravity: [0, -10, 0],
     useGround: true,
     ground: {
-        size: [30, 30, 0.5],
+        size: [40, 40, 0.5],
         color: 0x22ff44,
         type: "box",
         meshMaterialFn: getMeshTransparentMaterial03
     },
     useWorldRadius: true,    
-    worldRadius: 30,
+    worldRadius: 20,
     orbitControlDistance: [1, 100]
 });
 

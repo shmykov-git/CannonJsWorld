@@ -6,12 +6,11 @@ import { pStoneMaterial, pPlasticMaterial } from '../PWorld/World/PhysicMaterial
 import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { pyramid1000 } from '../PWorld/composeData.js'
 import { rand } from 'three/tsl';
-import { mx_bilerp_0, mx_bilerp_1 } from 'three/src/nodes/materialx/lib/mx_noise.js';
 import { coodsWithText } from '../PWorld/data.js';
 
 
 const world = new PWorld({
-    cameraPosition: [10, 10, 20],
+    cameraPosition: [8, 10, 25],
     gravity: [0, -10, 0],
     useGround: true,
     ground: {
@@ -42,7 +41,6 @@ const objects = [
         id: "coods",
         color: 0x984523,
         usePhysic: false,
-        useView: true,
         scale: [15, 15, 15],
         position: [-7, 1, -7],
         meshMaterialFn: getMeshItemMaterial,

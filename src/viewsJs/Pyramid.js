@@ -1,22 +1,23 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import {PWorld, PSphere, PJumpSphere, PPolyhedron, PBox } from '../PWorld/PObjects.js'
-import { getMeshTransparentMaterial03, getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial } from '../PWorld/Scene/MeshMaterials.js'
+import { getMeshTransparentMaterial03, getDiceCubeMaterial, getEarthMaterial, getMeshWireMaterial, getMeshItemMaterial } from '../PWorld/Scene/MeshMaterials.js'
 import { pStoneMaterial, pPlasticMaterial } from '../PWorld/World/PhysicMaterials.js'
 import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { pyramid1000 } from '../PWorld/composeData.js'
 import { rand } from 'three/tsl';
 import { mx_bilerp_0, mx_bilerp_1 } from 'three/src/nodes/materialx/lib/mx_noise.js';
+import { coodsWithText } from '../PWorld/data.js';
 
 
 const world = new PWorld({
-    cameraPosition: [50, 5, 0],
+    cameraPosition: [10, 10, 20],
     gravity: [0, -10, 0],
     useGround: true,
     ground: {
-        size: [30, 30, 0.5, 100],
+        size: [30, 30, 0.5],
         color: 0x22ff44,
-        type: "cylinder",
+        type: "box",
         meshMaterialFn: getMeshTransparentMaterial03
     },
     useWorldRadius: true,    
@@ -37,6 +38,16 @@ const boxComposer = new BoxComposer({
 
 // one body - one mesh
 const objects = [
+    new PPolyhedron({
+        id: "coods",
+        color: 0x984523,
+        usePhysic: false,
+        useView: true,
+        scale: [15, 15, 15],
+        position: [-7, 1, -7],
+        meshMaterialFn: getMeshItemMaterial,
+        ...coodsWithText
+    }),
     ...boxComposer.getObjects()
 ];
 

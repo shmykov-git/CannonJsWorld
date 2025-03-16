@@ -15,7 +15,6 @@ export class PPlane extends PObject {
             position: [0, 0, 0],
             color: 0x008800,
             type: "plane",
-            // mass: 0,
             static: true,
             meshMaterialFn: getPlaneMaterial,
             pMaterial: pWallMaterial,
@@ -36,6 +35,7 @@ export class PPlane extends PObject {
                 break;
             case "box":
                 geometry = new THREE.BoxGeometry(...args.size)
+                pG = [0, -args.size[2]/2, 0]
                 break;
             case "cylinder":
                 geometry = new THREE.CylinderGeometry(...args.size)

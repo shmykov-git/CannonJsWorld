@@ -14,6 +14,7 @@ const showHelp = queryArgs.showHelp;
 const world = new PWorld({
     useGround: false,
     worldRadius: 20,
+    backgroundColor: 0x202020,
     cameraPosition: [0, 0, 50],
     changeGravityByCamera: true
 });

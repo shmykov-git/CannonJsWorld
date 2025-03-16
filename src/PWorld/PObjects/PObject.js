@@ -23,6 +23,10 @@ export class PObject {
             debugBody: false,
             ...args,
 
+            view: {
+                position: [0, 0, 0],
+                ...args.view
+            },
             model: {
                 url: "santa.glb",
                 centered: true,
@@ -61,9 +65,10 @@ export class PObject {
         const args = this.args;
         const material = args.meshMaterialFn ? args.meshMaterialFn(args.color) : getMeshWireMaterial(args.color);
         const [g, gC, gQ] = this.getVcq(this.geometry);
-        let mesh = new THREE.Mesh(g, material);       // Представление
-        mesh.position.set(gC[0], gC[1], gC[2])          // Позиция
-        mesh.quaternion.set(gQ.x, gQ.y, gQ.z, gQ.w)     // Поворот
+        let mesh = new THREE.Mesh(g, material);                 // Представление
+        const meshPos = vfn.sum(gC, this.args.view.position)
+        mesh.position.set(meshPos[0], meshPos[1], meshPos[2])   // Позиция
+        mesh.quaternion.set(gQ.x, gQ.y, gQ.z, gQ.w)             // Поворот
 
         this.mesh = mesh;
         this.scene.add(this.mesh);

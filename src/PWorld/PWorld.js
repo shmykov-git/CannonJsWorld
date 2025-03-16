@@ -31,10 +31,16 @@ export class PWorld {
 
             ground: {
                 size: [30, 30, 0.5],
+                position: [0, 0, 0],
                 color: 0x008800,
                 type: "box",
                 pMaterial: pWallMaterial,
                 meshMaterialFn: getMeshTransparentMaterial,
+
+                view: {
+                    position: [0, 0, 0],
+                    ...args.ground?.view
+                },
                 ...args.ground
             }
         };
@@ -91,8 +97,10 @@ export class PWorld {
                 id: "ground",
                 static: true,
                 size: this.args.ground.size,
+                position: this.args.ground.position,
                 color: this.args.ground.color,
                 type: this.args.ground.type,
+                view: this.args.ground.view,
                 meshMaterialFn: this.args.ground.meshMaterialFn
             });
             objects = [...objects, ground]

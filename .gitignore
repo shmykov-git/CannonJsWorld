@@ -25,8 +25,5 @@ pnpm-debug.log*
 # MacOS system files
 Thumbs.db
 
-# deploy folders
-deploy_prod/
-
 # skip models upload, see readme.md
 public/models

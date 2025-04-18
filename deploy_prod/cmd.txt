@@ -1,0 +1,54 @@
+# todo: это все относится к серверу, а не к одному проекту
+# перетащить в отдельное место
+
+# simple rebuild cannonworld
+cd ../opt/CannonJsWorld/deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d;
+
+
+docker compose up nginx --force-recreate
+
+# resertificate
+# автоматом обновляются в 3 ночи каждое воскресение
+0 3 * * 0 /opt/dehydrated/dehydrated -c --cron
+
+# done:
+git clone https://github.com/dehydrated-io/dehydrated.git
+cd dehydrated
+chmod +x dehydrated
+cp dehydrated /usr/local/bin/
+mkdir -p /etc/dehydrated
+cd /etc/dehydrated
+mkdir -p certs accounts
+
+# настройка 
+/etc/dehydrated/domains.txt
+
+echo 'BASEDIR="/etc/dehydrated"
+WELLKNOWN="/var/www/dehydrated"
+CONTACT_EMAIL="shmykov.dev@gmail.com"
+
+# на всякий
+mkdir -p /var/www/dehydrated
+chown -R www-data:www-data /var/www/dehydrated
+
+dehydrated --register --accept-terms
+dehydrated -c
+crontab -e # добавить или изменить время запуска 'dehydrated -c'. Это обновит при необходимости сертификаты, если срок уже поджимает. Действуют 3 месяца, но обновятся за 1н месяц.
+
+# только для первого создания
+docker compose up nginx-init
+
+# remove \r
+dos2unix <file>
+
+# install history
+# apt install dos2unix
+
+https://cannon.programbus.ru
+
+
+# что еще:
+# можно порт закрыть, для этого нужно влкючть брендмауэр
+ufw enable
+ufw deny 3333 # должен перестать работать сайт по ip
+

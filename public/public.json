@@ -293,21 +293,31 @@
     },
     "gallery": {
       "files": [
+        "BigDee.glb",
         "Chess.glb",
+        "CubeGalaxiesIntersection.glb",
+        "Fight.glb",
         "HiStar.glb",
+        "I'll be back.glb",
         "KungFuR.glb",
+        "MobiusMaze.glb",
+        "TheCat.glb",
+        "bh&h.glb",
         "c13.glb",
         "c14.glb",
         "d14.glb",
         "dragon.glb",
         "f1.glb",
+        "galaxy.glb",
+        "gz.glb",
         "nbs.glb",
         "scorpio.glb",
+        "ussr.glb",
         "vually.glb",
         "w29.glb",
         "w30.glb"
       ],
-      "totalCount": 13
+      "totalCount": 23
     },
     "mains": {
       "files": [
@@ -432,10 +442,10 @@
     "files": [
       "santa.glb"
     ],
-    "totalCount": 395
+    "totalCount": 405
   },
   "files": [
     "public.json"
   ],
-  "totalCount": 396
+  "totalCount": 406
 }

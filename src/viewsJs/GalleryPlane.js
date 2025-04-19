@@ -4,7 +4,7 @@ import {PWorld, PSphere, PJumpSphere, PPolyhedron, PBox } from '../PWorld/PObjec
 import { getDiceCubeMaterial, getEarthMaterial, getMeshTransparentMaterial, getMeshTransparentMaterial45, getMeshItemMaterial } from '../PWorld/Scene/MeshMaterials.js'
 import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { color, rand } from 'three/tsl';
-import { rCircle } from '../PWorld/VecFuncs.js'
+import { rCircleFi, rotateY } from '../PWorld/VecFuncs.js'
 import { coodsWithText } from '../PWorld/data.js';
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF, 5)
@@ -23,7 +23,6 @@ const world = new PWorld({
     orbitControlDistance: [0.01, 100],
     lights: [ambientLight, directionalLight]
 });
-
 
 const baseArgs = { 
     radius: 1.5,
@@ -46,7 +45,7 @@ const models = [
         url: "tattoos/b10.glb",
         scale: [2, 2, 2],
         position: [0, 0, -1],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/b5.glb",
@@ -62,144 +61,145 @@ const models = [
         url: "tattoos/b9.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/bb2.glb",
         scale: [2, 2, 2],
         position: [0, -0.5, -0.8],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/bb3.glb",
         scale: [3, 3, 3],
         position: [0, -0.5, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/bc1.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/c3.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/d5.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/e3.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/ee1.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/h1.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/lh1.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/m8.glb",
         scale: [2.7, 2.7, 2.7],
         position: [0, -1, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/md1.glb",
         scale: [2, 2, 2],
         position: [0.5, 0, 0.5],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/mm1.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/o2.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/p3.glb",
         scale: [2, 2, 2],
         position: [0, -2, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/tb1.glb",
         scale: [2, 2, 2],
         position: [-1, -1, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/w17+.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/w18+.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/w19.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/wl1.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/wp1.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "tattoos/ww1.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
 ]
 
 const fallY = 8
 const itemRadius = 22
-const positions = [...rCircle(models.length, itemRadius).map(p => [p[0], fallY, p[1]])]
+const positions = [...rCircleFi(models.length, itemRadius).map(p => [[p[0], fallY, p[1]], rotateY(p[2])])]
 
 const objects = models.map((model, i) => 
     new PSphere({
         ...baseArgs,
-        position: positions[i], 
+        position: positions[i][0], 
+        quaternion: positions[i][1],
         model: {
             ...model,
             url: model.url

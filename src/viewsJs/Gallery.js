@@ -4,7 +4,7 @@ import {PWorld, PSphere, PJumpSphere, PPolyhedron, PBox } from '../PWorld/PObjec
 import { getDiceCubeMaterial, getEarthMaterial, getMeshTransparentMaterial, getMeshTransparentMaterial45 } from '../PWorld/Scene/MeshMaterials.js'
 import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { color, rand } from 'three/tsl';
-import { rCircle } from '../PWorld/VecFuncs.js'
+import { rCircleFi, rotateY } from '../PWorld/VecFuncs.js'
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF, 5)
 const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 5)
@@ -44,7 +44,7 @@ const models = [
         url: "I'll be back.glb",
         scale: [0.13, 0.13, 0.13],
         position: [0, 0.8, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "f1.glb",
@@ -55,30 +55,31 @@ const models = [
         url: "vually.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
+        color: 0xff00ff,
     },
     {
         url: "BigDee.glb",
         scale: [0.15, 0.15, 0.15],
         position: [0, 1, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "CubeGalaxiesIntersection.glb",
         scale: [3, 3, 3],
         position: [0.2, -0.5, 0.8],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "galaxy.glb",
         scale: [3.1, 3.1, 3.1],
         position: [0, -0.5, 0],
-        color: 0xff0000,            
+        color: 0xffaf9f,            
     },
     {
         url: "Chess.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "Fight.glb",
@@ -90,40 +91,43 @@ const models = [
         url: "MobiusMaze.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        color: 0xffff00,            
     },
     {
         url: "TheCat.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "gz.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "ussr.glb",
         scale: [2.2, 2.2, 2.2],
         position: [0, -0.3, 0],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
     {
         url: "bh&h.glb",
         scale: [2, 2, 2],
         position: [6, 0, 2],
-        color: 0xff0000,            
+        // color: 0xff0000,            
     },
 ]
 
-const positions = [...rCircle(models.length, 12).map(p => [p[0], 12, p[1]])]
+const fallY = 8
+const itemRadius = 12
+const positions = [...rCircleFi(models.length, itemRadius).map(p => [[p[0], fallY, p[1]], rotateY(p[2])])]
 
 const objects = models.map((model, i) => 
     new PSphere({
         ...baseArgs,
-        position: positions[i], 
+        position: positions[i][0], 
+        quaternion: positions[i][1],
         model: {
             ...model,
             url: `gallery/${model.url}`

@@ -25,6 +25,16 @@ export function* rCircle(n, r = 1) {
     }
 }
 
+export function* rCircleFi(n, r = 1) {
+    const dF = 2 * Math.PI / n;
+    let f = 0;
+    while (n > 0) {
+        yield [r * Math.sin(f), r * Math.cos(f), f]
+        f += dF
+        n--;
+    }
+}
+
 export const agri = (v, f, a0 = 0) => rN(v.length).reduce((a, i) => f(a, i), a0)
 export const agri1 = (v, f, a0) => rN(v.length-1).reduce((a, i) => f(a, i+1), a0)
 
@@ -84,3 +94,7 @@ export function sumA(vs) {
 }
 
 export function center(vs) { return div(sumA(vs), vs.length); }
+
+export function rotateY(fi) {
+    return [0, Math.sin(fi/2), 0, Math.cos(fi/2)]
+}

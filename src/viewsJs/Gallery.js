@@ -41,14 +41,14 @@ const baseArgs = {
 
 const models = [
     {
-        url: "w30.glb",
-        scale: [2, 2, 5],
-        position: [0, -1, 0],
+        url: "I'll be back.glb",
+        scale: [0.13, 0.13, 0.13],
+        position: [0, 0.8, 0],
         color: 0xff0000,            
     },
     {
         url: "f1.glb",
-        scale: [1, 1, 1],
+        scale: [2, 2, 2],
         position: [0, 0, 0],
     },
     {
@@ -57,56 +57,68 @@ const models = [
         position: [0, 0, 0],
     },
     {
-        url: "c13.glb",
-        scale: [2, 2, 2],
-        position: [0, -1, 0],
+        url: "BigDee.glb",
+        scale: [0.15, 0.15, 0.15],
+        position: [0, 1, 0],
         color: 0xff0000,            
     },
     {
-        url: "c14.glb",
-        scale: [2, 2, 2],
-        position: [0, -1, 0],
+        url: "CubeGalaxiesIntersection.glb",
+        scale: [3, 3, 3],
+        position: [0.2, -0.5, 0.8],
         color: 0xff0000,            
     },
     {
-        url: "d14.glb",
-        scale: [2, 2, 2],
-        position: [0, -1, 0],
+        url: "galaxy.glb",
+        scale: [3.1, 3.1, 3.1],
+        position: [0, -0.5, 0],
         color: 0xff0000,            
     },
     {
-        url: "dragon.glb",
+        url: "Chess.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
         color: 0xff0000,            
     },
     {
-        url: "KungFuR.glb",
+        url: "Fight.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
         // color: 0xff0000,            
     },
     {
-        url: "nbs.glb",
+        url: "MobiusMaze.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
         color: 0xff0000,            
     },
     {
-        url: "scorpio.glb",
+        url: "TheCat.glb",
         scale: [2, 2, 2],
         position: [0, 0, 0],
         color: 0xff0000,            
     },
     {
-        url: "w29.glb",
+        url: "gz.glb",
         scale: [2, 2, 2],
-        position: [0, -1, 0],
+        position: [0, 0, 0],
+        color: 0xff0000,            
+    },
+    {
+        url: "ussr.glb",
+        scale: [2.2, 2.2, 2.2],
+        position: [0, -0.3, 0],
+        color: 0xff0000,            
+    },
+    {
+        url: "bh&h.glb",
+        scale: [2, 2, 2],
+        position: [6, 0, 2],
         color: 0xff0000,            
     },
 ]
 
-const positions = [...rCircle(models.length, 10).map(p => [p[0], 10, p[1]])]
+const positions = [...rCircle(models.length, 12).map(p => [p[0], 12, p[1]])]
 
 const objects = models.map((model, i) => 
     new PSphere({

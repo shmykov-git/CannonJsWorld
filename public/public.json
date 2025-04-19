@@ -293,6 +293,7 @@
     },
     "gallery": {
       "files": [
+        "Chess.glb",
         "HiStar.glb",
         "KungFuR.glb",
         "c13.glb",
@@ -306,7 +307,7 @@
         "w29.glb",
         "w30.glb"
       ],
-      "totalCount": 12
+      "totalCount": 13
     },
     "mains": {
       "files": [
@@ -431,10 +432,10 @@
     "files": [
       "santa.glb"
     ],
-    "totalCount": 394
+    "totalCount": 395
   },
   "files": [
     "public.json"
   ],
-  "totalCount": 395
+  "totalCount": 396
 }

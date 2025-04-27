@@ -2,7 +2,7 @@
 # перетащить в отдельное место
 
 # simple rebuild cannonworld
-cd ../opt/CannonJsWorld/deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d;
+cd ../opt/CannonJsWorld; git pull https://github.com/shmykov-git/CannonJsWorld.git; cd deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d;
 
 
 docker compose up nginx --force-recreate

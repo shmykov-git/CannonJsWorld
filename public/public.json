@@ -439,13 +439,24 @@
       ],
       "totalCount": 83
     },
+    "watter": {
+      "files": [
+        "w1.glb",
+        "w2.glb",
+        "w3.glb",
+        "w4.glb",
+        "w5.glb",
+        "w6.glb"
+      ],
+      "totalCount": 6
+    },
     "files": [
       "santa.glb"
     ],
-    "totalCount": 405
+    "totalCount": 411
   },
   "files": [
     "public.json"
   ],
-  "totalCount": 406
+  "totalCount": 412
 }

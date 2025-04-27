@@ -26,4 +26,8 @@ pnpm-debug.log*
 Thumbs.db
 
 # skip models upload, see readme.md
-public/models
+public/models/Composed
+public/models/development
+public/models/forms
+public/models/mains
+public/models/tattoos

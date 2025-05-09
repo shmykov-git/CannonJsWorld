@@ -6,6 +6,13 @@ import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { color, rand } from 'three/tsl';
 import { rCircleFi, rotateY } from '../PWorld/VecFuncs.js'
 
+function getQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    return Object.fromEntries(params.entries());
+}
+const queryArgs = getQueryParams();
+const listId = queryArgs?.list ?? 0
+
 const fallY = 8
 const itemRadius = 8
 const worldRadius = 10
@@ -46,38 +53,64 @@ const baseArgs = {
     }
 }
 
-const models = [
-    {
-        url: "actives/egsStrike.glb",
-        scale: [2, 2, 2],
-        position: [0, 0.5, 0]
-    },
-    {
-        url: "actives/interaction.glb",
-        scale: [2, 2, 2],
-        position: [0, 0.5, 0]
-    },
-    {
-        url: "actives/ballRacing.glb",
-        scale: [2, 2, 2],
-        position: [0, 1.5, 0]
-    },
-    {
-        url: "actives/waterfall1.glb",
-        scale: [2, 2, 2],
-        position: [0, 0, 0]
-    },
-    {
-        url: "actives/waterfall2.glb",
-        scale: [2, 2, 2],
-        position: [0, 0, 0]
-    },
-    {
-        url: "actives/twoStones.glb",
-        scale: [2, 2, 2],
-        position: [0, 1.5, 0]
-    },
+const listOfModels = [
+    [
+        {
+            url: "actives/egsStrike.glb",
+            scale: [2, 2, 2],
+            position: [0, 0.5, 0]
+        },
+        {
+            url: "actives/interaction.glb",
+            scale: [2, 2, 2],
+            position: [0, 0.5, 0]
+        },
+        {
+            url: "actives/ballRacing.glb",
+            scale: [2, 2, 2],
+            position: [0, 1.5, 0]
+        },
+        {
+            url: "actives/waterfall1.glb",
+            scale: [2, 2, 2],
+            position: [0, 0, 0]
+        },
+        {
+            url: "actives/waterfall2.glb",
+            scale: [2, 2, 2],
+            position: [0, 0, 0]
+        },
+        {
+            url: "actives/twoStones.glb",
+            scale: [2, 2, 2],
+            position: [0, 1.5, 0]
+        },
+    ],
+    [
+        {
+            url: "actives/material/standing1.glb",
+            scale: [2, 2, 2],
+            position: [0, 5, 0]
+        },
+        {
+            url: "actives/material/standing2.glb",
+            scale: [2, 2, 2],
+            position: [0, 5, 0]
+        },
+        {
+            url: "actives/material/fall1.glb",
+            scale: [2, 2, 2],
+            position: [0, 0, 0]
+        },
+        {
+            url: "actives/material/rotation.glb",
+            scale: [2, 2, 2],
+            position: [0, 1.5, 0]
+        },
+    ]
 ]
+
+const models = listOfModels[listId]
 
 const positions = [...rCircleFi(models.length, itemRadius).map(p => [[p[0], fallY, p[1]], rotateY(p[2])])]
 

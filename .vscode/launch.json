@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Open index.html",
             "url_": "http://localhost:3333/index.html",
-            "url": "http://localhost:3333/views/GalleryWatter.html",
+            "url": "http://localhost:3333/views/AnimatedGallery.html",
             "sourceMaps": true,
             "skipFiles": ["node_modules/**"]
         }

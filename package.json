@@ -5,6 +5,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@msgpack/msgpack": "^3.1.1",
     "cannon-es": "^0.20.0",
     "three": "^0.172.0",
     "vite": "^6.0.7"

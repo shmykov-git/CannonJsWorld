@@ -4,6 +4,7 @@ import { pItemMaterial } from '../World/PhysicMaterials.js'
 import { getMeshWireMaterial } from '../Scene/MeshMaterials.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as vfn from '../VecFuncs.js'
+import { decode } from "@msgpack/msgpack";
 
 export class PObject {
     constructor(args, shapes, geometry) {
@@ -34,6 +35,7 @@ export class PObject {
                 scale: [1, 1, 1],
                 position: [0, 0, 0],
                 color: undefined,
+                useAnimate: false,
                 ...args.model
             },
             selection: {
@@ -111,11 +113,57 @@ export class PObject {
                 
         // remove old model
         if (this.model) this.scene.remove(this.model)
-
+        
         const modelGroup = new THREE.Group()
         modelGroup.add(model)
         this.model = modelGroup
         this.scene.add(this.model)
+
+        if (args.useAnimate) {
+            this.loadModelAnimate()
+        }
+    }
+
+    initAnimate(animate) {
+        const model = this.model.children[0]       
+        let isValid = animate["meshes"].length == model.children.length
+
+        if (!isValid) {
+            console.log("Invalid animate mesh count")
+            return
+        }
+
+        for (const [i, mesh] of model.children.entries()) {    
+            const meshAnimate = animate["meshes"][i]
+            const points0 = new Float32Array(meshAnimate["points0"])
+            const index = new Uint16Array(meshAnimate["index"])
+            const links = meshAnimate["links"]
+            const moves0 = meshAnimate["moves"][0]
+
+            if (moves0.length > 0) {
+                if (links.length == 0) {
+                    isValid &&= moves0.length == points0.length
+                } else {
+                    const movesCount = 3 * links.reduce((acc, ms) => acc + ms.length, 0)
+                    isValid &&= (movesCount == points0.length)    
+                }
+            }
+
+            mesh.geometry.setIndex(new THREE.BufferAttribute(index, 1));
+            mesh.geometry.setAttribute('position', new THREE.BufferAttribute(points0, 3));
+            // mesh.geometry.computeBoundingBox();
+            // mesh.geometry.computeBoundingSphere();
+        }
+
+        if (!isValid) {
+            console.log("Invalid animate mesh struct")
+            return
+        }
+
+        animate.isActive = false
+        animate.frameIndex = 0
+        animate.frameCount = animate["meshes"][0]["moves"].length
+        this.modelAnimate = animate
     }
 
     initPhysic() {
@@ -188,16 +236,29 @@ export class PObject {
             this.initDebugMesh()
     }
 
-    loadModel(onLoad) {
+    getModelUrl() {
         let url = this.args.model.url
         if (!url) return
 
         if (!url.startsWith('/')) url = '/' + url
         if (!url.startsWith('/models')) url = '/models' + url
+        return url
+    }
+
+    getModelAnimateUrl() {
+        const modelUrl = this.getModelUrl()
+        if (!modelUrl) return
+
+        return modelUrl.replace(/\.glb$/, ".animate");
+    }
+
+    loadModel(onLoad) {
+        const modelUrl = this.getModelUrl()
+        if (!modelUrl) return
 
         const loader = new GLTFLoader();
         loader.load(
-            url,
+            modelUrl,
             (gltf) => {
                 this.initModel(gltf.scene)
                 if (onLoad) onLoad(this.model)
@@ -209,6 +270,26 @@ export class PObject {
                 console.error('Ошибка при загрузке модели:', error);
             }
         )
+    }
+
+    async loadModelAnimate() {
+        const animateUrl = this.getModelAnimateUrl()
+
+        try {
+            const response = await fetch(animateUrl);
+        
+            if (!response.ok) {
+                throw new Error(`Ошибка загрузки анимации: ${response.statusText}`);
+            }
+        
+            const arrayBuffer = await response.arrayBuffer();
+            const animate = decode(new Uint8Array(arrayBuffer));
+        
+            this.initAnimate(animate)
+        } catch (error) {
+            console.error("Ошибка при загрузке или декодировании:", error);
+            return null;
+        }
     }
 
     onSelect(clickEvent) {
@@ -275,6 +356,64 @@ export class PObject {
             this.model.position.set
             this.model.position.set(p.x, p.y, p.z);
             this.model.quaternion.set(q.x, q.y, q.z, q.w);
+
+            if (this.args.model.useAnimate && this.modelAnimate?.isActive) {
+                this.updateAnimate()
+            }
         }
-    }            
+    }
+    
+    startAnimate() {
+        this.modelAnimate.isActive = true
+    }
+
+    stopAnimate() {
+        this.modelAnimate.isActive = false
+    }
+
+    updateAnimate() {
+        const slowMotion = 2
+        const updateCount = this.modelAnimate.updateCount ?? 0
+        this.modelAnimate.updateCount = (updateCount + 1) % slowMotion
+        
+        if (updateCount % slowMotion != 0)
+            return;
+    
+        const frameCount = this.modelAnimate.frameCount
+        const frameIndex = this.modelAnimate.frameIndex
+
+        for (const [iMesh, mesh] of this.model.children[0].children.entries()) {
+            const meshAnimate = this.modelAnimate["meshes"][iMesh]
+            const moves = meshAnimate["moves"]
+            if (moves[frameIndex].length == 0) continue
+
+            const links = meshAnimate["links"]
+            const points0 = meshAnimate["points0"]
+            const points = new Float32Array(points0)  
+
+            if (links.length == 0) {
+                for (const [i, x] of points.entries()) {
+                    points[i] = x + moves[frameIndex][i]
+                }
+            } else {
+                for (const [linkI, ps] of links.entries()) 
+                for (const pI of ps) {
+                    points[3*pI] += moves[frameIndex][3*linkI]
+                    points[3*pI + 1] += moves[frameIndex][3*linkI + 1]
+                    points[3*pI + 2] += moves[frameIndex][3*linkI + 2]
+                }
+            }      
+            
+            mesh.geometry.setAttribute('position', new THREE.BufferAttribute(points, 3));
+            // mesh.geometry.computeBoundingBox();
+            // mesh.geometry.computeBoundingSphere();
+            
+            // if (mesh.geometry.attributes.normal) 
+            //     mesh.geometry.deleteAttribute('normal');              
+            
+            // mesh.geometry.computeVertexNormals();
+        }
+
+        this.modelAnimate.frameIndex = (frameIndex + 1) % frameCount        
+    }     
 }

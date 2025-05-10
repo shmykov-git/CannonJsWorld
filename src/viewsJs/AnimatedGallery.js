@@ -85,6 +85,11 @@ const listOfModels = [
             scale: [2, 2, 2],
             position: [0, 1.5, 0]
         },
+        {
+            url: "actives/gravity/heart.glb",
+            scale: [1.5, 1.5, 1.5],
+            position: [-1.8, 0, 0]
+        },
     ],
     [
         {

@@ -225,13 +225,41 @@
       "totalCount": 214
     },
     "actives": {
+      "ai": {
+        "files": [
+          "wave.animate",
+          "wave.glb"
+        ],
+        "totalCount": 2
+      },
+      "material": {
+        "files": [
+          "fall1.animate",
+          "fall1.glb",
+          "rotation.animate",
+          "rotation.glb",
+          "standing1.animate",
+          "standing1.glb",
+          "standing2.animate",
+          "standing2.glb"
+        ],
+        "totalCount": 8
+      },
       "files": [
-        "scene3d.animate",
-        "scene3d.glb",
-        "twoballs.animate",
-        "twoballs.glb"
+        "ballRacing.animate",
+        "ballRacing.glb",
+        "egsStrike.animate",
+        "egsStrike.glb",
+        "interaction.animate",
+        "interaction.glb",
+        "twoStones.animate",
+        "twoStones.glb",
+        "waterfall1.animate",
+        "waterfall1.glb",
+        "waterfall2.animate",
+        "waterfall2.glb"
       ],
-      "totalCount": 4
+      "totalCount": 22
     },
     "development": {
       "files": [
@@ -462,10 +490,10 @@
     "files": [
       "santa.glb"
     ],
-    "totalCount": 415
+    "totalCount": 433
   },
   "files": [
     "public.json"
   ],
-  "totalCount": 416
+  "totalCount": 434
 }

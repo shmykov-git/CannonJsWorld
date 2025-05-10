@@ -88,6 +88,16 @@ const listOfModels = [
     ],
     [
         {
+            url: "actives/material/bullet.glb",
+            scale: [2, 2, 2],
+            position: [0, 2.7, 8.5]
+        },
+        {
+            url: "actives/ai/wave.glb",
+            scale: [1.5, 1.5, 1.5],
+            position: [0, 0, 0]
+        },
+        {
             url: "actives/material/standing1.glb",
             scale: [2, 2, 2],
             position: [0, 5, 0]

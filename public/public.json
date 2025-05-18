@@ -232,8 +232,17 @@
         ],
         "totalCount": 2
       },
+      "gravity": {
+        "files": [
+          "heart.animate",
+          "heart.glb"
+        ],
+        "totalCount": 2
+      },
       "material": {
         "files": [
+          "bullet.animate",
+          "bullet.glb",
           "fall1.animate",
           "fall1.glb",
           "rotation.animate",
@@ -243,7 +252,7 @@
           "standing2.animate",
           "standing2.glb"
         ],
-        "totalCount": 8
+        "totalCount": 10
       },
       "files": [
         "ballRacing.animate",
@@ -259,7 +268,7 @@
         "waterfall2.animate",
         "waterfall2.glb"
       ],
-      "totalCount": 22
+      "totalCount": 26
     },
     "development": {
       "files": [
@@ -476,6 +485,12 @@
       ],
       "totalCount": 83
     },
+    "text": {
+      "files": [
+        "linkToAlgo.glb"
+      ],
+      "totalCount": 1
+    },
     "watter": {
       "files": [
         "w1.glb",
@@ -490,10 +505,10 @@
     "files": [
       "santa.glb"
     ],
-    "totalCount": 433
+    "totalCount": 438
   },
   "files": [
     "public.json"
   ],
-  "totalCount": 434
+  "totalCount": 439
 }

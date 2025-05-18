@@ -64,7 +64,53 @@ const objects = [
         color: 0xdddddd,
         meshMaterialFn: getEarthMaterial
     }), 
+
+    new PBox({
+        id: "linkToAlgo",
+        color: 0x333333,
+        meshMaterialFn: getMeshTransparentMaterial,
+        useView: true,
+        useModel: true,
+        useSelection: true,
+        selection: {
+            onSelect: o => copyLink(o, "https://github.com/shmykov-git/Algo")
+        },        
+        size: [10, 2, 1],
+        position: [-9, 1, 14], 
+        model: {
+            url: 'text/linkToAlgo.glb',
+            scale: [5, 5, 5],
+            position: [0, 0, 0],        
+        }
+    }), 
+
+    new PBox({
+        id: "linkToProject",
+        color: 0x333333,
+        meshMaterialFn: getMeshTransparentMaterial,
+        useView: true,
+        useModel: true,
+        useSelection: true,
+        selection: {
+            onSelect: o => copyLink(o, "https://github.com/shmykov-git/CannonJsWorld")
+        },        
+        size: [10, 2, 1],
+        position: [9, 1, 14], 
+        model: {
+            url: 'text/linkToProject.glb',
+            scale: [6.7, 6.7, 6.7],
+            position: [0, 0, 0],        
+        }
+    })
 ];
+
+function copyLink(obj, link) {
+    obj.body.applyForce(new CANNON.Vec3(0, 1000, -10000))
+    
+    navigator.clipboard.writeText(link)
+        .then(() => console.log(link))
+        .catch(err => console.error(err));
+}
 
 world.init(objects);
 

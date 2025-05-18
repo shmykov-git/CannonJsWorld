@@ -381,8 +381,9 @@ export class PObject {
     
         const frameCount = this.modelAnimate.frameCount
         const frameIndex = this.modelAnimate.frameIndex
+        const model = this.model.children[0]
 
-        for (const [iMesh, mesh] of this.model.children[0].children.entries()) {
+        for (const [iMesh, mesh] of model.children.entries()) {
             const meshAnimate = this.modelAnimate["meshes"][iMesh]
             const moves = meshAnimate["moves"]
             if (moves[frameIndex].length == 0) continue

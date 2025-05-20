@@ -4,12 +4,16 @@
 # simple rebuild cannonworld
 cd ../opt/CannonJsWorld; git pull https://github.com/shmykov-git/CannonJsWorld.git; cd deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d;
 
+cd /opt/CannonJsWorld/deploy_prod
 
-docker compose up nginx --force-recreate
+docker compose up nginx --build --remove-orphans --force-recreate -d
+/opt/dehydrated/dehydrated -c   #генерация сертификата
+Для первой генерации сертификата нужно в nginx.config закоментировать секция сайта, чтобы не читать сертификаты, которых пока нет
 
 # resertificate
 # автоматом обновляются в 3 ночи каждое воскресение
 0 3 * * 0 /opt/dehydrated/dehydrated -c --cron
+
 
 # done:
 git clone https://github.com/dehydrated-io/dehydrated.git
@@ -21,8 +25,12 @@ cd /etc/dehydrated
 mkdir -p certs accounts
 
 # настройка 
-/etc/dehydrated/domains.txt
+nano /etc/dehydrated/domains.txt
+вставить
+cannon.programbus.ru www.cannon.programbus.ru
 
+nano /etc/dehydrated/config
+вставить
 echo 'BASEDIR="/etc/dehydrated"
 WELLKNOWN="/var/www/dehydrated"
 CONTACT_EMAIL="shmykov.dev@gmail.com"
@@ -33,7 +41,14 @@ chown -R www-data:www-data /var/www/dehydrated
 
 dehydrated --register --accept-terms
 dehydrated -c
+
+у сертификатов будет номер, а нужно в дефолтные имена все скопировать
+mv /etc/dehydrated/certs/cannon.programbus.ru/fullchain-1747761254.pem /etc/dehydrated/certs/cannon.programbus.ru/fullchain.pem
+mv /etc/dehydrated/certs/cannon.programbus.ru/privkey-1747761254.pem /etc/dehydrated/certs/cannon.programbus.ru/privkey.pem
+
 crontab -e # добавить или изменить время запуска 'dehydrated -c'. Это обновит при необходимости сертификаты, если срок уже поджимает. Действуют 3 месяца, но обновятся за 1н месяц.
+вставить
+0 3 * * 0 /opt/dehydrated/dehydrated -c --cron
 
 # только для первого создания
 docker compose up nginx-init

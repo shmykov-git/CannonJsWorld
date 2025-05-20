@@ -24,19 +24,5 @@ services:
     networks:
       - prod-site-net
 
-  nginx-init: #80, 443
-   container_name: nginx-init
-   image: nginx:latest
-   restart: unless-stopped
-   volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - /var/www/dehydrated:/var/www/dehydrated
-      - /etc/dehydrated/certs:/etc/dehydrated/certs:ro
-   ports:
-      - 80:80
-      - 443:443
-   networks:
-      - prod-site-net
-
 networks:
   prod-site-net:

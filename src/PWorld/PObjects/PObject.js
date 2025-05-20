@@ -139,6 +139,8 @@ export class PObject {
             const index = new Uint16Array(meshAnimate["index"])
             const links = meshAnimate["links"]
             const moves0 = meshAnimate["moves"][0]
+            const indexRemoves = meshAnimate["indexRemoves"]
+            meshAnimate.hasIndexRemoves = indexRemoves && indexRemoves.reduce((acc, rm) => acc || rm.length > 0, false)
 
             if (moves0.length > 0) {
                 if (links.length == 0) {
@@ -404,6 +406,20 @@ export class PObject {
                     points[3*pI + 2] += moves[frameIndex][3*linkI + 2]
                 }
             }      
+
+            if (meshAnimate.hasIndexRemoves) {
+                if (iMesh == 0) {
+                    const index = new Uint16Array(meshAnimate["index"])
+                    mesh.geometry.setIndex(new THREE.BufferAttribute(index, 1))
+                } else {
+                    const indexRemoves = meshAnimate["indexRemoves"]
+                    const excludeIndexes = new Set(indexRemoves[frameIndex])
+                    if (excludeIndexes.size > 0) {
+                        const newIndex = new Uint16Array(mesh.geometry.index.array.filter((_, i) => !excludeIndexes.has((i / 3) | 0)))
+                        mesh.geometry.setIndex(new THREE.BufferAttribute(newIndex, 1))
+                    }
+                }
+            }
             
             mesh.geometry.setAttribute('position', new THREE.BufferAttribute(points, 3));
             // mesh.geometry.computeBoundingBox();

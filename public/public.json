@@ -243,6 +243,8 @@
         "files": [
           "bullet.animate",
           "bullet.glb",
+          "bullet2.animate",
+          "bullet2.glb",
           "fall1.animate",
           "fall1.glb",
           "rotation.animate",
@@ -252,7 +254,7 @@
           "standing2.animate",
           "standing2.glb"
         ],
-        "totalCount": 10
+        "totalCount": 12
       },
       "files": [
         "ballRacing.animate",
@@ -268,7 +270,7 @@
         "waterfall2.animate",
         "waterfall2.glb"
       ],
-      "totalCount": 26
+      "totalCount": 28
     },
     "development": {
       "files": [
@@ -487,9 +489,10 @@
     },
     "text": {
       "files": [
-        "linkToAlgo.glb"
+        "linkToAlgo.glb",
+        "linkToProject.glb"
       ],
-      "totalCount": 1
+      "totalCount": 2
     },
     "watter": {
       "files": [
@@ -505,10 +508,10 @@
     "files": [
       "santa.glb"
     ],
-    "totalCount": 438
+    "totalCount": 441
   },
   "files": [
     "public.json"
   ],
-  "totalCount": 439
+  "totalCount": 442
 }

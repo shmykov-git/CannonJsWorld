@@ -232,6 +232,13 @@
         ],
         "totalCount": 2
       },
+      "fractal": {
+        "files": [
+          "tree.animate",
+          "tree.glb"
+        ],
+        "totalCount": 2
+      },
       "gravity": {
         "files": [
           "heart.animate",
@@ -270,7 +277,7 @@
         "waterfall2.animate",
         "waterfall2.glb"
       ],
-      "totalCount": 28
+      "totalCount": 30
     },
     "development": {
       "files": [
@@ -508,10 +515,10 @@
     "files": [
       "santa.glb"
     ],
-    "totalCount": 441
+    "totalCount": 443
   },
   "files": [
     "public.json"
   ],
-  "totalCount": 442
+  "totalCount": 444
 }

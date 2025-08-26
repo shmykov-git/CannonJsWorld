@@ -127,6 +127,13 @@ const listOfModels = [
             scale: [2, 2, 2],
             position: [0, 1.5, 0]
         },
+    ],
+    [
+        {
+            url: "actives/fractal/tree.glb",
+            scale: [0.4, 0.4, 0.4],
+            position: [0,-1, 0]            
+        }
     ]
 ]
 

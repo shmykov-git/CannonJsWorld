@@ -35,6 +35,13 @@ echo 'BASEDIR="/etc/dehydrated"
 WELLKNOWN="/var/www/dehydrated"
 CONTACT_EMAIL="shmykov.dev@gmail.com"
 
+tee /etc/dehydrated/config > /dev/null <<EOF
+BASEDIR="/etc/dehydrated"
+WELLKNOWN="/var/www/dehydrated"
+CONTACT_EMAIL="shmykov.dev@gmail.com"
+EOF
+cat /etc/dehydrated/config
+
 # на всякий
 mkdir -p /var/www/dehydrated
 chown -R www-data:www-data /var/www/dehydrated
@@ -60,6 +67,54 @@ dos2unix <file>
 # apt install dos2unix
 
 https://cannon.programbus.ru
+
+
+# server redeploy from the begining
+curl --version # уже должно быть, либо поставить
+apt update
+
+# git до последней версии
+apt install -y software-properties-common
+add-apt-repository ppa:git-core/ppa -y
+apt update
+git config --global core.autocrlf false
+git --version
+
+# docker, docker compose
+curl -fsSL https://get.docker.com | sh
+apt update && sudo apt install docker-compose-plugin -y
+docker compose --version
+
+# Clone всех нужных репозиториев
+# CannonJsWorld основной сайт
+git clone https://github.com/shmykov-git/CannonJsWorld.git /opt/CannonJsWorld
+# dehydrated для сертификации сайта
+git clone https://github.com/dehydrated-io/dehydrated.git /opt/dehydrated
+
+# настройка dehydrated для сертификации сайта
+cd /opt/dehydrated
+chmod +x dehydrated
+cp dehydrated /usr/local/bin/
+mkdir -p /etc/dehydrated
+cd /etc/dehydrated
+mkdir -p certs accounts
+
+# domains.txt
+echo "cannon.programbus.ru www.cannon.programbus.ru" | sudo tee /etc/dehydrated/domains.txt > /dev/null
+cat /etc/dehydrated/domains.txt
+
+# config
+tee /etc/dehydrated/config > /dev/null <<EOF
+echo 'BASEDIR="/etc/dehydrated"
+WELLKNOWN="/var/www/dehydrated"
+CONTACT_EMAIL="shmykov.dev@gmail.com"
+EOF
+cat /etc/dehydrated/config
+
+# на всякий
+mkdir -p /var/www/dehydrated
+chown -R www-data:www-data /var/www/dehydrated
+
 
 
 # что еще:

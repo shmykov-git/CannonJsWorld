@@ -69,7 +69,7 @@ EOFMain
 
 
 # скопируем локальную папку public на удаленную машину
-scp -r ../public root@90.156.252.135:/opt/CannonJsWorld/public
+scp -r ../public root@90.156.252.135:/opt/CannonJsWorld
 
 
 # соберем 

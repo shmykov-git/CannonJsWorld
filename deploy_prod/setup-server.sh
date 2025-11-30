@@ -1,16 +1,12 @@
-# если нет ключа на своей машине, то
-# ssh-keygen -t ed25519 (enter, enter, enter)
+#!/bin/bash
+echo Пароль для пользователя root для нового сервера обычно находится в почте
 
-# пароль нового сервера в почте (copy)
-# запустить git bash терминал, выполнить
-cd /c/DATA/Projects/Html/CannonJsWorld; .setu-server.sh
-# попросит ввести пароль (paste)
-
-https://cannon.programbus.ru
+# скопируем локальный ключ с машины на удаленную
+ssh-copy-id root@90.156.252.135
 
 
-==========
-# todo: сделать все отдельным скриптом
+# На удаленной машине выполним полную подготовку проекта
+ssh root@90.156.252.135 << 'EOFMain'
 
 # server redeploy from the begining
 curl --version # уже должно быть, либо поставить
@@ -69,9 +65,19 @@ docker stop nginx-cert
 echo "0 3 * * 0 /opt/dehydrated/dehydrated -c --cron" | crontab -
 crontab -l
 
-# !!! нужно залить содержимое папки public, т.к. в репозитории находится не полный список объектов
-# например через WinSCP
+EOFMain
 
-# выполнить полную сборку сайта
-cd /opt/CannonJsWorld; git pull https://github.com/shmykov-git/CannonJsWorld.git; cd deploy_prod; docker compose up cannonworld nginx --build --remove-orphans --force-recreate -d;
 
+# скопируем локальную папку public на удаленную машину
+scp -r ../public root@90.156.252.135:/opt/CannonJsWorld/public
+
+
+# соберем 
+ssh root@90.156.252.135 << 'EOFMain'
+cd /opt/CannonJsWorld
+git pull https://github.com/shmykov-git/CannonJsWorld.git
+cd deploy_prod
+docker compose up cannonworld nginx --build --remove-orphans --force-recreate -d
+EOFMain
+
+echo https://cannon.programbus.ru

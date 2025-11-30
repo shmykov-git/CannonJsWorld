@@ -3,7 +3,7 @@
 
 # пароль нового сервера в почте (copy)
 # запустить git bash терминал, выполнить
-cd /c/DATA/Projects/Html/CannonJsWorld; .setu-server.sh
+cd /c/DATA/Projects/Html/CannonJsWorld; ./setup-server.sh
 # попросит ввести пароль (paste)
 
 https://cannon.programbus.ru

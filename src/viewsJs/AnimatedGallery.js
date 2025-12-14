@@ -98,16 +98,6 @@ const listOfModels = [
             position: [0, 2.7, 8.5]
         },
         {
-            url: "actives/material/bullet2.glb",
-            scale: [2, 2, 2],
-            position: [-2.5, 0, 0]
-        },
-        {
-            url: "actives/ai/wave.glb",
-            scale: [1.5, 1.5, 1.5],
-            position: [0, 0, 0]
-        },
-        {
             url: "actives/material/standing1.glb",
             scale: [2, 2, 2],
             position: [0, 5, 0]
@@ -133,7 +123,22 @@ const listOfModels = [
             url: "actives/fractal/tree.glb",
             scale: [0.4, 0.4, 0.4],
             position: [0,-1, 0]            
-        }
+        },
+        {
+            url: "actives/world/cut.glb",
+            scale: [1, 1, 1],
+            position: [0, 1, 0]            
+        },
+        {
+            url: "actives/ai/wave.glb",
+            scale: [1.5, 1.5, 1.5],
+            position: [0, 0, 0]
+        },
+        {
+            url: "actives/material/bullet2.glb",
+            scale: [2, 2, 2],
+            position: [-2.5, 0, 0]
+        },
     ]
 ]
 

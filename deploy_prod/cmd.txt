@@ -1,8 +1,18 @@
 # todo: это все относится к серверу, а не к одному проекту
 # перетащить в отдельное место
 
+# deploy from terminal
+ssh root@90.156.252.135 "cd /opt/CannonJsWorld; git restore .; git pull https://github.com/shmykov-git/CannonJsWorld.git; cd deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d; docker system prune -f;"
+
+# copy changed files to remote from terminal
+wsl -d Ubuntu rsync -avz public/ root@90.156.252.135:/opt/CannonJsWorld/public/
+
 # simple rebuild cannonworld
-cd /opt/CannonJsWorld; git pull https://github.com/shmykov-git/CannonJsWorld.git; cd deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d;
+# git restore . # rallback changes before
+cd /opt/CannonJsWorld; git restore .; git pull https://github.com/shmykov-git/CannonJsWorld.git; cd deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d; docker system prune -f;
+
+# copy changed files to remote
+# wsl -d Ubuntu rsync -avz public/ root@90.156.252.135:/opt/CannonJsWorld/public/
 
 # pull без смены репозитория
 git -C /opt/CannonJsWorld pull https://github.com/shmykov-git/CannonJsWorld.git 

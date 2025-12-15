@@ -1,5 +1,3 @@
-# todo: это все относится к серверу, а не к одному проекту
-# перетащить в отдельное место
 
 # deploy from terminal
 ssh root@90.156.252.135 "cd /opt/CannonJsWorld; git restore .; git pull https://github.com/shmykov-git/CannonJsWorld.git; cd deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d; docker system prune -f;"
@@ -7,42 +5,7 @@ ssh root@90.156.252.135 "cd /opt/CannonJsWorld; git restore .; git pull https://
 # copy changed files to remote from terminal
 wsl -d Ubuntu rsync -avz public/ root@90.156.252.135:/opt/CannonJsWorld/public/
 
-# simple rebuild cannonworld
-# git restore . # rallback changes before
+
+# simple rebuild cannonworld on remote
 cd /opt/CannonJsWorld; git restore .; git pull https://github.com/shmykov-git/CannonJsWorld.git; cd deploy_prod; docker compose up cannonworld --build --remove-orphans --force-recreate -d; docker system prune -f;
-
-# copy changed files to remote
-# wsl -d Ubuntu rsync -avz public/ root@90.156.252.135:/opt/CannonJsWorld/public/
-
-# pull без смены репозитория
-git -C /opt/CannonJsWorld pull https://github.com/shmykov-git/CannonJsWorld.git 
-
-cd /opt/CannonJsWorld/deploy_prod
-
-docker compose up nginx --build --remove-orphans --force-recreate -d
-/opt/dehydrated/dehydrated -c   #генерация сертификата
-Для первой генерации сертификата нужно в nginx.config закоментировать секция сайта, чтобы не читать сертификаты, которых пока нет
-
-# resertificate
-# автоматом обновляются в 3 ночи каждое воскресение
-0 3 * * 0 /opt/dehydrated/dehydrated -c --cron
-
-у сертификатов будет номер, а нужно в дефолтные имена все скопировать
-mv /etc/dehydrated/certs/cannon.programbus.ru/fullchain-1747761254.pem /etc/dehydrated/certs/cannon.programbus.ru/fullchain.pem
-mv /etc/dehydrated/certs/cannon.programbus.ru/privkey-1747761254.pem /etc/dehydrated/certs/cannon.programbus.ru/privkey.pem
-
-
-# remove \r
-dos2unix <file>
-
-# install history
-# apt install dos2unix
-
-https://cannon.programbus.ru
-
-
-# что еще:
-# можно порт закрыть, для этого нужно влкючть брендмауэр
-ufw enable
-ufw deny 3333 # должен перестать работать сайт по ip
 

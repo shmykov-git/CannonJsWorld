@@ -36,7 +36,12 @@ export class PObject {
                 position: [0, 0, 0],
                 color: undefined,
                 useAnimate: false,
-                ...args.model
+                ...args.model,
+
+                animate: {
+                    slowMotion: 2,
+                    ...args.model?.animate
+                }
             },
             selection: {
                 type: "byView",
@@ -374,7 +379,7 @@ export class PObject {
     }
 
     updateAnimate() {
-        const slowMotion = 2
+        const slowMotion = this.args.model.animate.slowMotion
         const updateCount = this.modelAnimate.updateCount ?? 0
         this.modelAnimate.updateCount = (updateCount + 1) % slowMotion
         

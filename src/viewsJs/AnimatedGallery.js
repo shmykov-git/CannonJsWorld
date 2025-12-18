@@ -127,7 +127,10 @@ const listOfModels = [
         {
             url: "actives/world/cut.glb",
             scale: [1, 1, 1],
-            position: [0, 1, 0]            
+            position: [0, 1, 0],
+            animate: {
+                slowMotion: 1
+            }     
         },
         {
             url: "actives/ai/wave.glb",

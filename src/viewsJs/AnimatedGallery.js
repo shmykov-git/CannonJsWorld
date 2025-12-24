@@ -116,6 +116,11 @@ const listOfModels = [
             url: "actives/material/rotation.glb",
             scale: [2, 2, 2],
             position: [0, 1.5, 0]
+        },        
+        {
+            url: "actives/world/table.glb",
+            scale: [2, 2, 2],
+            position: [0, 1.5, 0]
         },
     ],
     [
@@ -135,7 +140,10 @@ const listOfModels = [
         {
             url: "actives/ai/wave.glb",
             scale: [1.5, 1.5, 1.5],
-            position: [0, 0, 0]
+            position: [0, 0, 0],
+            animate: {
+                slowMotion: 5
+            } 
         },
         {
             url: "actives/material/bullet2.glb",
@@ -187,6 +195,7 @@ document.getElementById("btnDetach").addEventListener("click", event => {
         world.attachArgs.object.showView()
         world.attachArgs.object.stopAnimate()
     }
+    event.stopPropagation()
 
     world.attachCamera({
         targetPositionFn: () => new THREE.Vector3(0, 0, 0),

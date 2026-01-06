@@ -24,6 +24,7 @@ services:
     networks:
       - prod-site-net
 
+services:
   hbbs:
     image: rustdesk/rustdesk-server:latest
     container_name: rustdesk-hbbs
@@ -33,10 +34,10 @@ services:
     network_mode: host
     restart: unless-stopped
 
-  hbbse:
+  hbbr:
     image: rustdesk/rustdesk-server:latest
-    container_name: rustdesk-hbbse
-    command: hbbse
+    container_name: rustdesk-hbbr
+    command: hbbr
     volumes:
       - ./data:/root
     network_mode: host

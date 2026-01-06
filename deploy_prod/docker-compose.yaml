@@ -35,7 +35,7 @@ services:
       - "21118:21118"
     volumes:
       - ./data:/root
-    command: hbbs -r ${RUSTDESK_DOMAIN_OR_IP} -k ${RUSTDESK_KEY:-_}
+    command: ["hbbs", "-r", "90.156.252.135", "--key", "_"]
     networks:
       - rustdesk-net
 
@@ -48,7 +48,7 @@ services:
       - "21119:21119"
     volumes:
       - ./data:/root
-    command: hbbr -k ${RUSTDESK_KEY:-_}
+    command: ["hbbr", "--key", "_"]
     networks:
       - rustdesk-net
 

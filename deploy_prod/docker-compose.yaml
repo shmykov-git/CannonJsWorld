@@ -26,21 +26,33 @@ services:
 
   hbbs:
     image: rustdesk/rustdesk-server:latest
-    container_name: rustdesk-hbbs
-    command: hbbs
+    container_name: hbbs
+    restart: unless-stopped
+    ports:
+      - "21115:21115"
+      - "21116:21116"
+      - "21116:21116/udp"
+      - "21118:21118"
     volumes:
       - ./data:/root
-    network_mode: host
-    restart: unless-stopped
+    command: hbbs -r ${RUSTDESK_DOMAIN_OR_IP} -k ${RUSTDESK_KEY:-_} -m ${RUSTDESK_MODE:-_}
+    networks:
+      - rustdesk-net
 
   hbbr:
     image: rustdesk/rustdesk-server:latest
-    container_name: rustdesk-hbbr
-    command: hbbr
+    container_name: hbbr
+    restart: unless-stopped
+    ports:
+      - "21117:21117"
+      - "21119:21119"
     volumes:
       - ./data:/root
-    network_mode: host
-    restart: unless-stopped
-    
+    command: hbbr -k ${RUSTDESK_KEY:-_}
+    networks:
+      - rustdesk-net
+
 networks:
   prod-site-net:
+  rustdesk-net:
+    driver: bridge

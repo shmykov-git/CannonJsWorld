@@ -118,9 +118,38 @@ const listOfModels = [
             position: [0, 1.5, 0]
         },        
         {
+            url: "actives/world/cube.glb",
+            scale: [2, 2, 2],
+            position: [0, 3, 0],
+            animate: {
+                slowMotion: 3
+            }     
+        },
+        {
+            url: "actives/world/dodecahedron.glb",
+            scale: [2, 2, 2],
+            position: [0, 2, 0],
+            animate: {
+                slowMotion: 3
+            }     
+        },
+        {
+            url: "actives/world/mobius.glb",
+            scale: [2, 2, 2],
+            position: [0, 2, 0],
+            animate: {
+                slowMotion: 3
+            }     
+        },
+        {
             url: "actives/world/table.glb",
             scale: [2, 2, 2],
             position: [0, 1.5, 0]
+        },
+        {
+            url: "actives/world/PlasticTree.glb",
+            scale: [2, 2, 2],
+            position: [0, 2, 0]
         },
     ],
     [

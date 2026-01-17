@@ -25,12 +25,20 @@ export function getMeshTransparentMaterial45(color) {
     return new THREE.MeshStandardMaterial({ color: color, flatShading: false, opacity: 0.45, transparent: true });
 }
 
+export function getMeshTransparentMaterial90(color) {
+    return new THREE.MeshStandardMaterial({ color: color, flatShading: false, opacity: 0.90, transparent: true });
+}
+
 export function getMeshItemMaterial(color) {
     return new THREE.MeshStandardMaterial({ color: color, flatShading: false });
 }
 
 export function getMeshWireMaterial(color) {
     return new THREE.MeshBasicMaterial({ color: color, wireframe: true });
+}
+
+export function getMeshBasicMaterial(color) {
+    return new THREE.MeshBasicMaterial({ color: color });
 }
 
 function getTextureMaterial(color, url) {

@@ -35,6 +35,7 @@ export class PObject {
                 scale: [1, 1, 1],
                 position: [0, 0, 0],
                 color: undefined,
+                materials: undefined,
                 useAnimate: false,
                 ...args.model,
 
@@ -109,10 +110,16 @@ export class PObject {
         model.position.y += args.position[1]
         model.position.z += args.position[2]
 
-        model.traverse((object) => {
-            if (object.isMesh) {
-                if (args.color)
-                    object.material.color.set(args.color)
+        let meshI = 0
+        model.traverse((mesh) => {
+            if (mesh.isMesh) {
+                if (args.materials) {
+                    const material = args.materials[meshI % args.materials.length]
+                    if (material) mesh.material = material
+                    else if (args.color) mesh.material.color.set(args.color)
+                } else if (args.color)
+                    mesh.material.color.set(args.color)
+                meshI++
             }
         })
                 

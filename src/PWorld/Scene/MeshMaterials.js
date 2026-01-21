@@ -3,6 +3,7 @@ import maze_ball1 from '../../../textures/maze_ball1.png'
 import ball1 from '../../../textures/ball1.png'
 import dice from '../../../textures/dice.png'
 import earth from '../../../textures/earth.jpg'
+import wood from '../../../textures/wood.jpg'
 import { rMN } from '../VecFuncs'
 
 
@@ -52,6 +53,16 @@ function getTextureMaterial(color, url) {
 
 export function getEarthMaterial(color) {
     return getTextureMaterial(color, earth)
+}
+
+export function getWoodMaterial(color) {
+    const texture = new THREE.TextureLoader().load(wood);
+    // texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+
+    return new THREE.MeshBasicMaterial({
+        map: texture, // Используем текстуру для цвета
+        color: color ? color : undefined
+    });    
 }
 
 export function getMazeBallMaterial(color) {

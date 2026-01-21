@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 import {PWorld, PSphere, PJumpSphere, PPolyhedron, PBox } from '../PWorld/PObjects.js'
-import { getDiceCubeMaterial, getEarthMaterial, getMeshTransparentMaterial, getMeshTransparentMaterial45, getMeshTransparentMaterial90, getMeshWireMaterial, getMeshBasicMaterial, getMeshItemMaterial } from '../PWorld/Scene/MeshMaterials.js'
+import { getDiceCubeMaterial, getWoodMaterial, getMeshTransparentMaterial, getMeshTransparentMaterial45, getMeshTransparentMaterial90, getMeshWireMaterial, getMeshBasicMaterial, getMeshItemMaterial } from '../PWorld/Scene/MeshMaterials.js'
 import { BoxComposer } from '../PWorld/Tools/Composer.js';
 import { color, rand } from 'three/tsl';
 import { rCircleFi, rotateY } from '../PWorld/VecFuncs.js'
@@ -155,7 +155,7 @@ const listOfModels = [
                 getMeshBasicMaterial(0x0000ff),
                 getMeshBasicMaterial(0x0000ff),
                 getMeshBasicMaterial(0x0000ff),
-                getMeshTransparentMaterial90(0x00ff00),
+                getWoodMaterial(0xffffff),
                 getMeshBasicMaterial(0xaa0000),
             ]
         },

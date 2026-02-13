@@ -17,6 +17,7 @@ services:
   cannonworld: #3333
     container_name: cannonworld
     image: cannonworldimage
+    restart: unless-stopped
     build:
       context: ..
     ports:

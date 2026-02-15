@@ -2,7 +2,8 @@
 echo Пароль для пользователя root для нового сервера обычно находится в почте
 
 # скопируем локальный ключ с машины на удаленную
-ssh-copy-id root@90.156.252.135
+ssh-keygen -R 90.156.252.135        # удалим старый ключ, если он есть
+ssh-copy-id root@90.156.252.135     # скопируем новый ключ, чтобы не вводить пароль при каждом подключении
 
 
 # На удаленной машине выполним полную подготовку проекта
@@ -77,7 +78,7 @@ ssh root@90.156.252.135 << 'EOFMain'
 cd /opt/CannonJsWorld
 git pull https://github.com/shmykov-git/CannonJsWorld.git
 cd deploy_prod
-docker compose up cannonworld nginx --build --remove-orphans --force-recreate -d
+docker compose up --build --remove-orphans --force-recreate -d
 EOFMain
 
 echo https://cannon.programbus.ru

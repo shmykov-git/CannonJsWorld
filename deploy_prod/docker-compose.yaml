@@ -37,6 +37,8 @@ services:
     volumes:
       - ./data:/root
     command: ["hbbs", "-r", "90.156.252.135", "--key", "_"]
+    environment:
+      - RUST_LOG=debug
     networks:
       - rustdesk-net
 
@@ -50,6 +52,8 @@ services:
     volumes:
       - ./data:/root
     command: ["hbbr", "--key", "_"]
+    environment:
+      - RUST_LOG=debug
     networks:
       - rustdesk-net
 

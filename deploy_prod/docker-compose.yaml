@@ -60,6 +60,7 @@ services:
 
 networks:
   calls-network:
+    driver: bridge
   prod-site-net:
   rustdesk-net:
     driver: bridge

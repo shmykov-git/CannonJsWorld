@@ -61,6 +61,8 @@ services:
 networks:
   calls-network:
     driver: bridge
+    external: true
+    name: calls-network
   prod-site-net:
   rustdesk-net:
     driver: bridge

@@ -40,7 +40,7 @@ cd /etc/dehydrated
 mkdir -p certs accounts
 
 # domains.txt
-echo "cannon.programbus.ru www.cannon.programbus.ru" | sudo tee /etc/dehydrated/domains.txt > /dev/null
+echo "cannon.programbus.ru www.cannon.programbus.ru andrew.programbus.ru www.andrew.programbus.ru" | sudo tee /etc/dehydrated/domains.txt > /dev/null
 cat /etc/dehydrated/domains.txt
 
 # config
@@ -66,6 +66,8 @@ docker stop nginx-cert
 echo "0 3 * * 0 /opt/dehydrated/dehydrated -c --cron" | crontab -
 crontab -l
 
+# создадим общую сеть для проектов
+docker network create calls-network
 EOFMain
 
 

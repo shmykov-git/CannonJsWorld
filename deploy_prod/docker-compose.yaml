@@ -60,11 +60,28 @@ services:
     networks:
       - rustdesk-net
 
+  vpn:
+    image: alekslitvinenk/openvpn
+    container_name: vpn
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 1194:1194/udp
+      - 8080:80
+    environment:
+      HOST_ADDR: "185.125.46.111"
+    volumes:
+      - ./dockovpn-data:/opt/Dockovpn_data
+    restart: always
+    networks:
+      - vpn-net
+
 networks:
   calls-network:
     driver: bridge
     external: true
     name: calls-network
   prod-site-net:
+  vpn-net:
   rustdesk-net:
     driver: bridge

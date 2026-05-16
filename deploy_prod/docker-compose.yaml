@@ -40,6 +40,7 @@ services:
     command: ["hbbs", "-r", "90.156.252.135", "--key", "_"]
     environment:
       - RUST_LOG=debug
+      - KEY=qhvuILEFbicMiECweA+bycB4vLDopMv5SUw3W+QTb0g=
     networks:
       - rustdesk-net
 
@@ -55,6 +56,7 @@ services:
     command: ["hbbr", "--key", "_"]
     environment:
       - RUST_LOG=debug
+      - KEY=qhvuILEFbicMiECweA+bycB4vLDopMv5SUw3W+QTb0g=
     networks:
       - rustdesk-net
 

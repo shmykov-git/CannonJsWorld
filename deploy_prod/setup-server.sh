@@ -64,6 +64,8 @@ docker stop nginx-cert
 
 # настроить обновление сертификата сайта по рассписанию
 echo "0 3 * * 0 /opt/dehydrated/dehydrated -c --cron" | crontab -
+# добавим обновление сертификата vpn раз в месяц
+(crontab -l; echo "0 2 1 * * /usr/bin/docker stop nginx && sleep 5 && /usr/bin/certbot renew --standalone --quiet --preferred-challenges http && /usr/bin/docker start nginx") | sudo crontab -
 crontab -l
 
 # создадим общую сеть для проектов

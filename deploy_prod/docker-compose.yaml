@@ -12,7 +12,6 @@ services:
       - 80:80
       - 443:443
     networks:
-      - calls-network
       - prod-site-net
 
   cannonworld: #3333
@@ -77,10 +76,6 @@ services:
       - vpn-net
 
 networks:
-  calls-network:
-    driver: bridge
-    external: true
-    name: calls-network
   prod-site-net:
   vpn-net:
   rustdesk-net:

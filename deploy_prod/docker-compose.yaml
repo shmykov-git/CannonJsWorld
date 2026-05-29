@@ -8,6 +8,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /var/www/dehydrated:/var/www/dehydrated
       - /etc/dehydrated/certs:/etc/dehydrated/certs:ro
+      - /var/www/html:/var/www/html
     ports:
       - 80:80
       - 443:443

@@ -69,7 +69,7 @@ services:
       - 1194:1194/udp
       - 8080:80
     environment:
-      HOST_ADDR: "90.156.252.135"
+      HOST_ADDR: "155.212.230.124"
     volumes:
       - ./dockovpn-data:/opt/Dockovpn_data
     restart: always
